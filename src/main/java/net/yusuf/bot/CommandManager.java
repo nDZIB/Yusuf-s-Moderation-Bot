@@ -3,12 +3,13 @@ package net.yusuf.bot;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.yusuf.bot.command.CommandContext;
 import net.yusuf.bot.command.ICommand;
+import net.yusuf.bot.command.admin.SetPrefixCommand;
 import net.yusuf.bot.command.commands.*;
 import net.yusuf.bot.command.github_commands.*;
 import net.yusuf.bot.command.moderation.KickCommand;
+import net.yusuf.bot.command.music.*;
 import net.yusuf.bot.command.server_commands.*;
 import net.yusuf.bot.command.tutorials_commands.*;
-
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -25,22 +26,37 @@ public class CommandManager {
         addCommand(new PasteCommand());
         addCommand(new HelpCommand());
         addCommand(new Support());
+        addCommand(new MemeCommand());
         addCommand(new KickCommand());
+        addCommand(new WebhookCommand());
+        addCommand(new JokeCommand());
+        addCommand(new SetPrefixCommand());
+
         addCommand(new RealYusufIsmailGithub());
         addCommand(new DungeonMakersGithub());
         addCommand(new TurtyWurtyGithub());
         addCommand(new SilentChaos512Github());
         addCommand(new TeamCitcraftGithub());
         addCommand(new ForgeGithub());
+
         addCommand(new TeamCitcraftServer());
         addCommand(new TurtyWurtyServer());
         addCommand(new ForgeServer());
         addCommand(new DungeonMakersSever());
+
         addCommand(new Cy4shotTutorials());
         addCommand(new RealyusufismailTutorials());
         addCommand(new McjtyTutorials());
         addCommand(new Silentchaos512Tutorials());
         addCommand(new TurtyWurtyTutorials());
+
+        addCommand(new JoinCommand());
+        addCommand(new PlayCommand());
+        addCommand(new StopCommand());
+        addCommand(new NowPlayingCommand());
+        addCommand(new SkipCommand());
+        addCommand(new QueueCommand());
+        addCommand(new RepeatCommand());
     }
 
     private void addCommand(ICommand cmd) {
@@ -68,9 +84,9 @@ public class CommandManager {
         return null;
     }
 
-    void handle(GuildMessageReceivedEvent event) {
+    void handle(GuildMessageReceivedEvent event, String prefix) {
         String[] split = event.getMessage().getContentRaw()
-                .replaceFirst("(?i)" + Pattern.quote(Config.get("prefix")), "")
+                .replaceFirst("(?i)" + Pattern.quote(prefix), "")
                 .split("\\s+");
 
         String invoke = split[0].toLowerCase();

@@ -1,6 +1,9 @@
 # Discord java bot 
 Set your prefix, Bot toke and owner id in the .env file.
 
+Bot is beig deveoped in a private repository.
+
+More commands to come.
 
 [![License: BSD](https://img.shields.io/badge/License-BSD-green.svg)](https://opensource.org/licenses/BSD)
 [![Discord](https://img.shields.io/discord/842490150537527306?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)]( https://discord.gg/hpY6s6mh3N)

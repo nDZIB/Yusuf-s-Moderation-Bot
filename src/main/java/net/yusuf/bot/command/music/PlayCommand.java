@@ -17,7 +17,7 @@ public class PlayCommand implements ICommand {
         final TextChannel channel = ctx.getChannel();
 
         if (ctx.getArgs().isEmpty()) {
-            channel.sendMessage("Correct usage is `!!play <youtube link>`").queue();
+            channel.sendMessage("Correct usage is `&play <youtube link>`").queue();
             return;
         }
 

@@ -6,15 +6,13 @@ import net.yusuf.bot.command.ICommand;
 import net.yusuf.bot.command.admin.SetPrefixCommand;
 import net.yusuf.bot.command.commands.*;
 import net.yusuf.bot.command.github_commands.*;
-import net.yusuf.bot.command.moderation.KickCommand;
+import net.yusuf.bot.command.moderation.*;
 import net.yusuf.bot.command.music.*;
 import net.yusuf.bot.command.server_commands.*;
 import net.yusuf.bot.command.tutorials_commands.*;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class CommandManager {
@@ -27,10 +25,15 @@ public class CommandManager {
         addCommand(new HelpCommand());
         addCommand(new Support());
         addCommand(new MemeCommand());
-        addCommand(new KickCommand());
         addCommand(new WebhookCommand());
         addCommand(new JokeCommand());
         addCommand(new SetPrefixCommand());
+        addCommand(new UptimeCommand());
+
+        addCommand(new BanCommand());
+        addCommand(new WarnCommand());
+        addCommand(new MuteCommand());
+        addCommand(new KickCommand());
 
         addCommand(new RealYusufIsmailGithub());
         addCommand(new DungeonMakersGithub());
@@ -62,9 +65,10 @@ public class CommandManager {
     private void addCommand(ICommand cmd) {
         boolean nameFound = this.commands.stream().anyMatch((it) -> it.getName().equalsIgnoreCase(cmd.getName()));
 
-        if(nameFound) {
+        if (nameFound) {
             throw new IllegalArgumentException("A command with this name is already present");
         }
+
         commands.add(cmd);
     }
 
@@ -76,11 +80,12 @@ public class CommandManager {
     public ICommand getCommand(String search) {
         String searchLower = search.toLowerCase();
 
-        for(ICommand cmd : this.commands) {
-            if(cmd.getName().equals(searchLower) || cmd.getAliases().contains(searchLower)) {
+        for (ICommand cmd : this.commands) {
+            if (cmd.getName().equals(searchLower) || cmd.getAliases().contains(searchLower)) {
                 return cmd;
             }
         }
+
         return null;
     }
 
@@ -92,11 +97,11 @@ public class CommandManager {
         String invoke = split[0].toLowerCase();
         ICommand cmd = this.getCommand(invoke);
 
-        if(cmd != null) {
+        if (cmd != null) {
             event.getChannel().sendTyping().queue();
-            List<String> args = Arrays.asList(split).subList(1,split.length);
+            List<String> args = Arrays.asList(split).subList(1, split.length);
 
-            CommandContext ctx = new CommandContext(event,args);
+            CommandContext ctx = new CommandContext(event, args);
 
             cmd.handle(ctx);
         }

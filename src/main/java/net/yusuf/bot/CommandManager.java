@@ -54,6 +54,7 @@ public class CommandManager {
         addCommand(new TurtyWurtyTutorials());
 
         addCommand(new JoinCommand());
+        addCommand(new LeaveCommand());
         addCommand(new PlayCommand());
         addCommand(new StopCommand());
         addCommand(new NowPlayingCommand());

@@ -8,18 +8,12 @@ import net.dv8tion.jda.api.managers.AudioManager;
 import net.yusuf.bot.command.CommandContext;
 import net.yusuf.bot.command.ICommand;
 
-@SuppressWarnings("ConstantConditions")
-public class JoinCommand implements ICommand {
+public class LeaveCommand implements ICommand {
     @Override
     public void handle(CommandContext ctx) {
         final TextChannel channel = ctx.getChannel();
         final Member self = ctx.getSelfMember();
         final GuildVoiceState selfVoiceState = self.getVoiceState();
-
-        if (selfVoiceState.inVoiceChannel()) {
-            channel.sendMessage("I'm already in a voice channel").queue();
-            return;
-        }
 
         final Member member = ctx.getMember();
         final GuildVoiceState memberVoiceState = member.getVoiceState();
@@ -32,18 +26,17 @@ public class JoinCommand implements ICommand {
         final AudioManager audioManager = ctx.getGuild().getAudioManager();
         final VoiceChannel memberChannel = memberVoiceState.getChannel();
 
-        audioManager.openAudioConnection(memberChannel);
-        audioManager.isSelfDeafened();
-        channel.sendMessageFormat("Connecting to `\uD83D\uDD0A %s`", memberChannel.getName()).queue();
+        audioManager.closeAudioConnection();
+        channel.sendMessageFormat("I have left `\uD83D\uDD0A %s`", memberChannel.getName()).queue();
     }
 
     @Override
     public String getName() {
-        return "join";
+        return "leave";
     }
 
     @Override
     public String getHelp() {
-        return "Makes the bot join your voice channel";
+            return "Makes the bot leave your voice channel";
     }
 }

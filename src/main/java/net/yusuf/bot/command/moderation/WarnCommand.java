@@ -1,5 +1,7 @@
 package net.yusuf.bot.command.moderation;
 
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
@@ -14,17 +16,17 @@ public class WarnCommand implements ICommand {
         final TextChannel channel = ctx.getChannel();
         final Message message = ctx.getMessage();
         final List<String> args = ctx.getArgs();
+        final Member member = ctx.getMember();
 
         if(args.size() < 2 || message.getMentionedMembers().isEmpty()) {
             channel.sendMessage("missing argument").queue();
             return;
         }
 
-        // final Member target = message.getMentionedMembers().get(0);
-        final User user2 =  message.getMentionedMembers().get(0).getUser();
+        final User target = message.getMentionedMembers().get(0).getUser();
         final String reason = String.join(" ", args.subList(1, args.size()));
 
-        user2.openPrivateChannel().queue((privateChannel) -> channel.sendMessage("You have been warned for " + reason));
+        target.openPrivateChannel().queue((privateChannel) -> channel.sendMessage("You have been warned for " + reason));
     }
 
     @Override

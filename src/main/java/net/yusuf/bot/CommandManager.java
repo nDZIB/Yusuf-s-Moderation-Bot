@@ -60,6 +60,8 @@ public class CommandManager {
         addCommand(new SkipCommand());
         addCommand(new QueueCommand());
         addCommand(new RepeatCommand());
+        addCommand(new PauseCommand());
+        addCommand(new ResumeCommand());
     }
 
     private void addCommand(ICommand cmd) {

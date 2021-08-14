@@ -8,6 +8,7 @@ import net.yusuf.bot.command.commands.*;
 import net.yusuf.bot.command.github_commands.*;
 import net.yusuf.bot.command.moderation.*;
 import net.yusuf.bot.command.music.*;
+import net.yusuf.bot.command.role.*;
 import net.yusuf.bot.command.server_commands.*;
 import net.yusuf.bot.command.tutorials_commands.*;
 
@@ -19,6 +20,7 @@ public class CommandManager {
     private final List<ICommand> commands = new ArrayList<>();
 
     public CommandManager() {
+        addCommand(new HelloWorld());
         addCommand(new PingCommand());
         addCommand(new CommandList(this));
         addCommand(new PasteCommand());
@@ -63,6 +65,9 @@ public class CommandManager {
         addCommand(new RepeatCommand());
         addCommand(new PauseCommand());
         addCommand(new ResumeCommand());
+
+        addCommand(new AddRoleCommand());
+        addCommand(new RemoveRoleCommand());
     }
 
     private void addCommand(ICommand cmd) {

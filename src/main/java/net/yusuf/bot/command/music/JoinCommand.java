@@ -33,7 +33,7 @@ public class JoinCommand implements ICommand {
         final VoiceChannel memberChannel = memberVoiceState.getChannel();
 
         audioManager.openAudioConnection(memberChannel);
-        audioManager.isSelfDeafened();
+        audioManager.setSelfDeafened(true);
         channel.sendMessageFormat("Connecting to `\uD83D\uDD0A %s`", memberChannel.getName()).queue();
     }
 

@@ -7,6 +7,8 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.managers.AudioManager;
 import net.yusuf.bot.command.CommandContext;
 import net.yusuf.bot.command.ICommand;
+import net.yusuf.bot.lavaplayer.GuildMusicManager;
+import net.yusuf.bot.lavaplayer.PlayerManager;
 
 public class LeaveCommand implements ICommand {
     @Override
@@ -14,6 +16,11 @@ public class LeaveCommand implements ICommand {
         final TextChannel channel = ctx.getChannel();
         final Member self = ctx.getSelfMember();
         final GuildVoiceState selfVoiceState = self.getVoiceState();
+
+        if (selfVoiceState.inVoiceChannel() == false) {
+            channel.sendMessage("I'm not in a voice channel").queue();
+            return;
+        }
 
         final Member member = ctx.getMember();
         final GuildVoiceState memberVoiceState = member.getVoiceState();
@@ -25,8 +32,10 @@ public class LeaveCommand implements ICommand {
 
         final AudioManager audioManager = ctx.getGuild().getAudioManager();
         final VoiceChannel memberChannel = memberVoiceState.getChannel();
+        final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
 
         audioManager.closeAudioConnection();
+        musicManager.scheduler.queue.clear();
         channel.sendMessageFormat("I have left `\uD83D\uDD0A %s`", memberChannel.getName()).queue();
     }
 

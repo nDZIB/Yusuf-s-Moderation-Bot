@@ -2,6 +2,7 @@ package net.yusuf.bot.command.music;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
 import net.yusuf.bot.command.CommandContext;
@@ -22,36 +23,42 @@ public class QueueCommand implements ICommand {
         final BlockingQueue<AudioTrack> queue = musicManager.scheduler.queue;
 
         if (queue.isEmpty()) {
-            channel.sendMessage("The queue is currently empty").queue();
+            EmbedBuilder builder = new EmbedBuilder();
+            builder.setTitle("Queue");
+            builder.setDescription("The queue is currently empty");
+            builder.setColor(0x34d8eb);
+            ctx.getChannel().sendTyping().queue();
+            ctx.getChannel().sendMessage(builder.build()).queue();
             return;
         }
-
+        EmbedBuilder builder = new EmbedBuilder();
         final int trackCount = Math.min(queue.size(), 20);
         final List<AudioTrack> trackList = new ArrayList<>(queue);
-        final MessageAction messageAction = channel.sendMessage("**Current Queue:**\n");
+        builder.setTitle("**Current Queue:**\n");
 
         for (int i = 0; i <  trackCount; i++) {
             final AudioTrack track = trackList.get(i);
             final AudioTrackInfo info = track.getInfo();
 
-            messageAction.append('#')
-                    .append(String.valueOf(i + 1))
-                    .append(" `")
-                    .append(String.valueOf(info.title))
-                    .append(" by ")
-                    .append(info.author)
-                    .append("` [`")
-                    .append(formatTime(track.getDuration()))
-                    .append("`]\n");
+            builder.appendDescription("#")
+                    .appendDescription(String.valueOf(i + 1))
+                    .appendDescription(" `")
+                    .appendDescription(String.valueOf(info.title))
+                    .appendDescription(" by ")
+                    .appendDescription(info.author)
+                    .appendDescription("` [`")
+                    .appendDescription(formatTime(track.getDuration()))
+                    .appendDescription("`]\n");
         }
 
         if (trackList.size() > trackCount) {
-            messageAction.append("And `")
-                    .append(String.valueOf(trackList.size() - trackCount))
-                    .append("` more...");
+            builder.appendDescription("And `")
+                    .appendDescription(String.valueOf(trackList.size() - trackCount))
+                    .appendDescription("` more...");
         }
 
-        messageAction.queue();
+        ctx.getChannel().sendTyping().queue();
+        ctx.getChannel().sendMessage(builder.build()).queue();
     }
 
     private String formatTime(long timeInMillis) {

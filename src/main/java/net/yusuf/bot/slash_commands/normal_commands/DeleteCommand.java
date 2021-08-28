@@ -1,8 +1,12 @@
 package net.yusuf.bot.slash_commands.normal_commands;
 
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -11,9 +15,26 @@ import net.yusuf.bot.slash_commands.Command;
 
 import static net.dv8tion.jda.api.interactions.commands.OptionType.INTEGER;
 
-public class DeleteCommand extends Command {
+public class DeleteCommand extends ListenerAdapter {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
+        final Member member = event.getMember();
+        event.deferReply(true).queue();
+        InteractionHook hook = event.getHook();
+        hook.setEphemeral(true);
+
+        if(!member.hasPermission(Permission.MESSAGE_MANAGE)) {
+            hook.sendMessage("You are missing permission to manage the message").queue();
+            return;
+        }
+
+        final Member selfMember = event.getGuild().getSelfMember();
+
+        if(!selfMember.hasPermission(Permission.MESSAGE_MANAGE)) {
+            hook.sendMessage("I am missing permissions to manage these messages").queue();
+            return;
+        }
+
         OptionMapping amountOption = event.getOption("amount"); // This is configured to be optional so check for null
         int amount = amountOption == null
                 ? 100 // default 100
@@ -26,6 +47,7 @@ public class DeleteCommand extends Command {
                 .queue();
     }
 
+    @Override
     public void onButtonClick(ButtonClickEvent event)
     {
         // users can spoof this id so be careful what you do with this
@@ -52,12 +74,11 @@ public class DeleteCommand extends Command {
         }
     }
 
-    @Override
+
     public String getName() {
         return "delete";
     }
 
-    @Override
     public String getDescription() {
         return "Delete 1 to 200 messages";
     }

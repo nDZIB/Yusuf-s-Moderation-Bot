@@ -43,7 +43,7 @@ public class HelloWorld implements ICommand {
             help.setDescription("I could not find hello world for this langauge");
         }
 
-        ctx.getChannel().sendTyping().queue();
+        
         ctx.getChannel().sendMessage(help.build()).queue();
     }
 

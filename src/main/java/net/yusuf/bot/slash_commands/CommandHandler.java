@@ -1,5 +1,7 @@
 package net.yusuf.bot.slash_commands;
 
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.yusuf.bot.slash_commands.github_commands.*;
@@ -28,7 +30,6 @@ public class CommandHandler extends ListenerAdapter {
         addCommand(new Support());
         addCommand(new MemeCommand());
         addCommand(new JokeCommand());
-        addCommand(new DeleteCommand());
         //addCommand(new UptimeCommand());
 
         addCommand(new BanCommand());

@@ -20,7 +20,7 @@ public class AddRoleCommand extends Command {
         InteractionHook hook = event.getHook();
         hook.setEphemeral(true);
 
-         Member target = event.getOption("user").getAsMember();
+        Member target = event.getOption("user").getAsMember();
 
         if(!member.canInteract(target) || !member.hasPermission(Permission.MANAGE_ROLES)) {
             hook.sendMessage("You are missing permission to add a role this member").queue();

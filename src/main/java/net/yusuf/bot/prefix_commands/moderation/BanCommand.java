@@ -39,7 +39,7 @@ public class BanCommand implements ICommand {
         final String reason = String.join(" ", args.subList(1, args.size()));
 
             ctx.getGuild()
-                .ban(target, 5, reason)
+                .ban(target, 1, reason)
                 .reason(reason)
                 .queue(
                         (__) -> channel.sendMessage("Ban was successful").queue(),

@@ -22,7 +22,6 @@ public class HelpCommand implements ICommand {
             help.setTitle("Help");
             help.setDescription("Commands can be found by doing &commands for support type &support");
             help.setColor(0x34d8eb);
-            ctx.getChannel().sendTyping().queue();
             ctx.getChannel().sendMessage(help.build()).queue();
         }
     }

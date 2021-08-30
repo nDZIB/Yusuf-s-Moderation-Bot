@@ -2,21 +2,18 @@ package net.yusuf.bot.slash_commands.moderation;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
-import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.yusuf.bot.slash_commands.Command;
 
 import static net.dv8tion.jda.api.interactions.commands.OptionType.INTEGER;
-import static net.dv8tion.jda.api.interactions.commands.OptionType.USER;
 
 public class UnBanCommand extends Command {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
-        final String user = event.getUser().getId();
+        final String userId = event.getOption("user_id").getAsString();
 
         event.deferReply(true).queue(); // Let the user know we received the command before doing anything else
         InteractionHook hook = event.getHook(); // This is a special webhook that allows you to send messages without having permissions in the channel and also allows ephemeral messages
@@ -34,7 +31,7 @@ public class UnBanCommand extends Command {
             return;
         }
 
-        event.getGuild().unban(user)
+        event.getGuild().unban(userId)
                 .flatMap(v -> hook.sendMessage("Unbanned user"))
                 .queue();
     }

@@ -52,8 +52,6 @@ public class JoinCommand extends Command {
 
     @Override
     public CommandData getCommandData() {
-        return new CommandData(getName(), getDescription())
-                .addOptions(new OptionData(CHANNEL, "input", "Link or term")
-                        .setRequired(true));//add options maybe
+        return new CommandData(getName(), getDescription());
     }
 }

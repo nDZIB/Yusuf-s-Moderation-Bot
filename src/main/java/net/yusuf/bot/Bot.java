@@ -31,8 +31,8 @@ public class Bot {
                         CacheFlag.EMOTE
                 ))
                 .enableCache(CacheFlag.VOICE_STATE)
-                .addEventListeners(new CommandHandler(), new Listener(), new DeleteCommand())
-                .setActivity(Activity.watching("/help"))
+                .addEventListeners(new CommandHandler(), new Listener())
+                .setActivity(Activity.watching("&help"))
                 .setStatus(OnlineStatus.ONLINE)
                 .build();
 

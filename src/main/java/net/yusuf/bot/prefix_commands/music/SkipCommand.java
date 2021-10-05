@@ -36,15 +36,15 @@
 package net.yusuf.bot.prefix_commands.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
+import github.io.yusuf.core.lavaplayer.GuildMusicManager;
+import github.io.yusuf.core.lavaplayer.PlayerManager;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.yusuf.bot.prefix_commands.CommandContext;
-import net.yusuf.bot.prefix_commands.ICommand;
-import net.yusuf.bot.lavaplayer.GuildMusicManager;
-import net.yusuf.bot.lavaplayer.PlayerManager;
+import github.io.yusuf.core.bot.prefix_command.CommandContext;
+import github.io.yusuf.core.bot.prefix_command.PrefixCommand;
 
-public class SkipCommand implements ICommand {
+public class SkipCommand implements PrefixCommand {
     @Override
     public void handle(CommandContext ctx) {
         final TextChannel channel = ctx.getChannel();

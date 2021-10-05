@@ -38,9 +38,9 @@ package net.yusuf.bot.slash_commands.normal_commands;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import net.yusuf.bot.slash_commands.Command;
+import github.io.yusuf.core.bot.slash_command.Command;
 
-public class PingCommand extends Command {
+public class PingCommand implements Command {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         JDA jda = event.getJDA();

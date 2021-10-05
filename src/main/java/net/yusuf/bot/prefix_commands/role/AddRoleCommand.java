@@ -40,12 +40,13 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.yusuf.bot.prefix_commands.CommandContext;
-import net.yusuf.bot.prefix_commands.ICommand;
+
 
 import java.util.List;
+import github.io.yusuf.core.bot.prefix_command.CommandContext;
+import github.io.yusuf.core.bot.prefix_command.PrefixCommand;
 
-public class AddRoleCommand implements ICommand {
+public class AddRoleCommand implements PrefixCommand {
     @Override
     public void handle(CommandContext ctx) {
         final TextChannel channel = ctx.getChannel();

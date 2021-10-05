@@ -35,17 +35,17 @@
 
 package net.yusuf.bot.slash_commands.music;
 
+import github.io.yusuf.core.lavaplayer.GuildMusicManager;
+import github.io.yusuf.core.lavaplayer.PlayerManager;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.managers.AudioManager;
-import net.yusuf.bot.slash_commands.Command;
-import net.yusuf.bot.lavaplayer.GuildMusicManager;
-import net.yusuf.bot.lavaplayer.PlayerManager;
+import github.io.yusuf.core.bot.slash_command.Command;
 
-public class LeaveCommand extends Command {
+public class LeaveCommand implements Command {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         final Member self = event.getGuild().getSelfMember();

@@ -41,11 +41,11 @@ import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import net.yusuf.bot.slash_commands.Command;
+import github.io.yusuf.core.bot.slash_command.Command;
 
 import static net.dv8tion.jda.api.interactions.commands.OptionType.INTEGER;
 
-public class UnBanCommand extends Command {
+public class UnBanCommand implements Command {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         final String userId = event.getOption("user_id").getAsString();

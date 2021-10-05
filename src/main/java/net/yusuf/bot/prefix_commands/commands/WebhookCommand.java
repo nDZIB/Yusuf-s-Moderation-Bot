@@ -41,12 +41,12 @@ import club.minnced.discord.webhook.send.WebhookMessageBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.yusuf.bot.Config;
-import net.yusuf.bot.prefix_commands.CommandContext;
-import net.yusuf.bot.prefix_commands.ICommand;
+import github.io.yusuf.core.bot.prefix_command.CommandContext;
+import github.io.yusuf.core.bot.prefix_command.PrefixCommand;
 
 import java.util.List;
 
-public class WebhookCommand implements ICommand {
+public class WebhookCommand implements PrefixCommand {
 
     private final WebhookClient client;
 

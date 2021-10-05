@@ -36,14 +36,15 @@
 package net.yusuf.bot.prefix_commands.commands;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import github.io.yusuf.core.bot.prefix_command.CommandContext;
+import github.io.yusuf.core.bot.prefix_command.PrefixCommand;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import me.duncte123.botcommons.web.WebUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.yusuf.bot.prefix_commands.CommandContext;
-import net.yusuf.bot.prefix_commands.ICommand;
 
-public class MemeCommand implements ICommand {
+
+public class MemeCommand implements PrefixCommand {
     @Override
     public void handle(CommandContext ctx) {
         final TextChannel channel = ctx.getChannel();

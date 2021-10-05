@@ -35,21 +35,20 @@
 
 package net.yusuf.bot.slash_commands.music;
 
+import github.io.yusuf.core.lavaplayer.PlayerManager;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import net.yusuf.bot.slash_commands.Command;
-import net.yusuf.bot.lavaplayer.PlayerManager;
+import github.io.yusuf.core.bot.slash_command.Command;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import static net.dv8tion.jda.api.interactions.commands.OptionType.STRING;
 
-public class PlayCommand extends Command {
+public class PlayCommand implements Command {
     @SuppressWarnings("ConstantConditions")
     @Override
     public void onSlashCommand(SlashCommandEvent event) {

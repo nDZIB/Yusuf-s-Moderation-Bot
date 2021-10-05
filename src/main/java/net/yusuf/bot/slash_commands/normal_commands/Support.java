@@ -37,9 +37,9 @@ package net.yusuf.bot.slash_commands.normal_commands;
 
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import net.yusuf.bot.slash_commands.Command;
+import github.io.yusuf.core.bot.slash_command.Command;
 
-public class Support extends Command {
+public class Support implements Command {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
             event.reply(event.getOption("This is the discord support server").getAsString()).queue();

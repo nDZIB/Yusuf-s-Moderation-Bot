@@ -40,11 +40,11 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import net.yusuf.bot.slash_commands.Command;
-import net.yusuf.bot.lavaplayer.GuildMusicManager;
-import net.yusuf.bot.lavaplayer.PlayerManager;
+import github.io.yusuf.core.bot.slash_command.Command;
+import github.io.yusuf.core.lavaplayer.GuildMusicManager;
+import github.io.yusuf.core.lavaplayer.PlayerManager;
 
-public class PauseCommand extends Command {
+public class PauseCommand implements Command {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         final Member self = event.getGuild().getSelfMember();

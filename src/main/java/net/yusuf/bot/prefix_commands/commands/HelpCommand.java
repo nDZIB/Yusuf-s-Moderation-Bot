@@ -35,15 +35,16 @@
 
 package net.yusuf.bot.prefix_commands.commands;
 
+import github.io.yusuf.core.bot.prefix_command.CommandContext;
+import github.io.yusuf.core.bot.prefix_command.PrefixCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
-import net.yusuf.bot.prefix_commands.CommandContext;
-import net.yusuf.bot.prefix_commands.ICommand;
+
 
 import java.util.List;
 
-public class HelpCommand implements ICommand {
+public class HelpCommand implements PrefixCommand {
 
     @Override
     public void handle(CommandContext ctx) {

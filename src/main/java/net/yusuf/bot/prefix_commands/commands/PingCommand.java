@@ -35,12 +35,13 @@
 
 package net.yusuf.bot.prefix_commands.commands;
 
+import github.io.yusuf.core.bot.prefix_command.CommandContext;
+import github.io.yusuf.core.bot.prefix_command.PrefixCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
-import net.yusuf.bot.prefix_commands.CommandContext;
-import net.yusuf.bot.prefix_commands.ICommand;
 
-public class PingCommand implements ICommand {
+
+public class PingCommand implements PrefixCommand {
     @Override
     public void handle(CommandContext ctx) {
         JDA jda = ctx.getJDA();

@@ -33,68 +33,85 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.yusuf.bot.slash_commands.role;
+package net.yusuf.bot.slash_commands.moderation;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.yusuf.bot.database.SQLiteDataSource;
 import github.io.yusuf.core.bot.slash_command.Command;
 
-import static net.dv8tion.jda.api.interactions.commands.OptionType.ROLE;
-import static net.dv8tion.jda.api.interactions.commands.OptionType.USER;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
-public class AddRoleCommand implements Command {
+import static net.dv8tion.jda.api.interactions.commands.OptionType.*;
+
+public class WarnCommand implements Command {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
+        final User user = event.getUser();
         final Member member = event.getMember();
-        event.deferReply(true).queue();
-        InteractionHook hook = event.getHook();
-        hook.setEphemeral(true);
 
-        Member target = event.getOption("user").getAsMember();
-
-        if(!member.canInteract(target) || !member.hasPermission(Permission.MANAGE_ROLES)) {
-            hook.sendMessage("You are missing permission to add a role this member").queue();
+        event.deferReply(true).queue(); // Let the user know we received the command before doing anything else
+        InteractionHook hook = event.getHook(); // This is a special webhook that allows you to send messages without having permissions in the channel and also allows ephemeral messages
+        hook.setEphemeral(true); // All messages here will now be ephemeral implicitly
+        if (!event.getMember().hasPermission(Permission.MANAGE_ROLES)) {
+            hook.sendMessage("You do not have the required permissions to warn users from this server.").queue();
             return;
         }
 
-        final Member selfMember = event.getGuild().getSelfMember();
-
-        if(!selfMember.canInteract(target) || !selfMember.hasPermission(Permission.MANAGE_ROLES)) {
-            hook.sendMessage("I am missing permissions to add a role to that member").queue();
+        Member selfMember = event.getGuild().getSelfMember();
+        if (!selfMember.hasPermission(Permission.MANAGE_ROLES)) {
+            hook.sendMessage("I don't have the required permissions to warn users from this server.").queue();
             return;
         }
 
-        Role role = event.getOption("role").getAsRole();
+        if (member != null && !selfMember.canInteract(member)) {
+            hook.sendMessage("This user is too powerful for me to warn.").queue();
+            return;
+        }
 
-        event.getGuild()
-                .addRoleToMember(target, role)
-                .queue(
-                        (__) -> event.reply("The role was given.").queue(),
-                        (error) -> hook.sendMessage("Could not give the role").queue()
-                );
+
     }
 
     @Override
     public String getName() {
-        return "give_role";
+        return "warn";
     }
 
     @Override
     public String getDescription() {
-        return "gives a role";
+        return "Warn a user";
     }
 
     @Override
     public CommandData getCommandData() {
         return new CommandData(getName(), getDescription())
-                .addOptions(new OptionData(USER, "user", "The user which you want to give the role to.")
-                        .setRequired(true))
-                .addOptions(new OptionData(ROLE, "role", "The role which you want to give")
-                        .setRequired(true));
+                .addOptions(new OptionData(USER, "user", "The user to warn")
+                        .setRequired(true)) // This command requires a parameter
+                .addOptions(new OptionData(STRING, "reason", "The reason why you want to warn the user"));
     }
+
+    /*
+    private void updateWarn(long guildId, String userAmount, SlashCommandEvent event) {
+        final User user = event.getOption("user").getAsUser();
+
+        try (final PreparedStatement preparedStatement = SQLiteDataSource
+                .getConnection()
+                // language=SQLite
+                .prepareStatement("UPDATE guild_settings SET userAmount = ? WHERE guild_id = ?")) {
+
+            preparedStatement.setString(1, user);
+            preparedStatement.setString(2, String.valueOf(guildId));
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+     */
 }

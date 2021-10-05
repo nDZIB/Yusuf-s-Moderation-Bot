@@ -39,15 +39,16 @@ import me.duncte123.botcommons.StringUtils;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import net.yusuf.bot.prefix_commands.CommandContext;
-import net.yusuf.bot.prefix_commands.ICommand;
+import github.io.yusuf.core.bot.prefix_command.CommandContext;
+import github.io.yusuf.core.bot.prefix_command.PrefixCommand;
 
 import java.lang.management.ManagementFactory;
 import java.util.List;
 
-import static net.yusuf.bot.prefix_commands.ExtraCommandStuff.reply;
+import static github.io.yusuf.core.bot.prefix_command.ExtraCommandStuff.reply;
 
-public class UptimeCommand implements ICommand {
+
+public class UptimeCommand implements PrefixCommand {
     @Override
     public void handle(CommandContext ctx) {
         List<String> args = ctx.getArgs();

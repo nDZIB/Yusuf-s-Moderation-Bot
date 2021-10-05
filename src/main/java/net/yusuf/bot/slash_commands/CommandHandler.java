@@ -35,6 +35,7 @@
 
 package net.yusuf.bot.slash_commands;
 
+import github.io.yusuf.core.bot.slash_command.CoreSlashCommandHandler;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.yusuf.bot.slash_commands.github_commands.*;
@@ -49,8 +50,7 @@ import net.yusuf.bot.slash_commands.tutorials_commands.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CommandHandler extends ListenerAdapter {
-    private final Map<String, Command> commands = new HashMap<>();
+public class CommandHandler extends CoreSlashCommandHandler {
 
     public CommandHandler() {
         addCommand(new CommandsList());
@@ -104,19 +104,5 @@ public class CommandHandler extends ListenerAdapter {
 
         addCommand(new AddRoleCommand());
         addCommand(new RemoveRoleCommand());
-    }
-
-    public void addCommand(Command command){
-        commands.put(command.getName(), command);
-    }
-
-    @Override
-    public void onSlashCommand(SlashCommandEvent event) {
-        var cmd = commands.get(event.getName());
-        if(cmd == null) {
-            event.reply("unknown command").queue();
-            return;
-        }
-        cmd.onSlashCommand(event);
     }
 }

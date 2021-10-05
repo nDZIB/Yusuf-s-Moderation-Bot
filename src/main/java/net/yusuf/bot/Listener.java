@@ -35,6 +35,7 @@
 
 package net.yusuf.bot;
 
+import github.io.yusuf.core.bot.prefix_command.VeryBadDesign;
 import me.duncte123.botcommons.BotCommons;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.ReadyEvent;

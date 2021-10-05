@@ -40,16 +40,16 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import net.yusuf.bot.slash_commands.Command;
-import net.yusuf.bot.lavaplayer.GuildMusicManager;
-import net.yusuf.bot.lavaplayer.PlayerManager;
+import github.io.yusuf.core.bot.slash_command.Command;
+import github.io.yusuf.core.lavaplayer.GuildMusicManager;
+import github.io.yusuf.core.lavaplayer.PlayerManager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-public class QueueCommand extends Command {
+public class QueueCommand implements Command {
 
     @Override
     public void onSlashCommand(SlashCommandEvent event) {

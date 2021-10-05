@@ -41,20 +41,17 @@ import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import net.yusuf.bot.slash_commands.Command;
+import github.io.yusuf.core.bot.slash_command.Command;
 
 import java.util.HashMap;
 
 import static net.dv8tion.jda.api.interactions.commands.OptionType.STRING;
 
-public class HelloWorld extends Command {
+public class HelloWorld implements Command {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         User sender = event.getUser();
         EmbedBuilder builder = new EmbedBuilder();
-        event.deferReply(true).queue();
-        InteractionHook hook = event.getHook();
-        hook.setEphemeral(true);
 
         final String language = event.getOption("language").getAsString();
         HashMap<String, String> langs = new HashMap<String, String>();
@@ -76,7 +73,7 @@ public class HelloWorld extends Command {
         if(langs.containsKey(language)) {
             builder.setDescription(langs.get(language));
         } else {
-            hook.sendMessage("Could not find hello world for this language.").queue();
+            event.reply("Could not find hello world for this language.").queue();
             return;
         }
 

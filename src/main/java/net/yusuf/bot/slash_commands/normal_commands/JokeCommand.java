@@ -42,9 +42,9 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import net.yusuf.bot.slash_commands.Command;
+import github.io.yusuf.core.bot.slash_command.Command;
 
-public class JokeCommand extends Command {
+public class JokeCommand implements Command {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         final TextChannel channel = event.getTextChannel();

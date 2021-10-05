@@ -41,11 +41,11 @@ import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import net.yusuf.bot.slash_commands.Command;
+import github.io.yusuf.core.bot.slash_command.Command;
 
 import static net.dv8tion.jda.api.interactions.commands.OptionType.USER;
 
-public class KickCommand extends Command {
+public class KickCommand implements Command {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         final Member member = event.getOption("user").getAsMember();

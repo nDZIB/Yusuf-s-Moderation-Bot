@@ -34,12 +34,10 @@
  */
 
 package net.yusuf.bot.prefix_commands.commands;
+import github.io.yusuf.core.bot.prefix_command.CommandContext;
+import github.io.yusuf.core.bot.prefix_command.PrefixCommand;
 
-import net.yusuf.bot.prefix_commands.CommandContext;
-import net.yusuf.bot.prefix_commands.ICommand;
-
-
-public class VerificationLevelCommand implements ICommand {
+public class VerificationLevelCommand implements PrefixCommand {
     @Override
     public void handle(CommandContext ctx) {
         ctx.getGuild()

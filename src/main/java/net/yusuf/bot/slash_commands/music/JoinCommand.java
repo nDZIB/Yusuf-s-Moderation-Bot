@@ -41,11 +41,11 @@ import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.managers.AudioManager;
-import net.yusuf.bot.slash_commands.Command;
+import github.io.yusuf.core.bot.slash_command.Command;
 
 import static net.dv8tion.jda.api.interactions.commands.OptionType.CHANNEL;
 
-public class JoinCommand extends Command {
+public class JoinCommand implements Command {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         final Member self = event.getGuild().getSelfMember();

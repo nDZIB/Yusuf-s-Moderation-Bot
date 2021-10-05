@@ -37,9 +37,9 @@ package net.yusuf.bot.slash_commands.server_commands;
 
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import net.yusuf.bot.slash_commands.Command;
+import github.io.yusuf.core.bot.slash_command.Command;
 
-public class ProgrammingServer extends Command {
+public class ProgrammingServer implements Command {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
             event.reply("https://discord.gg/programmer").queue(); // reply immediately

@@ -35,19 +35,19 @@
 
 package net.yusuf.bot.prefix_commands.admin;
 
+import github.io.yusuf.core.bot.prefix_command.CommandContext;
+import github.io.yusuf.core.bot.prefix_command.PrefixCommand;
+import github.io.yusuf.core.bot.prefix_command.VeryBadDesign;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.yusuf.bot.VeryBadDesign;
-import net.yusuf.bot.prefix_commands.CommandContext;
-import net.yusuf.bot.prefix_commands.ICommand;
 import net.yusuf.bot.database.SQLiteDataSource;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-public class SetPrefixCommand implements ICommand {
+public class SetPrefixCommand implements PrefixCommand {
     @Override
     public void handle(CommandContext ctx) {
         final TextChannel channel = ctx.getChannel();

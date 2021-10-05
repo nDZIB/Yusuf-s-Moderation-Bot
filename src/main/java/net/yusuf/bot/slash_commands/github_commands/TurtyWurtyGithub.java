@@ -37,9 +37,9 @@ package net.yusuf.bot.slash_commands.github_commands;
 
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import net.yusuf.bot.slash_commands.Command;
+import github.io.yusuf.core.bot.slash_command.Command;
 
-public class TurtyWurtyGithub extends Command {
+public class TurtyWurtyGithub implements Command {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
             event.reply("https://github.com/DaRealTurtyWurty").queue(); // reply immediately

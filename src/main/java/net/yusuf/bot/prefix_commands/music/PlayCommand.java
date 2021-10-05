@@ -35,18 +35,17 @@
 
 package net.yusuf.bot.prefix_commands.music;
 
+import github.io.yusuf.core.bot.prefix_command.CommandContext;
+import github.io.yusuf.core.bot.prefix_command.PrefixCommand;
+import github.io.yusuf.core.lavaplayer.PlayerManager;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.yusuf.bot.prefix_commands.CommandContext;
-import net.yusuf.bot.prefix_commands.ICommand;
-import net.yusuf.bot.lavaplayer.PlayerManager;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-
-public class PlayCommand implements ICommand {
+public class PlayCommand implements PrefixCommand {
     @SuppressWarnings("ConstantConditions")
     @Override
     public void handle(CommandContext ctx) {

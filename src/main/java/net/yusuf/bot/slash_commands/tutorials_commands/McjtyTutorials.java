@@ -37,9 +37,9 @@ package net.yusuf.bot.slash_commands.tutorials_commands;
 
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import net.yusuf.bot.slash_commands.Command;
+import github.io.yusuf.core.bot.slash_command.Command;
 
-public class McjtyTutorials extends Command {
+public class McjtyTutorials implements Command {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
             event.reply("https://www.youtube.com/channel/UCYMg1JQw3syJBgPeW6m68lA").queue(); // reply immediately

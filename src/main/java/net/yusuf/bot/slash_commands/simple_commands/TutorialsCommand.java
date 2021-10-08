@@ -37,14 +37,12 @@ package net.yusuf.bot.slash_commands.simple_commands;
 
 import github.io.yusuf.core.bot.Command;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
 import org.javacord.api.interaction.*;
 import org.javacord.api.interaction.callback.InteractionImmediateResponseBuilder;
 import org.javacord.api.util.logging.ExceptionLogger;
 
 import java.awt.*;
-import java.util.Optional;
 
 public class TutorialsCommand implements Command {
     @Override

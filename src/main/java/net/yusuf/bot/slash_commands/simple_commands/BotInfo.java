@@ -49,15 +49,25 @@ public class BotInfo implements Command {
         InteractionBase interactionBase = slashCommandCreateEvent.getInteraction();
 
         EmbedBuilder builder = new EmbedBuilder()
-                .setTitle("[Yusuf's Moderation Bot](https://github.com/Yusuf-s-Discord-bot/Yusuf-s-Moderation-Bot) | Info")
-                .setDescription("Running 1.0.0" +
-                        "Developers" +
-                        "[RealYusufIsmail](https://github.com/RealYusufIsmail)" +
-                        "Runtime Version" +
-                        "Java 16" +
-                        "Library's" +
-                        "(JavaCord)[https://github.com/Javacord/Javacord]" +
-                        "(YusufIsmail's Discord core)[https://github.com/Yusuf-s-Discord-bot/YusufIsmails-Discord-core]")
+                .setTitle("Yusuf's Moderation Bot Info")
+                .setDescription("""
+                        Running on Yusuf's Moderation bot V2-1.0.0
+                        
+                        Developer:
+                        • [RealYusufIsmail](https://github.com/RealYusufIsmail)
+                        
+                        Runtime-Environment:
+                        Java 16
+                        
+                        Library's:
+                        [JavaCord](https://github.com/Javacord/Javacord)
+                        [YusufIsmail's Discord core](https://github.com/Yusuf-s-Discord-bot/YusufIsmails-Discord-core)
+                        
+                        Bot's Repo and Org:
+                        [Yusuf's Moderation bot](https://github.com/Yusuf-s-Discord-bot/Yusuf-s-Moderation-Bot)
+                        [Yusuf's Discord Bot org](https://github.com/Yusuf-s-Discord-bot)
+                        """
+                )
                 .setAuthor("Made by " + slashCommandCreateEvent.getSlashCommandInteraction().getApi().getYourself().getName(), null, interactionBase.getUser().getAvatar())
                 .setFooter("Yusuf's Moderation Bot by Yusuf-s Discord bot org")
                 .setColor(Color.CYAN);

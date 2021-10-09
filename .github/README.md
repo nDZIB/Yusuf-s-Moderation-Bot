@@ -1,5 +1,5 @@
 # Discord java bot 
-Set your prefix, Bot toke and owner id in the .env file.
+Set your prefix, bot token and owner id in the .env file.
 
 Bot is beig deveoped in a private repository.
 

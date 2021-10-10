@@ -79,7 +79,10 @@ public class Bot {
         //commands.add(new PlayCommand().getCommandData());
         commands.add(new JoinCommand().getCommandData());
         commands.add(new IssueCommand().getCommandData());
-
+        //commands.add(new RuleCommand().getCommandData());
+        commands.add(new InviteCommand().getCommandData());
+        commands.add(new CreateEmbedCommand().getCommandData());
+        commands.add(new BotInfo().getCommandData());
 
         api.bulkOverwriteGlobalSlashCommands(commands);
 

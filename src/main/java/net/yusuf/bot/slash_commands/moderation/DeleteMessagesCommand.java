@@ -36,66 +36,31 @@
 package net.yusuf.bot.slash_commands.moderation;
 
 import github.io.yusuf.core.bot.Command;
-import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
-import org.javacord.api.interaction.*;
+import org.javacord.api.interaction.SlashCommandBuilder;
+import org.javacord.api.interaction.SlashCommandOption;
+import org.javacord.api.interaction.SlashCommandOptionType;
 
-import java.util.Optional;
-
-public class BanCommand implements Command{
+public class DeleteMessagesCommand implements Command {
     @Override
-    public void onSlashCommand(SlashCommandCreateEvent event) {
-        // Interaction base
-        SlashCommandInteraction interaction = event.getSlashCommandInteraction();
+    public void onSlashCommand(SlashCommandCreateEvent slashCommandCreateEvent) {
 
-        // This command should only work in servers
-        if (!interaction.getServer().isPresent()) {
-            return;
-        }
-
-        // The server
-        Server server = interaction.getServer().get();
-
-        // The message author
-        User author = interaction.getUser();
-
-        // Calling .get() here is okay because this is a required parameter
-        User userToBan = interaction.requestFirstOptionUserValue().get().join();
-
-        //The Reason for the ban
-        String banReason = interaction.getSecondOptionStringValue().get();
-
-        // Checks if the bot has permission to ban the user
-        if (!server.canBanUser(author, userToBan) || !server.canYouBanUser(userToBan)) {
-            interaction.createImmediateResponder().setContent("I can't ban that person!. He is too powerful").respond();
-
-            return;
-        }
-
-        // Bans the user
-        server.banUser(userToBan, 1, String.valueOf(banReason));
-
-        // Responds
-        interaction.createImmediateResponder().setContent("Banned!").respond();
     }
 
     @Override
     public String getName() {
-        return "ban";
+        return "delete_messages";
     }
 
     @Override
     public String getDescription() {
-        return "Use this command to ban a user";
+        return "You this command to delete messages from 1 to 200";
     }
 
     @Override
     public SlashCommandBuilder getCommandData() {
         return new SlashCommandBuilder().setName(getName()).setDescription(getDescription())
-                .addOption(SlashCommandOption.create(SlashCommandOptionType.USER, "User",
-                        "The user which you want to ban."))
-                .addOption(SlashCommandOption.create(SlashCommandOptionType.STRING,"Reason",
-                        "The Reason why you want to ban the user"));
+                .addOption(SlashCommandOption.create(SlashCommandOptionType.INTEGER, "delete_messages_number",
+                        "The amount of messages you want to delete"));
     }
 }

@@ -43,26 +43,35 @@ import org.javacord.api.interaction.SlashCommandBuilder;
 
 import java.awt.*;
 
-public class IssueCommand implements Command {
+public class BotInfo implements Command {
     @Override
     public void onSlashCommand(SlashCommandCreateEvent slashCommandCreateEvent) {
         InteractionBase interactionBase = slashCommandCreateEvent.getInteraction();
+
         EmbedBuilder builder = new EmbedBuilder()
-                .setTitle("Report an issue")
-                .setDescription("To report an issue please press [here](https://github.com/Yusuf-s-Discord-bot/Yusuf-s-Moderation-Bot/issues)")
-                .setColor(Color.CYAN)
-                .setAuthor("Made by " + slashCommandCreateEvent.getSlashCommandInteraction().getApi().getYourself().getName(), null, interactionBase.getUser().getAvatar());
+                .setTitle("[Yusuf's Moderation Bot](https://github.com/Yusuf-s-Discord-bot/Yusuf-s-Moderation-Bot) | Info")
+                .setDescription("Running 1.0.0" +
+                        "Developers" +
+                        "[RealYusufIsmail](https://github.com/RealYusufIsmail)" +
+                        "Runtime Version" +
+                        "Java 16" +
+                        "Library's" +
+                        "(JavaCord)[https://github.com/Javacord/Javacord]" +
+                        "(YusufIsmail's Discord core)[https://github.com/Yusuf-s-Discord-bot/YusufIsmails-Discord-core]")
+                .setAuthor("Made by " + slashCommandCreateEvent.getSlashCommandInteraction().getApi().getYourself().getName(), null, interactionBase.getUser().getAvatar())
+                .setFooter("Yusuf's Moderation Bot by Yusuf-s Discord bot org")
+                .setColor(Color.CYAN);
         interactionBase.createImmediateResponder().addEmbed(builder).respond();
     }
 
     @Override
     public String getName() {
-        return "issue";
+        return "botinfo";
     }
 
     @Override
     public String getDescription() {
-        return "Use this command to report an issue";
+        return "Shows the bot info";
     }
 
     @Override

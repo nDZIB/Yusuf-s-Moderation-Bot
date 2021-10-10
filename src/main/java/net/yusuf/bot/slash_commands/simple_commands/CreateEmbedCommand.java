@@ -33,69 +33,53 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.yusuf.bot.slash_commands.moderation;
+package net.yusuf.bot.slash_commands.simple_commands;
 
 import github.io.yusuf.core.bot.Command;
-import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
+import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
 import org.javacord.api.interaction.*;
 
-import java.util.Optional;
+import java.awt.*;
 
-public class BanCommand implements Command{
+public class CreateEmbedCommand implements Command {
     @Override
-    public void onSlashCommand(SlashCommandCreateEvent event) {
-        // Interaction base
-        SlashCommandInteraction interaction = event.getSlashCommandInteraction();
+    public void onSlashCommand(SlashCommandCreateEvent slashCommandCreateEvent) {
+        SlashCommandInteraction interaction = slashCommandCreateEvent.getSlashCommandInteraction();
+        InteractionBase interactionBase = slashCommandCreateEvent.getInteraction();
 
-        // This command should only work in servers
         if (!interaction.getServer().isPresent()) {
             return;
         }
 
-        // The server
-        Server server = interaction.getServer().get();
+        String title = interaction.getFirstOptionStringValue().get();
+        String description = interaction.getSecondOptionStringValue().get();
 
-        // The message author
-        User author = interaction.getUser();
+        EmbedBuilder builder = new EmbedBuilder()
+                .setTitle(title)
+                .setDescription(description)
+                .setAuthor("Made by " + slashCommandCreateEvent.getSlashCommandInteraction().getApi().getYourself().getName(), null, interactionBase.getUser().getAvatar())
+                .setColor(Color.CYAN);
 
-        // Calling .get() here is okay because this is a required parameter
-        User userToBan = interaction.requestFirstOptionUserValue().get().join();
-
-        //The Reason for the ban
-        String banReason = interaction.getSecondOptionStringValue().get();
-
-        // Checks if the bot has permission to ban the user
-        if (!server.canBanUser(author, userToBan) || !server.canYouBanUser(userToBan)) {
-            interaction.createImmediateResponder().setContent("I can't ban that person!. He is too powerful").respond();
-
-            return;
-        }
-
-        // Bans the user
-        server.banUser(userToBan, 1, String.valueOf(banReason));
-
-        // Responds
-        interaction.createImmediateResponder().setContent("Banned!").respond();
+        interactionBase.createImmediateResponder().addEmbed(builder).respond();
     }
 
     @Override
     public String getName() {
-        return "ban";
+        return "create_embed";
     }
 
     @Override
     public String getDescription() {
-        return "Use this command to ban a user";
+        return "Use this command to create an embed";
     }
 
     @Override
     public SlashCommandBuilder getCommandData() {
         return new SlashCommandBuilder().setName(getName()).setDescription(getDescription())
-                .addOption(SlashCommandOption.create(SlashCommandOptionType.USER, "User",
-                        "The user which you want to ban."))
-                .addOption(SlashCommandOption.create(SlashCommandOptionType.STRING,"Reason",
-                        "The Reason why you want to ban the user"));
+                .addOption(SlashCommandOption.create(SlashCommandOptionType.STRING, "title",
+                        "The title of the embed"))
+            .addOption(SlashCommandOption.create(SlashCommandOptionType.STRING, "description",
+                "The description of the embed"));
     }
 }

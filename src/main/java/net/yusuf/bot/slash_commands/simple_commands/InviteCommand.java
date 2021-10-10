@@ -33,31 +33,41 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.yusuf.bot;
+package net.yusuf.bot.slash_commands.simple_commands;
 
-import github.io.yusuf.core.bot.CoreSlashCommandHandler;
-import net.yusuf.bot.slash_commands.moderation.*;
-import net.yusuf.bot.slash_commands.simple_commands.*;
-import net.yusuf.bot.slash_commands.music.*;
+import github.io.yusuf.core.bot.Command;
+import org.javacord.api.entity.message.embed.EmbedBuilder;
+import org.javacord.api.event.interaction.SlashCommandCreateEvent;
+import org.javacord.api.interaction.InteractionBase;
+import org.javacord.api.interaction.SlashCommandBuilder;
 
+import java.awt.*;
 
-public class SlashCommandHandler extends CoreSlashCommandHandler {
+public class InviteCommand implements Command {
+    @Override
+    public void onSlashCommand(SlashCommandCreateEvent slashCommandCreateEvent) {
+        InteractionBase interactionBase = slashCommandCreateEvent.getInteraction();
+        EmbedBuilder builder = new EmbedBuilder()
+                .setTitle("Invite the bot")
+                .setDescription("You can invite the bot by going [here](https://top.gg/bot/725309463392682036)")
+                .setAuthor("Made by " + slashCommandCreateEvent.getSlashCommandInteraction().getApi().getYourself().getName(), null, interactionBase.getUser().getAvatar())
+                .setColor(Color.CYAN);
 
-    public SlashCommandHandler() {
-        addCommand(new GithubUsernameCommand());
-        addCommand(new DiscordServersCommand());
-        addCommand(new TutorialsCommand());
-        addCommand(new HelloWorld());
-        addCommand(new KickCommand());
-        addCommand(new BanCommand());
-        addCommand(new UnBanCommand());
-        //addCommand(new PlayCommand());
-        addCommand(new JoinCommand());
-        addCommand(new IssueCommand());
-        //addCommand(new RuleCommand());
-        addCommand(new InviteCommand());
-        addCommand(new CreateEmbedCommand());
-        addCommand(new BotInfo());
+        interactionBase.createImmediateResponder().addEmbed(builder).respond();
+    }
 
+    @Override
+    public String getName() {
+        return "invite";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Use this command to get the invite link";
+    }
+
+    @Override
+    public SlashCommandBuilder getCommandData() {
+        return new SlashCommandBuilder().setName(getName()).setDescription(getDescription());
     }
 }

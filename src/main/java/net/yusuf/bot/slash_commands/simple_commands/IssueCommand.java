@@ -33,34 +33,36 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.yusuf.bot.prefix_commands.tutorials_commands;
+package net.yusuf.bot.slash_commands.simple_commands;
 
-import net.dv8tion.jda.api.entities.TextChannel;
-import github.io.yusuf.core.bot.prefix_command.CommandContext;
-import github.io.yusuf.core.bot.prefix_command.PrefixCommand;
+import github.io.yusuf.core.bot.Command;
+import org.javacord.api.entity.message.embed.EmbedBuilder;
+import org.javacord.api.event.interaction.SlashCommandCreateEvent;
+import org.javacord.api.interaction.InteractionBase;
+import org.javacord.api.interaction.SlashCommandBuilder;
 
-import java.util.List;
-
-public class RealyusufismailTutorials implements PrefixCommand {
+public class IssueCommand implements Command {
     @Override
-    public void handle(CommandContext ctx) {
-        List<String> args = ctx.getArgs();
-        TextChannel channel = ctx.getChannel();
-
-        if(args.isEmpty()) {
-            StringBuilder builder = new StringBuilder();
-            builder.append("https://youtube.com/UC1RUkzjpWtp4w3OoMKh7pGg");
-            channel.sendMessage(builder.toString()).queue();
-        }
+    public void onSlashCommand(SlashCommandCreateEvent slashCommandCreateEvent) {
+        InteractionBase interactionBase = slashCommandCreateEvent.getInteraction();
+        EmbedBuilder builder = new EmbedBuilder()
+                .setTitle("Report an issue")
+                .setDescription("To report an issue please press [here](https://github.com/Yusuf-s-Discord-bot/Yusuf-s-Moderation-Bot/issues)");
+        interactionBase.createImmediateResponder().addEmbed(builder).respond();
     }
 
     @Override
     public String getName() {
-        return "realyusufismail_tutorials";
+        return "issue";
     }
 
     @Override
-    public String getHelp() {
-        return "Shows Youtube channel";
+    public String getDescription() {
+        return "Use this command to report an issue";
+    }
+
+    @Override
+    public SlashCommandBuilder getCommandData() {
+        return new SlashCommandBuilder().setName(getName()).setDescription(getDescription());
     }
 }

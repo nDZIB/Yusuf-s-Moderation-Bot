@@ -38,15 +38,12 @@ repositories {
 
 dependencies {
     //JDA
-    implementation group: 'net.dv8tion', name: 'JDA', version: '4.3.0_330'
-    implementation group: 'pw.chew', name: 'jda-chewtils-command', version: '1.22.0'
-    //Yusuf Ismail's Discord Core
-    implementation group: 'github.io.yusuf', name: 'core.jda', version: '1.1.2'
-    implementation group: 'me.duncte123', name: 'botCommons', version: '2.3.8'
+    implementation group: 'org.javacord', name: 'javacord', version: '3.3.2'
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.5'
+    //Yusuf Ismail's Discord Core
+    implementation group: 'github.io.yusuf', name: 'core.javacord', version: '1.1.1'
     implementation group: 'io.github.cdimascio', name: 'dotenv-java', version: '2.2.0'
-    implementation group: 'club.minnced', name: 'discord-webhooks', version: '0.5.8'
     implementation group: 'com.sedmelluq', name: 'lavaplayer', version: '1.3.78'
     implementation group: 'net.sf.trove4j', name: 'trove4j', version: '3.0.3'
     implementation group: 'org.menudocs', name: 'paste-client-java', version: '1.1.2'

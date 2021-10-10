@@ -35,63 +35,73 @@
 
 package net.yusuf.bot.slash_commands.music;
 
-import github.io.yusuf.core.lavaplayer.PlayerManager;
-import net.dv8tion.jda.api.entities.GuildVoiceState;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import github.io.yusuf.core.bot.slash_command.Command;
+import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
+import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import github.io.yusuf.core.bot.Command;
+import github.io.yusuf.core.lavaplayer.LavaPlayerAudioSource;
+import org.javacord.api.DiscordApi;
+import org.javacord.api.audio.AudioConnection;
+import org.javacord.api.audio.AudioSource;
+import org.javacord.api.entity.server.Server;
+import org.javacord.api.event.interaction.SlashCommandCreateEvent;
+import org.javacord.api.interaction.SlashCommandBuilder;
+import org.javacord.api.interaction.SlashCommandInteraction;
+import org.javacord.api.interaction.SlashCommandOption;
+import org.javacord.api.interaction.SlashCommandOptionType;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import static net.dv8tion.jda.api.interactions.commands.OptionType.STRING;
+import java.util.Optional;
 
 public class PlayCommand implements Command {
-    @SuppressWarnings("ConstantConditions")
     @Override
-    public void onSlashCommand(SlashCommandEvent event) {
-        if (event.getName().equals("play")) {
-            final Member self = event.getGuild().getSelfMember();
-            final GuildVoiceState selfVoiceState = self.getVoiceState();
+    public void onSlashCommand(SlashCommandCreateEvent slashCommandCreateEvent) {
+        SlashCommandInteraction interaction = slashCommandCreateEvent.getSlashCommandInteraction();
+        AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
+        playerManager.registerSourceManager(new YoutubeAudioSourceManager());
+        String music_link = interaction.getFirstOptionStringValue().get();
+        AudioPlayer player = playerManager.createPlayer();
+        DiscordApi api = interaction.getApi();
+        Server server = interaction.getServer().get();
+        Optional<AudioConnection> audioConnection = server.getAudioConnection();
 
-            if (!selfVoiceState.inVoiceChannel()) {
-                event.reply("I need to be in a voice channel for this to work").queue();
-                return;
+
+        // Create an audio source and add it to the audio connection's queue
+        AudioSource source = new LavaPlayerAudioSource(api, player);
+        audioConnection.get().setAudioSource(source);
+
+        // You can now use the AudioPlayer like you would normally do with Lavaplayer, e.g.,
+        playerManager.loadItem(music_link, new AudioLoadResultHandler() {
+
+            @Override
+            public void trackLoaded(AudioTrack track) {
+                player.playTrack(track);
             }
 
-            final Member member = event.getMember();
-            final GuildVoiceState memberVoiceState = member.getVoiceState();
-
-            if (!memberVoiceState.inVoiceChannel()) {
-                event.reply("You need to be in a voice channel for this command to work").queue();
-                return;
+            @Override
+            public void playlistLoaded(AudioPlaylist playlist) {
+                for (AudioTrack track : playlist.getTracks()) {
+                    player.playTrack(track);
+                }
             }
 
-            if (!memberVoiceState.getChannel().equals(selfVoiceState.getChannel())) {
-                event.reply("You need to be in the same voice channel as me for this to work").queue();
-                return;
+            @Override
+            public void noMatches() {
+                // Notify the user that we've got nothing
             }
 
-            String link = event.getOption("song").getAsString();
-
-            if (!isUrl(link)) {
-                link = "ytsearch:" + link;
+            @Override
+            public void loadFailed(FriendlyException throwable) {
+                // Notify the user that everything exploded
             }
-
-            PlayerManager.getInstance().loadAndPlay(event.getTextChannel(), link);
-        }
+        });
     }
-    private boolean isUrl(String url) {
-        try {
-            new URI(url);
-            return true;
-        } catch (URISyntaxException e) {
-            return false;
-        }
-    }
 
+    //TODO Fix play command
     @Override
     public String getName() {
         return "play";
@@ -99,13 +109,13 @@ public class PlayCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "/play link or name";
+        return "Use this command to play something from youtube";
     }
 
     @Override
-    public CommandData getCommandData() {
-        return new CommandData(getName(), getDescription())
-                .addOptions(new OptionData(STRING, "song", "Link or term")
-                        .setRequired(true));
+    public SlashCommandBuilder getCommandData() {
+        return new SlashCommandBuilder().setName(getName()).setDescription(getDescription())
+                .addOption(SlashCommandOption.create(SlashCommandOptionType.STRING, "Name or link",
+                        "The link or name of the song which you want to play"));
     }
 }

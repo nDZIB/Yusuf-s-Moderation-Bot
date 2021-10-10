@@ -35,44 +35,25 @@
 
 package net.yusuf.bot.slash_commands.music;
 
-import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.interactions.InteractionHook;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import net.dv8tion.jda.api.managers.AudioManager;
-import github.io.yusuf.core.bot.slash_command.Command;
+import github.io.yusuf.core.bot.Command;
+import org.javacord.api.entity.channel.VoiceChannel;
+import org.javacord.api.entity.user.User;
+import org.javacord.api.event.interaction.SlashCommandCreateEvent;
+import org.javacord.api.interaction.SlashCommandBuilder;
+import org.javacord.api.interaction.SlashCommandInteraction;
+import org.javacord.api.interaction.SlashCommandOption;
+import org.javacord.api.interaction.SlashCommandOptionType;
 
-import static net.dv8tion.jda.api.interactions.commands.OptionType.CHANNEL;
+import java.util.Optional;
 
 public class JoinCommand implements Command {
     @Override
-    public void onSlashCommand(SlashCommandEvent event) {
-        final Member self = event.getGuild().getSelfMember();
-        final GuildVoiceState selfVoiceState = self.getVoiceState();
-        event.deferReply(true).queue();
-        InteractionHook hook = event.getHook();
-        hook.setEphemeral(true);
+    public void onSlashCommand(SlashCommandCreateEvent slashCommandCreateEvent) {
+        SlashCommandInteraction interaction = slashCommandCreateEvent.getSlashCommandInteraction();
+        Optional<VoiceChannel> channel = interaction.getFirstOptionChannelValue().get().asVoiceChannel();
+        User author = interaction.getUser();
 
-            if (selfVoiceState.inVoiceChannel()) {
-                hook.sendMessage("I'm already in a voice channel").queue();
-                return;
-            }
-
-            final Member member = event.getMember();
-            final GuildVoiceState memberVoiceState = member.getVoiceState();
-
-            if (!memberVoiceState.inVoiceChannel()) {
-                hook.sendMessage("You need to be in a voice channel for this command to work").queue();
-                return;
-            }
-
-            final AudioManager audioManager = event.getGuild().getAudioManager();
-            final VoiceChannel memberChannel = memberVoiceState.getChannel();
-
-            audioManager.openAudioConnection(memberChannel);
-            audioManager.setSelfDeafened(true);
-            hook.sendMessage("I have joined the vc").queue();
+        channel.get().canConnect(author);
     }
 
     @Override
@@ -82,11 +63,13 @@ public class JoinCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "Joins a vc";
+        return "use this command to add the bot to a vc";
     }
 
     @Override
-    public CommandData getCommandData() {
-        return new CommandData(getName(), getDescription());
+    public SlashCommandBuilder getCommandData() {
+        return new SlashCommandBuilder().setName(getName()).setDescription(getDescription())
+                .addOption(SlashCommandOption.create(SlashCommandOptionType.CHANNEL, "VC",
+                "Vc which you want the bot join"));
     }
 }

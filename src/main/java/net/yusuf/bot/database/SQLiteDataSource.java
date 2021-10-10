@@ -36,7 +36,6 @@ package net.yusuf.bot.database;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import net.yusuf.bot.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,13 +73,11 @@ public class SQLiteDataSource {
         ds = new HikariDataSource(config);
 
         try (final Statement statement = getConnection().createStatement()) {
-            final String defaultPrefix = Config.get("prefix");
-
             // language=SQLite
-            statement.execute("CREATE TABLE IF NOT EXISTS guild_settings (" +
+            statement.execute("CREATE TABLE IF NOT EXISTS warn_settings (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "guild_id VARCHAR(20) NOT NULL," +
-                    "prefix VARCHAR(255) NOT NULL DEFAULT '" + defaultPrefix + "'" +
+                    "user_id VARCHAR(20) NOT NULL," +
+                    "times INTEGER(1) NOT NULL"+
                     ");");
 
             LOGGER.info("Table initialised");
@@ -88,6 +85,7 @@ public class SQLiteDataSource {
             e.printStackTrace();
         }
     }
+
 
     private SQLiteDataSource() { }
 

@@ -35,46 +35,28 @@
 
 package net.yusuf.bot.slash_commands.moderation;
 
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.interactions.InteractionHook;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import github.io.yusuf.core.bot.Command;
 import net.yusuf.bot.database.SQLiteDataSource;
-import github.io.yusuf.core.bot.slash_command.Command;
+import org.javacord.api.entity.server.Server;
+import org.javacord.api.event.interaction.SlashCommandCreateEvent;
+import org.javacord.api.interaction.SlashCommandBuilder;
+import org.javacord.api.interaction.SlashCommandInteraction;
+import org.javacord.api.interaction.SlashCommandOption;
+import org.javacord.api.interaction.SlashCommandOptionType;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import static net.dv8tion.jda.api.interactions.commands.OptionType.*;
-
 public class WarnCommand implements Command {
     @Override
-    public void onSlashCommand(SlashCommandEvent event) {
-        final User user = event.getUser();
-        final Member member = event.getMember();
+    public void onSlashCommand(SlashCommandCreateEvent event) {
+        SlashCommandInteraction interaction = event.getSlashCommandInteraction();
 
-        event.deferReply(true).queue(); // Let the user know we received the command before doing anything else
-        InteractionHook hook = event.getHook(); // This is a special webhook that allows you to send messages without having permissions in the channel and also allows ephemeral messages
-        hook.setEphemeral(true); // All messages here will now be ephemeral implicitly
-        if (!event.getMember().hasPermission(Permission.MANAGE_ROLES)) {
-            hook.sendMessage("You do not have the required permissions to warn users from this server.").queue();
+        if (!interaction.getServer().isPresent()) {
             return;
         }
 
-        Member selfMember = event.getGuild().getSelfMember();
-        if (!selfMember.hasPermission(Permission.MANAGE_ROLES)) {
-            hook.sendMessage("I don't have the required permissions to warn users from this server.").queue();
-            return;
-        }
-
-        if (member != null && !selfMember.canInteract(member)) {
-            hook.sendMessage("This user is too powerful for me to warn.").queue();
-            return;
-        }
-
+        Server server = interaction.getServer().get();
 
     }
 
@@ -85,33 +67,27 @@ public class WarnCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "Warn a user";
+        return "Use this command to want the user";
     }
 
     @Override
-    public CommandData getCommandData() {
-        return new CommandData(getName(), getDescription())
-                .addOptions(new OptionData(USER, "user", "The user to warn")
-                        .setRequired(true)) // This command requires a parameter
-                .addOptions(new OptionData(STRING, "reason", "The reason why you want to warn the user"));
+    public SlashCommandBuilder getCommandData() {
+        return new SlashCommandBuilder().setName(getName()).setDescription(getDescription())
+                .addOption(SlashCommandOption.create(SlashCommandOptionType.USER, "User",
+                        "The user which you want to warn."));
     }
 
     /*
-    private void updateWarn(long guildId, String userAmount, SlashCommandEvent event) {
-        final User user = event.getOption("user").getAsUser();
+    private void warn(Integer user_id, Integer times) throws SQLException {
 
-        try (final PreparedStatement preparedStatement = SQLiteDataSource
+        try(final PreparedStatement statement = SQLiteDataSource
                 .getConnection()
-                // language=SQLite
-                .prepareStatement("UPDATE guild_settings SET userAmount = ? WHERE guild_id = ?")) {
+            // language=SQLite
+                .prepareStatement("UPDATE warn_settings SET user_id = ? WHERE times = ?")) {
 
-            preparedStatement.setString(1, user);
-            preparedStatement.setString(2, String.valueOf(guildId));
-
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
+
+    }
      */
 }

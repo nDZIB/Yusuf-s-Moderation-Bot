@@ -35,48 +35,45 @@
 
 package net.yusuf.bot.slash_commands.moderation;
 
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.interactions.InteractionHook;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import github.io.yusuf.core.bot.slash_command.Command;
-
-import static net.dv8tion.jda.api.interactions.commands.OptionType.USER;
+import github.io.yusuf.core.bot.Command;
+import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.User;
+import org.javacord.api.event.interaction.SlashCommandCreateEvent;
+import org.javacord.api.interaction.*;
 
 public class KickCommand implements Command {
     @Override
-    public void onSlashCommand(SlashCommandEvent event) {
-        final Member member = event.getOption("user").getAsMember();
-        event.deferReply(true).queue(); // Let the user know we received the command before doing anything else
-        InteractionHook hook = event.getHook(); // This is a special webhook that allows you to send messages without having permissions in the channel and also allows ephemeral messages
-        hook.setEphemeral(true); // All messages here will now be ephemeral implicitly
+    public void onSlashCommand(SlashCommandCreateEvent event) {
+        // Interaction base
+        SlashCommandInteraction interaction = event.getSlashCommandInteraction();
 
-        if (!event.getMember().hasPermission(Permission.KICK_MEMBERS))
-        {
-            hook.sendMessage("You do not have the required permissions to kick users from this server.").queue();
+
+        // This command should only work in servers
+        if (!interaction.getServer().isPresent()) {
             return;
         }
 
-        Member selfMember = event.getGuild().getSelfMember();
-        if (!selfMember.hasPermission(Permission.KICK_MEMBERS))
-        {
-            hook.sendMessage("I don't have the required permissions to kick users from this server.").queue();
+        // The server
+        Server server = interaction.getServer().get();
+
+        // The message author
+        User author = interaction.getUser();
+
+        // Calling .get() here is okay because this is a required parameter
+        User userToKick = interaction.requestFirstOptionUserValue().get().join();
+
+        // Checks if the bot has permission to kick the user
+        if (!server.canKickUser(author, userToKick) || !server.canYouKickUser(userToKick)) {
+            interaction.createImmediateResponder().setContent("I can't kick that person!").respond();
+
             return;
         }
 
-        if (member != null && !selfMember.canInteract(member))
-        {
-            hook.sendMessage("This user is too powerful for me to kick.").queue();
-            return;
-        }
+        // Kicks the user
+        server.kickUser(userToKick);
 
-
-        // Ban the user and send a success response
-        event.getGuild().kick(member)
-                .flatMap(v -> hook.sendMessage("kicked user " + member.getUser()))
-                .queue();
+        // Responds
+        interaction.createImmediateResponder().setContent("Kicked!").respond();
     }
 
     @Override
@@ -86,13 +83,13 @@ public class KickCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "kicks a user";
+        return "Use this command to kick a user";
     }
 
     @Override
-    public CommandData getCommandData() {
-        return new CommandData(getName(), getDescription())
-                .addOptions(new OptionData(USER, "user", "The user to kick")
-                        .setRequired(true));
+    public SlashCommandBuilder getCommandData() {
+        return new SlashCommandBuilder().setName(getName()).setDescription(getDescription())
+                .addOption(SlashCommandOption.create(SlashCommandOptionType.USER, "User",
+                        "The user which you want to kick."));
     }
 }

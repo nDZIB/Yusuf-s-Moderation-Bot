@@ -33,31 +33,26 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.yusuf.bot.slash_commands.tutorials_commands;
+package net.yusuf.bot;
 
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import github.io.yusuf.core.bot.slash_command.Command;
+import github.io.yusuf.core.bot.CoreSlashCommandHandler;
+import net.yusuf.bot.slash_commands.moderation.*;
+import net.yusuf.bot.slash_commands.simple_commands.*;
+import net.yusuf.bot.slash_commands.music.*;
 
-public class TurtyWurtyTutorials implements Command {
 
-    @Override
-    public void onSlashCommand(SlashCommandEvent event) {
-            event.reply("https://www.youtube.com/channel/UCicAXLV4w2X6bn2EuM4To4w").queue(); // reply immediately
-    }
+public class SlashCommandHandler extends CoreSlashCommandHandler {
 
-    @Override
-    public String getName() {
-        return "turty_wurty_tutorials";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Shows Youtube channel";
-    }
-
-    @Override
-    public CommandData getCommandData() {
-        return new CommandData(getName(), getDescription());
+    public SlashCommandHandler() {
+        addCommand(new GithubUsernameCommand());
+        addCommand(new DiscordServersCommand());
+        addCommand(new TutorialsCommand());
+        addCommand(new HelloWorld());
+        addCommand(new KickCommand());
+        addCommand(new BanCommand());
+        addCommand(new UnBanCommand());
+        //addCommand(new PlayCommand());
+        addCommand(new JoinCommand());
+        addCommand(new IssueCommand());
     }
 }

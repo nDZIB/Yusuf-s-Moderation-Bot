@@ -60,6 +60,7 @@ public class SlashCommandHandler extends CoreSlashCommandHandler {
         addCommand(new JoinCommand());
         addCommand(new PlayCommand());
         addCommand(new JoinCommand());
+        addCommand(new PauseCommand());
         addCommand(new IssueCommand());
         //addCommand(new RuleCommand());
         addCommand(new InviteCommand());
@@ -76,6 +77,7 @@ public class SlashCommandHandler extends CoreSlashCommandHandler {
         dataCommands.add(new UnBanCommand().getCommandData());
         dataCommands.add(new PlayCommand().getCommandData());
         dataCommands.add(new JoinCommand().getCommandData());
+        dataCommands.add(new PauseCommand().getCommandData());
         dataCommands.add(new IssueCommand().getCommandData());
         //dataCommands.add(new RuleCommand().getCommandData());
         dataCommands.add(new InviteCommand().getCommandData());

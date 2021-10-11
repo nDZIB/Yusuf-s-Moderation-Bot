@@ -36,24 +36,35 @@
 package net.yusuf.bot.slash_commands.music;
 
 import github.io.yusuf.core.bot.Command;
+import org.javacord.api.audio.AudioConnection;
+import org.javacord.api.entity.channel.ServerVoiceChannel;
 import org.javacord.api.entity.channel.VoiceChannel;
+import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
+import org.javacord.api.interaction.InteractionBase;
 import org.javacord.api.interaction.SlashCommandBuilder;
 import org.javacord.api.interaction.SlashCommandInteraction;
-import org.javacord.api.interaction.SlashCommandOption;
-import org.javacord.api.interaction.SlashCommandOptionType;
 
-import java.util.Optional;
 
 public class JoinCommand implements Command {
     @Override
     public void onSlashCommand(SlashCommandCreateEvent slashCommandCreateEvent) {
         SlashCommandInteraction interaction = slashCommandCreateEvent.getSlashCommandInteraction();
-        Optional<VoiceChannel> channel = interaction.getFirstOptionChannelValue().get().asVoiceChannel();
-        User author = interaction.getUser();
 
-        channel.get().canConnect(author);
+        // The server
+        Server server = interaction.getServer().get();
+
+        // The message author
+        User user = interaction.getUser();
+
+        //The Voice Channel
+        ServerVoiceChannel voiceChannel = server.getConnectedVoiceChannel(user).get();
+
+        //connect to vc
+        voiceChannel.connect();
+
+        interaction.createImmediateResponder().setContent("Joined").respond();
     }
 
     @Override
@@ -63,13 +74,11 @@ public class JoinCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "use this command to add the bot to a vc";
+        return "Use this command to add a bot to a vc";
     }
 
     @Override
     public SlashCommandBuilder getCommandData() {
-        return new SlashCommandBuilder().setName(getName()).setDescription(getDescription())
-                .addOption(SlashCommandOption.create(SlashCommandOptionType.CHANNEL, "VC",
-                "Vc which you want the bot join"));
+        return new SlashCommandBuilder().setName(getName()).setDescription(getDescription());
     }
 }

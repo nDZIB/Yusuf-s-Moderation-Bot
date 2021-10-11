@@ -35,15 +35,21 @@
 
 package net.yusuf.bot;
 
+import com.sedmelluq.discord.lavaplayer.remote.AbandonedTrackManager;
 import github.io.yusuf.core.bot.CoreSlashCommandHandler;
 import net.yusuf.bot.slash_commands.moderation.*;
 import net.yusuf.bot.slash_commands.simple_commands.*;
 import net.yusuf.bot.slash_commands.music.*;
+import org.javacord.api.interaction.SlashCommandBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SlashCommandHandler extends CoreSlashCommandHandler {
 
     public SlashCommandHandler() {
+        //slash commands name
         addCommand(new GithubUsernameCommand());
         addCommand(new DiscordServersCommand());
         addCommand(new TutorialsCommand());
@@ -51,13 +57,29 @@ public class SlashCommandHandler extends CoreSlashCommandHandler {
         addCommand(new KickCommand());
         addCommand(new BanCommand());
         addCommand(new UnBanCommand());
-        //addCommand(new PlayCommand());
+        addCommand(new JoinCommand());
+        addCommand(new PlayCommand());
         addCommand(new JoinCommand());
         addCommand(new IssueCommand());
         //addCommand(new RuleCommand());
         addCommand(new InviteCommand());
         addCommand(new CreateEmbedCommand());
         addCommand(new BotInfo());
-
+        
+        //register slash commands
+        dataCommands.add(new DiscordServersCommand().getCommandData());
+        dataCommands.add(new TutorialsCommand().getCommandData());
+        dataCommands.add(new GithubUsernameCommand().getCommandData());
+        dataCommands.add(new HelloWorld().getCommandData());
+        dataCommands.add(new KickCommand().getCommandData());
+        dataCommands.add(new BanCommand().getCommandData());
+        dataCommands.add(new UnBanCommand().getCommandData());
+        dataCommands.add(new PlayCommand().getCommandData());
+        dataCommands.add(new JoinCommand().getCommandData());
+        dataCommands.add(new IssueCommand().getCommandData());
+        //dataCommands.add(new RuleCommand().getCommandData());
+        dataCommands.add(new InviteCommand().getCommandData());
+        dataCommands.add(new CreateEmbedCommand().getCommandData());
+        dataCommands.add(new BotInfo().getCommandData());
     }
 }

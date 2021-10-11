@@ -47,9 +47,9 @@ public class BotInfo implements Command {
     @Override
     public void onSlashCommand(SlashCommandCreateEvent slashCommandCreateEvent) {
         InteractionBase interactionBase = slashCommandCreateEvent.getInteraction();
-
+    
         EmbedBuilder builder = new EmbedBuilder()
-                .setTitle("Yusuf's Moderation Bot Info")
+                .setTitle(slashCommandCreateEvent.getSlashCommandInteraction().getApi().getYourself().getName() + " Info")
                 .setDescription("""
                         Running on Yusuf's Moderation bot V2-1.0.0
                         
@@ -63,13 +63,13 @@ public class BotInfo implements Command {
                         [JavaCord](https://github.com/Javacord/Javacord)
                         [YusufIsmail's Discord core](https://github.com/Yusuf-s-Discord-bot/YusufIsmails-Discord-core)
                         
-                        Bot's Repo and Org:
-                        [Yusuf's Moderation bot](https://github.com/Yusuf-s-Discord-bot/Yusuf-s-Moderation-Bot)
-                        [Yusuf's Discord Bot org](https://github.com/Yusuf-s-Discord-bot)
+                        Bots repo and org:
+                        [Yusuf's moderation bot](https://github.com/Yusuf-s-Discord-bot/Yusuf-s-Moderation-Bot)
+                        [Yusuf's Discord bot](https://github.com/Yusuf-s-Discord-bot)
                         """
                 )
                 .setAuthor("Made by " + slashCommandCreateEvent.getSlashCommandInteraction().getApi().getYourself().getName(), null, interactionBase.getUser().getAvatar())
-                .setFooter("Yusuf's Moderation Bot by Yusuf-s Discord bot org")
+                .setFooter("Yusuf's Moderation Bot by Yusuf's Discord Bot org")
                 .setColor(Color.CYAN);
         interactionBase.createImmediateResponder().addEmbed(builder).respond();
     }

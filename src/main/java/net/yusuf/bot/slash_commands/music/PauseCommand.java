@@ -33,38 +33,53 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.yusuf.bot;
+package net.yusuf.bot.slash_commands.music;
 
-import net.yusuf.bot.slash_commands.moderation.*;
-import net.yusuf.bot.slash_commands.music.*;
-import net.yusuf.bot.slash_commands.simple_commands.*;
-import org.javacord.api.DiscordApi;
-import org.javacord.api.DiscordApiBuilder;
-import org.javacord.api.entity.channel.TextChannel;
-import org.javacord.api.entity.user.UserStatus;
+import github.io.yusuf.core.bot.Command;
+import org.javacord.api.audio.AudioConnection;
+import org.javacord.api.audio.AudioSource;
+import org.javacord.api.audio.PauseableAudioSource;
+import org.javacord.api.entity.server.Server;
+import org.javacord.api.event.interaction.SlashCommandCreateEvent;
 import org.javacord.api.interaction.SlashCommandBuilder;
+import org.javacord.api.interaction.SlashCommandInteraction;
 
-import javax.security.auth.login.LoginException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+public class PauseCommand implements Command {
+    @Override
+    public void onSlashCommand(SlashCommandCreateEvent slashCommandCreateEvent) {
+        SlashCommandInteraction interaction = slashCommandCreateEvent.getSlashCommandInteraction();
 
-public class Bot {
-    @SuppressWarnings("all")
-    public static void main(String[] args) throws LoginException, Exception {
-        DiscordApi api = new DiscordApiBuilder()
-                .setToken(Config.get("TOKEN"))
-                .addSlashCommandCreateListener(new SlashCommandHandler())
-                .login().join();
+        if (!interaction.getServer().isPresent()) {
+            return;
+        }
 
-        api.updateActivity("Only Supporting slash commands now.");
-        api.updateStatus(UserStatus.ONLINE);
+        // The server
+        Server server = interaction.getServer().get();
 
-        api.addServerMemberJoinListener(event -> {
-            Optional<TextChannel> channel = api.getTextChannelById(Config.get("872494635757473932"));
-            channel.ifPresent(TextChannel -> TextChannel.sendMessage("Welcome to the server + " +
-                    event.getUser().getMentionTag() + "We hope you have a great time"));
-        });
-        //api.bulkOverwriteGlobalSlashCommands(commands);
+        //The audio connection
+        AudioConnection audioConnection = server.getAudioConnection().get();
+
+        //The audio source
+        AudioSource audioSource = audioConnection.getAudioSource().get();
+
+        //the pause audio source class
+        PauseableAudioSource pauseableAudioSource = audioSource.asPauseableAudioSource().get();
+
+        pauseableAudioSource.setPaused(true);
+    }
+
+    @Override
+    public String getName() {
+        return "pause";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Use this to pause the bot";
+    }
+
+    @Override
+    public SlashCommandBuilder getCommandData() {
+        return new SlashCommandBuilder().setName(getName()).setDescription(getDescription());
     }
 }

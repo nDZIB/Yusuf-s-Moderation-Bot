@@ -6,7 +6,7 @@ plugins {
 
 mainClassName = 'net.yusuf.bot.Bot'
 
-version 'v2-1.0.0'
+version 'v2-1.0.1'
 
 sourceCompatibility = JavaVersion.VERSION_17
 
@@ -42,7 +42,7 @@ dependencies {
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.5'
     //Yusuf Ismail's Discord Core
-    implementation group: 'github.io.yusuf', name: 'core.javacord', version: 'v2-1.1.8'
+    implementation group: 'github.io.yusuf', name: 'core.javacord', version: 'v2-1.2'
     implementation group: 'io.github.cdimascio', name: 'dotenv-java', version: '2.2.0'
     implementation group: 'com.sedmelluq', name: 'lavaplayer', version: '1.3.78'
 

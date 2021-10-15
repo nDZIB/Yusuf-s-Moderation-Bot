@@ -65,6 +65,5 @@ public class Bot {
             channel.ifPresent(TextChannel -> TextChannel.sendMessage("Welcome to the server + " +
                     event.getUser().getMentionTag() + "We hope you have a great time"));
         });
-        //api.bulkOverwriteGlobalSlashCommands(commands);
     }
 }

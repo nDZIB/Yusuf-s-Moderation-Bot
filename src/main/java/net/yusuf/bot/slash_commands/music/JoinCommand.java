@@ -36,13 +36,9 @@
 package net.yusuf.bot.slash_commands.music;
 
 import github.io.yusuf.core.bot.Command;
-import org.javacord.api.audio.AudioConnection;
 import org.javacord.api.entity.channel.ServerVoiceChannel;
-import org.javacord.api.entity.channel.VoiceChannel;
-import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
-import org.javacord.api.interaction.InteractionBase;
 import org.javacord.api.interaction.SlashCommandBuilder;
 import org.javacord.api.interaction.SlashCommandInteraction;
 
@@ -52,18 +48,13 @@ public class JoinCommand implements Command {
     public void onSlashCommand(SlashCommandCreateEvent slashCommandCreateEvent) {
         SlashCommandInteraction interaction = slashCommandCreateEvent.getSlashCommandInteraction();
 
-        // The server
-        Server server = interaction.getServer().get();
-
         // The message author
         User user = interaction.getUser();
 
-        //The Voice Channel
-        ServerVoiceChannel voiceChannel = server.getConnectedVoiceChannel(user).get();
-
         //connect to vc
-        voiceChannel.connect();
+        interaction.getServer().orElseThrow().getConnectedVoiceChannel(user).ifPresent(ServerVoiceChannel::connect);
 
+        //Sends a conformation message
         interaction.createImmediateResponder().setContent("Joined").respond();
     }
 

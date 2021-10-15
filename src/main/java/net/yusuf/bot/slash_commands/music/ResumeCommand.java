@@ -33,50 +33,54 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.yusuf.bot.slash_commands.moderation;
+package net.yusuf.bot.slash_commands.music;
 
 import github.io.yusuf.core.bot.Command;
-import org.javacord.api.DiscordApi;
-import org.javacord.api.entity.channel.TextChannel;
+import org.javacord.api.audio.AudioConnection;
+import org.javacord.api.audio.AudioSource;
+import org.javacord.api.audio.PauseableAudioSource;
+import org.javacord.api.entity.server.Server;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
 import org.javacord.api.interaction.SlashCommandBuilder;
 import org.javacord.api.interaction.SlashCommandInteraction;
-import org.javacord.api.interaction.SlashCommandOption;
-import org.javacord.api.interaction.SlashCommandOptionType;
 
-public class DeleteMessagesCommand implements Command {
+public class ResumeCommand implements Command {
     @Override
     public void onSlashCommand(SlashCommandCreateEvent slashCommandCreateEvent) {
         SlashCommandInteraction interaction = slashCommandCreateEvent.getSlashCommandInteraction();
-        DiscordApi api = interaction.getApi();
 
         if (!interaction.getServer().isPresent()) {
             return;
         }
 
-        //Amount of messages to delete
-        Integer amount = interaction.getFirstOptionIntValue().get();
+        // The server
+        Server server = interaction.getServer().get();
 
-        //Channel
-        TextChannel channel = interaction.getChannel().get();
+        //The audio connection
+        AudioConnection audioConnection = server.getAudioConnection().get();
 
-        channel.deleteMessages(amount);
+        //The audio source
+        AudioSource audioSource = audioConnection.getAudioSource().get();
+
+        //Resumes the bot
+        audioSource.asPauseableAudioSource().orElseThrow().asPauseableAudioSource().ifPresent(PauseableAudioSource::resume);
+
+        //Sends conformation
+        interaction.createImmediateResponder().setContent("Resumed").respond();
     }
 
     @Override
     public String getName() {
-        return "delete_messages";
+        return "resume";
     }
 
     @Override
     public String getDescription() {
-        return "You this command to delete messages from 1 to 200";
+        return "Use this command to resume the bot";
     }
 
     @Override
     public SlashCommandBuilder getCommandData() {
-        return new SlashCommandBuilder().setName(getName()).setDescription(getDescription())
-                .addOption(SlashCommandOption.create(SlashCommandOptionType.INTEGER, "delete_messages_number",
-                        "The amount of messages you want to delete"));
+        return new SlashCommandBuilder().setName(getName()).setDescription(getDescription());
     }
 }

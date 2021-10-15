@@ -33,50 +33,51 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.yusuf.bot.slash_commands.moderation;
+package net.yusuf.bot.slash_commands.music;
 
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import github.io.yusuf.core.bot.Command;
-import org.javacord.api.DiscordApi;
-import org.javacord.api.entity.channel.TextChannel;
+import github.io.yusuf.core.lavaplayer.ApiMusicManager;
+import github.io.yusuf.core.lavaplayer.PlayerManager;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
+import org.javacord.api.interaction.InteractionBase;
 import org.javacord.api.interaction.SlashCommandBuilder;
 import org.javacord.api.interaction.SlashCommandInteraction;
-import org.javacord.api.interaction.SlashCommandOption;
-import org.javacord.api.interaction.SlashCommandOptionType;
 
-public class DeleteMessagesCommand implements Command {
+public class NowPlayingCommand implements Command {
     @Override
     public void onSlashCommand(SlashCommandCreateEvent slashCommandCreateEvent) {
         SlashCommandInteraction interaction = slashCommandCreateEvent.getSlashCommandInteraction();
-        DiscordApi api = interaction.getApi();
+        InteractionBase interactionBase = slashCommandCreateEvent.getInteraction();
 
-        if (!interaction.getServer().isPresent()) {
+        //Api Music manger
+        final ApiMusicManager musicManager = PlayerManager.getInstance().getMusicManager(interaction.getServer().get(), interaction.getApi());
+        final AudioPlayer audioPlayer = musicManager.audioPlayer;
+        final AudioTrack track = audioPlayer.getPlayingTrack();
+
+        if (track == null) {
+            interactionBase.createImmediateResponder().setContent("There is no track playing currently").respond();
             return;
         }
 
-        //Amount of messages to delete
-        Integer amount = interaction.getFirstOptionIntValue().get();
-
-        //Channel
-        TextChannel channel = interaction.getChannel().get();
-
-        channel.deleteMessages(amount);
+        final AudioTrackInfo info = track.getInfo();
+        interaction.getChannel().get().sendMessage(String.format("Now playing `%s` by `%s` (Link: <%s>)", info.title, info.author, info.uri));
     }
 
     @Override
     public String getName() {
-        return "delete_messages";
+        return "now_playing";
     }
 
     @Override
     public String getDescription() {
-        return "You this command to delete messages from 1 to 200";
+        return "Shows what you are playing";
     }
 
     @Override
     public SlashCommandBuilder getCommandData() {
-        return new SlashCommandBuilder().setName(getName()).setDescription(getDescription())
-                .addOption(SlashCommandOption.create(SlashCommandOptionType.INTEGER, "delete_messages_number",
-                        "The amount of messages you want to delete"));
+        return new SlashCommandBuilder().setName(getName()).setDescription(getDescription());
     }
 }

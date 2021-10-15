@@ -37,9 +37,11 @@ package net.yusuf.bot.slash_commands.simple_commands;
 
 import github.io.yusuf.core.bot.Command;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
-import org.javacord.api.interaction.*;
+import org.javacord.api.interaction.InteractionBase;
+import org.javacord.api.interaction.SlashCommandBuilder;
+import org.javacord.api.interaction.SlashCommandOption;
+import org.javacord.api.interaction.SlashCommandOptionType;
 import org.javacord.api.interaction.callback.InteractionImmediateResponseBuilder;
 import org.javacord.api.util.logging.ExceptionLogger;
 

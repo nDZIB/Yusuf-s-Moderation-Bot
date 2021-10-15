@@ -36,16 +36,12 @@
 package net.yusuf.bot.slash_commands.moderation;
 
 import github.io.yusuf.core.bot.Command;
-import net.yusuf.bot.database.SQLiteDataSource;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
 import org.javacord.api.interaction.SlashCommandBuilder;
 import org.javacord.api.interaction.SlashCommandInteraction;
 import org.javacord.api.interaction.SlashCommandOption;
 import org.javacord.api.interaction.SlashCommandOptionType;
-
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 public class WarnCommand implements Command {
     @Override

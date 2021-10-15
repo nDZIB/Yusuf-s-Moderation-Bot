@@ -48,16 +48,13 @@ import github.io.yusuf.core.lavaplayer.LavaPlayerAudioSource;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.audio.AudioConnection;
 import org.javacord.api.audio.AudioSource;
-import org.javacord.api.entity.channel.ServerVoiceChannel;
 import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
 import org.javacord.api.interaction.SlashCommandBuilder;
 import org.javacord.api.interaction.SlashCommandInteraction;
 import org.javacord.api.interaction.SlashCommandOption;
 import org.javacord.api.interaction.SlashCommandOptionType;
 
-import java.util.Optional;
 
 public class PlayCommand implements Command {
     @Override
@@ -69,9 +66,6 @@ public class PlayCommand implements Command {
             return;
         }
 
-        // The message author
-        User user = interaction.getUser();
-
         //YouTube link
         String link = interaction.getFirstOptionStringValue().get();
 
@@ -80,11 +74,6 @@ public class PlayCommand implements Command {
 
         //The Audio Connect
         AudioConnection audioConnection = server.getAudioConnection().get();
-
-        //The Voice Channel
-        ServerVoiceChannel voiceChannel = server.getConnectedVoiceChannel(user).get();
-
-        voiceChannel.connect();
 
         // Create a player manager
         AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
@@ -124,8 +113,6 @@ public class PlayCommand implements Command {
         });
     }
 
-
-    //TODO Fix play command
     @Override
     public String getName() {
         return "play";
@@ -139,7 +126,7 @@ public class PlayCommand implements Command {
     @Override
     public SlashCommandBuilder getCommandData() {
         return new SlashCommandBuilder().setName(getName()).setDescription(getDescription())
-                .addOption(SlashCommandOption.create(SlashCommandOptionType.STRING, "Name_or_link",
-                        "The link or name of the song which you want to play"));
+                .addOption(SlashCommandOption.create(SlashCommandOptionType.STRING, "link",
+                        "The link of the song which you want to play"));
     }
 }

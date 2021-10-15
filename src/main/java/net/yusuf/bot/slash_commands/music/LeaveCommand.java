@@ -33,50 +33,42 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.yusuf.bot.slash_commands.moderation;
+package net.yusuf.bot.slash_commands.music;
 
 import github.io.yusuf.core.bot.Command;
-import org.javacord.api.DiscordApi;
-import org.javacord.api.entity.channel.TextChannel;
+import github.io.yusuf.core.lavaplayer.ApiMusicManager;
+import github.io.yusuf.core.lavaplayer.PlayerManager;
+import org.javacord.api.audio.AudioConnection;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
 import org.javacord.api.interaction.SlashCommandBuilder;
 import org.javacord.api.interaction.SlashCommandInteraction;
-import org.javacord.api.interaction.SlashCommandOption;
-import org.javacord.api.interaction.SlashCommandOptionType;
 
-public class DeleteMessagesCommand implements Command {
+public class LeaveCommand implements Command {
     @Override
     public void onSlashCommand(SlashCommandCreateEvent slashCommandCreateEvent) {
         SlashCommandInteraction interaction = slashCommandCreateEvent.getSlashCommandInteraction();
-        DiscordApi api = interaction.getApi();
+        final ApiMusicManager musicManager = PlayerManager.getInstance().getMusicManager(interaction.getServer().get(), interaction.getApi());
 
-        if (!interaction.getServer().isPresent()) {
-            return;
-        }
+        //Leaves the vc
+        interaction.getServer().orElseThrow().getAudioConnection().ifPresent(AudioConnection::close);
+        musicManager.scheduler.queue.clear();
 
-        //Amount of messages to delete
-        Integer amount = interaction.getFirstOptionIntValue().get();
-
-        //Channel
-        TextChannel channel = interaction.getChannel().get();
-
-        channel.deleteMessages(amount);
+        //Sends a message
+        interaction.createImmediateResponder().setContent("I have left").respond();
     }
 
     @Override
     public String getName() {
-        return "delete_messages";
+        return "leave";
     }
 
     @Override
     public String getDescription() {
-        return "You this command to delete messages from 1 to 200";
+        return "Use this command to remove the bot from the vc";
     }
 
     @Override
     public SlashCommandBuilder getCommandData() {
-        return new SlashCommandBuilder().setName(getName()).setDescription(getDescription())
-                .addOption(SlashCommandOption.create(SlashCommandOptionType.INTEGER, "delete_messages_number",
-                        "The amount of messages you want to delete"));
+        return new SlashCommandBuilder().setName(getName()).setDescription(getDescription());
     }
 }

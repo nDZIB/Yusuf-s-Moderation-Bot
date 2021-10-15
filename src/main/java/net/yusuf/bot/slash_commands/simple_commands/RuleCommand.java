@@ -32,14 +32,15 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-/*
+
 package net.yusuf.bot.slash_commands.simple_commands;
 
 import github.io.yusuf.core.bot.Command;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
-import org.javacord.api.interaction.InteractionBase;
-import org.javacord.api.interaction.SlashCommandBuilder;
+import org.javacord.api.interaction.*;
+import org.javacord.api.interaction.callback.InteractionImmediateResponseBuilder;
+import org.javacord.api.util.logging.ExceptionLogger;
 
 import java.awt.*;
 
@@ -53,11 +54,11 @@ public class RuleCommand implements Command {
                         "\n" +
                         "Rule #2: Only post where content belongs .Post content appropriate things in corresponding channels. including emojis. For example, if you wanna talk about something random, put it in the miscellaneous channel, if you wanna play music on our music bot, keep the commands in music.\n" +
                         "\n" +
-                        "Rule #3: No overly explicit words or expressions are allowed in the general channels.Some people are offended and some aren’t, but if someone doesn’t want to see a word, just don’t act like a dick over something you said.\n" +
+                        "Rule #3: No overly explicit words or expressions are allowed in the general channels.Some people are offended and some arena’t, but if someone doesn’t want to see a word, just don’t act like a dick over something you said.\n" +
                         "\n" +
                         "Rule #4: If you have a problem with anyone, be an adult.Attempt to work it out with the other person. Should you need to involve any of the staff, please be prepared to provide proof of your efforts to communicate your issue with them and go from there. No harassment allowed.\n" +
                         "\n" +
-                        "Rule #5: Do not spam.Spamming is an action of repeating messages alot, or posting things so quickly that it disrupts the chats. Do not spam emoji. Do not do this anywhere on the server, and includes jumping from channel to channel in a spam-like fashion. Changing your nickname excessively will result in a warn then mute\n" +
+                        "Rule #5: Do not spam.Spamming is an action of repeating messages a lot, or posting things so quickly that it disrupts the chats. Do not spam emoji. Do not do this anywhere on the server, and includes jumping from channel to channel in a spam-like fashion. Changing your nickname excessively will result in a warn then mute\n" +
                         "\n" +
                         "Rule #6: Advertise properly and please don't spam the whole server (Check rule 5)  just to advertise your Content.\n" +
                         "\n" +
@@ -71,6 +72,46 @@ public class RuleCommand implements Command {
                         "[Yusuf's Discord bot Org](https://github.com/Yusuf-s-Discord-bot)")
                         .setColor(Color.CYAN);
         interactionBase.createImmediateResponder().addEmbed(builder).respond();
+
+        //Rules number
+        slashCommandCreateEvent
+                .getSlashCommandInteraction()
+                .getFirstOptionStringValue()
+                .map(rule_number -> {
+                    var responder = interactionBase.createImmediateResponder();
+                    switch(rule_number) {
+                        case "1" -> responder.addEmbed(
+                                builder.setDescription("Rule #1: Act appropriately. Everyone likes to have fun, but sometimes things are just too immature for people. No one acting under the age of thirteen. Gauge the flow of the chat and go from there, if any problems arise, This applies to voice channels too.")
+                        );
+                        case "2" -> responder.addEmbed(
+                                builder.setDescription("Rule #2: Only post where content belongs .Post content appropriate things in corresponding channels. including emojis. For example, if you wanna talk about something random, put it in the miscellaneous channel, if you wanna play music on our music bot, keep the commands in music.")
+                        );
+                        case "3" -> responder.addEmbed(
+                                builder.setDescription("Rule #3: No overly explicit words or expressions are allowed in the general channels.Some people are offended and some aren’t, but if someone doesn’t want to see a word, just don’t act like a dick over something you said.\n")
+                        );
+                        case "4" -> responder.addEmbed(
+                                builder.setDescription("Rule #4: If you have a problem with anyone, be an adult.Attempt to work it out with the other person. Should you need to involve any of the staff, please be prepared to provide proof of your efforts to communicate your issue with them and go from there. No harassment allowed.")
+                        );
+                        case "5" -> responder.addEmbed(
+                                builder.setDescription("Rule #5: Do not spam.Spamming is an action of repeating messages alot, or posting things so quickly that it disrupts the chats. Do not spam emoji. Do not do this anywhere on the server, and includes jumping from channel to channel in a spam-like fashion. Changing your nickname excessively will result in a warn then mute")
+                        );
+                        case "6" -> responder.addEmbed(
+                                builder.setDescription("Rule #6: Advertise properly and please don't spam the whole server (Check rule 5) just to advertise your Content." +
+                                        "\n" +
+                                        "Treat everyone with respect. Absolutely no harassment, witch hunting, sexism, racism, or hate speech will be tolerated. No NSFW or obscene content. This includes text, images, or links featuring nudity, sex, hard violence, or other graphically disturbing content.\n" +
+                                        "\n" +
+                                        "If any of the moderators think it is \"against the rules\", we reserve the right to take action.")
+                        );
+                        default -> responder.addEmbed(
+                                builder.setDescription("That all the rules"));
+                    }
+                    builder.setTitle("Rules");
+                    builder.setColor(Color.CYAN);
+                    builder.setFooter("Made by Yusuf's Discord bot");
+                    return responder;
+                })
+                .map(InteractionImmediateResponseBuilder::respond)
+                .ifPresent(future -> future.exceptionally(ExceptionLogger.get()));
     }
 
     @Override
@@ -85,8 +126,8 @@ public class RuleCommand implements Command {
 
     @Override
     public SlashCommandBuilder getCommandData() {
-        return new SlashCommandBuilder().setName(getName()).setDescription(getDescription());
+        return new SlashCommandBuilder().setName(getName()).setDescription(getDescription())
+                .addOption(SlashCommandOption.create(SlashCommandOptionType.INTEGER, "Rule_Number_1_to_9",
+                        "Which rule number you want. Leave blank if you want the full rules"));
     }
 }
-
- */

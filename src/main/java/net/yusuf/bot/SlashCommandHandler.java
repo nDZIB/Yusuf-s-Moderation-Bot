@@ -50,38 +50,53 @@ public class SlashCommandHandler extends CoreSlashCommandHandler {
 
     public SlashCommandHandler() {
         //slash commands name
+        //Moderation commands
+        addCommand(new KickCommand());
+        addCommand(new BanCommand());
+        addCommand(new UnBanCommand());
+        addCommand(new DeleteMessagesCommand());
+        //music command
+        addCommand(new JoinCommand());
+        addCommand(new PlayCommand());
+        addCommand(new PauseCommand());
+        addCommand(new LeaveCommand());
+        addCommand(new ResumeCommand());
+        addCommand(new QueueCommand());
+        addCommand(new NowPlayingCommand());
+        //Normal commands
         addCommand(new GithubUsernameCommand());
         addCommand(new DiscordServersCommand());
         addCommand(new TutorialsCommand());
         addCommand(new HelloWorld());
-        addCommand(new KickCommand());
-        addCommand(new BanCommand());
-        addCommand(new UnBanCommand());
-        addCommand(new JoinCommand());
-        addCommand(new PlayCommand());
-        addCommand(new JoinCommand());
-        addCommand(new PauseCommand());
         addCommand(new IssueCommand());
-        //addCommand(new RuleCommand());
+        addCommand(new RuleCommand());
         addCommand(new InviteCommand());
         addCommand(new CreateEmbedCommand());
         addCommand(new BotInfo());
         
         //register slash commands
-        dataCommands.add(new DiscordServersCommand().getCommandData());
-        dataCommands.add(new TutorialsCommand().getCommandData());
-        dataCommands.add(new GithubUsernameCommand().getCommandData());
-        dataCommands.add(new HelloWorld().getCommandData());
+        //Moderation commands
         dataCommands.add(new KickCommand().getCommandData());
         dataCommands.add(new BanCommand().getCommandData());
         dataCommands.add(new UnBanCommand().getCommandData());
+        dataCommands.add(new DeleteMessagesCommand().getCommandData());
+        //music commands
         dataCommands.add(new PlayCommand().getCommandData());
         dataCommands.add(new JoinCommand().getCommandData());
         dataCommands.add(new PauseCommand().getCommandData());
+        dataCommands.add(new ResumeCommand().getCommandData());
+        dataCommands.add(new LeaveCommand().getCommandData());
+        dataCommands.add(new QueueCommand().getCommandData());
+        dataCommands.add(new NowPlayingCommand().getCommandData());
+        //Normal commands
         dataCommands.add(new IssueCommand().getCommandData());
-        //dataCommands.add(new RuleCommand().getCommandData());
+        dataCommands.add(new HelloWorld().getCommandData());
+        dataCommands.add(new RuleCommand().getCommandData());
         dataCommands.add(new InviteCommand().getCommandData());
         dataCommands.add(new CreateEmbedCommand().getCommandData());
         dataCommands.add(new BotInfo().getCommandData());
+        dataCommands.add(new DiscordServersCommand().getCommandData());
+        dataCommands.add(new TutorialsCommand().getCommandData());
+        dataCommands.add(new GithubUsernameCommand().getCommandData());
     }
 }

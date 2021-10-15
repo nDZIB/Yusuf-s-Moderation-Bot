@@ -62,10 +62,12 @@ public class PauseCommand implements Command {
         //The audio source
         AudioSource audioSource = audioConnection.getAudioSource().get();
 
-        //the pause audio source class
-        PauseableAudioSource pauseableAudioSource = audioSource.asPauseableAudioSource().get();
+        //Pauses the bot
+        audioSource.asPauseableAudioSource().orElseThrow().asPauseableAudioSource().ifPresent(PauseableAudioSource::pause);
 
-        pauseableAudioSource.setPaused(true);
+        //Sends a conformation
+        interaction.createImmediateResponder().setContent("Paused").respond();
+
     }
 
     @Override

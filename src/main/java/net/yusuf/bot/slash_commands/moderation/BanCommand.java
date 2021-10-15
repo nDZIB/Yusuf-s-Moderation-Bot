@@ -39,9 +39,10 @@ import github.io.yusuf.core.bot.Command;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
-import org.javacord.api.interaction.*;
-
-import java.util.Optional;
+import org.javacord.api.interaction.SlashCommandBuilder;
+import org.javacord.api.interaction.SlashCommandInteraction;
+import org.javacord.api.interaction.SlashCommandOption;
+import org.javacord.api.interaction.SlashCommandOptionType;
 
 public class BanCommand implements Command{
     @Override
@@ -74,7 +75,7 @@ public class BanCommand implements Command{
         }
 
         // Bans the user
-        server.banUser(userToBan, 1, String.valueOf(banReason));
+        server.banUser(userToBan, 1, banReason);
 
         // Responds
         interaction.createImmediateResponder().setContent("Banned!").respond();

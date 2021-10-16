@@ -1,6 +1,6 @@
 # Changelog
 
-## v2-1.0.1
+## [v2-1.0.1](https://github.com/Yusuf-s-Discord-bot/Yusuf-s-Moderation-Bot/releases/tag/V2-1.0.1)
 
 -Updated Yusuf's Discord core version.
 

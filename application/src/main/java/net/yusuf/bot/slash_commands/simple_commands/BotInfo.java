@@ -52,13 +52,13 @@ public class BotInfo implements Command {
                 .getName() + " Info")
             .setDescription(
                     """
-                            Running on Yusuf's Moderation bot V2-1.0.0
+                            Running on Yusuf's Moderation bot V2-1.0.2
 
                             Developer:
                             • [RealYusufIsmail](https://github.com/RealYusufIsmail)
 
                             Runtime-Environment:
-                            Java 16
+                            Java 17
 
                             Library's:
                             [JavaCord](https://github.com/Javacord/Javacord)

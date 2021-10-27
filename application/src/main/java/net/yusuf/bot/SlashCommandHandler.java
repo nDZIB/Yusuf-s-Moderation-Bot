@@ -65,30 +65,5 @@ public class SlashCommandHandler extends CoreSlashCommandHandler {
         addCommand(new InviteCommand());
         addCommand(new CreateEmbedCommand());
         addCommand(new BotInfo());
-
-        // register slash commands
-        // Moderation commands
-        dataCommands.add(new KickCommand().getCommandData());
-        dataCommands.add(new BanCommand().getCommandData());
-        dataCommands.add(new UnBanCommand().getCommandData());
-        dataCommands.add(new DeleteMessagesCommand().getCommandData());
-        // music commands
-        dataCommands.add(new PlayCommand().getCommandData());
-        dataCommands.add(new JoinCommand().getCommandData());
-        dataCommands.add(new PauseCommand().getCommandData());
-        dataCommands.add(new ResumeCommand().getCommandData());
-        dataCommands.add(new LeaveCommand().getCommandData());
-        dataCommands.add(new QueueCommand().getCommandData());
-        dataCommands.add(new NowPlayingCommand().getCommandData());
-        // Normal commands
-        dataCommands.add(new IssueCommand().getCommandData());
-        dataCommands.add(new HelloWorld().getCommandData());
-        dataCommands.add(new RuleCommand().getCommandData());
-        dataCommands.add(new InviteCommand().getCommandData());
-        dataCommands.add(new CreateEmbedCommand().getCommandData());
-        dataCommands.add(new BotInfo().getCommandData());
-        dataCommands.add(new DiscordServersCommand().getCommandData());
-        dataCommands.add(new TutorialsCommand().getCommandData());
-        dataCommands.add(new GithubUsernameCommand().getCommandData());
     }
 }

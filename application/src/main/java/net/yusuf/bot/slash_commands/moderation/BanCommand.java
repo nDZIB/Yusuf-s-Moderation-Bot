@@ -121,8 +121,8 @@ public class BanCommand implements Command {
                 .get());
 
         String serverName = server.getName();
-        userToBan.sendMessage("Unfortunately you have been banned from " + serverName + " for the following reason " +
-                banReason);
+        userToBan.sendMessage("Unfortunately you have been banned from " + serverName
+                + " for the following reason " + banReason);
 
         // Bans the user
         server.banUser(userToBan, days, banReason);

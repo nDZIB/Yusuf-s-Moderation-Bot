@@ -36,6 +36,7 @@ import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.user.UserStatus;
+import org.javacord.api.util.logging.ExceptionLogger;
 
 import javax.security.auth.login.LoginException;
 import java.util.Optional;
@@ -56,6 +57,7 @@ public class Bot {
             channel.ifPresent(TextChannel -> TextChannel.sendMessage("Welcome to the server + "
                     + event.getUser().getMentionTag() + "We hope you have a great time"));
         });
-        api.bulkOverwriteGlobalSlashCommands(new SlashCommandHandler().dataCommands);
+        api.bulkOverwriteGlobalSlashCommands(new SlashCommandHandler().dataCommands)
+            .exceptionally(ExceptionLogger.get());
     }
 }

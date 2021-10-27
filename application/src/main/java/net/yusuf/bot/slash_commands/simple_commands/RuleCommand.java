@@ -121,11 +121,10 @@ public class RuleCommand implements Command {
     }
 
     private final List<SlashCommandOptionChoice> rules = Arrays.asList(
-            SlashCommandOptionChoice.create("all", "0"),
-            SlashCommandOptionChoice.create("rule_1", "1"),
-            SlashCommandOptionChoice.create("rule_2", "2"),
-            SlashCommandOptionChoice.create("rule_3", "3"),
-            SlashCommandOptionChoice.create("rule_4", "4"),
-            SlashCommandOptionChoice.create("rule_5", "5"),
-            SlashCommandOptionChoice.create("rule_6", "6"));
+            SlashCommandOptionChoice.create("all", 0), SlashCommandOptionChoice.create("rule_1", 1),
+            SlashCommandOptionChoice.create("rule_2", 2),
+            SlashCommandOptionChoice.create("rule_3", 3),
+            SlashCommandOptionChoice.create("rule_4", 4),
+            SlashCommandOptionChoice.create("rule_5", 5),
+            SlashCommandOptionChoice.create("rule_6", 6));
 }

@@ -97,10 +97,10 @@ public class TutorialsCommand implements Command {
     }
 
     private final List<SlashCommandOptionChoice> youtubeChannelNames =
-            Arrays.asList(SlashCommandOptionChoice.create("cy4shot", 1),
-                    SlashCommandOptionChoice.create("mcjty", 2),
-                    SlashCommandOptionChoice.create("silentchaos512", 3),
-                    SlashCommandOptionChoice.create("realyusufismail", 4),
-                    SlashCommandOptionChoice.create("turtywurty", 5));
+            Arrays.asList(SlashCommandOptionChoice.create("cy4shot", "cy4shot"),
+                    SlashCommandOptionChoice.create("mcjty", "mcjty"),
+                    SlashCommandOptionChoice.create("silentchaos512", "silentchaos512"),
+                    SlashCommandOptionChoice.create("realyusufismail", "silentchaos512"),
+                    SlashCommandOptionChoice.create("turtywurty", "turtywurty"));
 }
 

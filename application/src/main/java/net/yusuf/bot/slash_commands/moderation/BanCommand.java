@@ -120,6 +120,10 @@ public class BanCommand implements Command {
                 .flatMap(SlashCommandInteractionOption::getIntValue)
                 .get());
 
+        String serverName = server.getName();
+        userToBan.sendMessage("Unfortunately you have been banned from " + serverName + " for the following reason " +
+                banReason);
+
         // Bans the user
         server.banUser(userToBan, days, banReason);
 

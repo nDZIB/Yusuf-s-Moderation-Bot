@@ -93,9 +93,9 @@ public class DiscordServersCommand implements Command {
     }
 
     private final List<SlashCommandOptionChoice> discordSeversNames =
-            Arrays.asList(SlashCommandOptionChoice.create("cy4shot", 1),
-                    SlashCommandOptionChoice.create("programming", 2),
-                    SlashCommandOptionChoice.create("herukan", 3),
-                    SlashCommandOptionChoice.create("turtywurty", 4),
-                    SlashCommandOptionChoice.create("realyusufismail", 5));
+            Arrays.asList(SlashCommandOptionChoice.create("cy4shot", "cy4shot"),
+                    SlashCommandOptionChoice.create("programming", "programming"),
+                    SlashCommandOptionChoice.create("herukan", "herukan"),
+                    SlashCommandOptionChoice.create("turtywurty", "turtywurty"),
+                    SlashCommandOptionChoice.create("realyusufismail", "realyusufismail"));
 }

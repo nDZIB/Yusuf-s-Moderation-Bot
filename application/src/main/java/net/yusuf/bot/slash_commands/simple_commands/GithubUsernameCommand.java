@@ -94,8 +94,8 @@ public class GithubUsernameCommand implements Command {
     }
 
     private final List<SlashCommandOptionChoice> githubUserNames =
-            Arrays.asList(SlashCommandOptionChoice.create("forge", 1),
-                    SlashCommandOptionChoice.create("silentchaos512", 2),
-                    SlashCommandOptionChoice.create("turtywurty", 3),
-                    SlashCommandOptionChoice.create("realyusufismail", 4));
+            Arrays.asList(SlashCommandOptionChoice.create("forge", "forge"),
+                    SlashCommandOptionChoice.create("silentchaos512", "silentchaos512"),
+                    SlashCommandOptionChoice.create("turtywurty", "turtywurty"),
+                    SlashCommandOptionChoice.create("realyusufismail", "realyusufismail"));
 }

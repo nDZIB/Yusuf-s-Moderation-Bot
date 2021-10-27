@@ -102,13 +102,13 @@ public class HelloWorld implements Command {
             .setDescription(getDescription())
             .addOption(SlashCommandOption.createWithChoices(SlashCommandOptionType.STRING,
                     "programming_language", "The language which you want hello world in.", true,
-                    Arrays.asList(SlashCommandOptionChoice.create("java", 1),
-                            SlashCommandOptionChoice.create("javascript", 2),
-                            SlashCommandOptionChoice.create("c#", 3),
-                            SlashCommandOptionChoice.create("c++", 4),
-                            SlashCommandOptionChoice.create("python", 5),
-                            SlashCommandOptionChoice.create("ruby", 6),
-                            SlashCommandOptionChoice.create("c", 7),
-                            SlashCommandOptionChoice.create("swift", 8))));
+                    Arrays.asList(SlashCommandOptionChoice.create("java", "java"),
+                            SlashCommandOptionChoice.create("javascript", "javascript"),
+                            SlashCommandOptionChoice.create("c#", "c#"),
+                            SlashCommandOptionChoice.create("c++", "c++"),
+                            SlashCommandOptionChoice.create("python", "python"),
+                            SlashCommandOptionChoice.create("ruby", "ruby"),
+                            SlashCommandOptionChoice.create("c", "c"),
+                            SlashCommandOptionChoice.create("swift", "swift"))));
     }
 }

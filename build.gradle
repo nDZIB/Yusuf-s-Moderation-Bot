@@ -45,6 +45,7 @@ group 'io.github.yusufsdiscordbot'
 sourceCompatibility = JavaVersion.VERSION_17
 
 subprojects {
+    //credits for this part of the gradle goes toward https://github.com/Together-Java/TJ-Bot/blob/develop/build.gradle#L24
     apply plugin: "java"
     apply plugin: "com.diffplug.spotless"
 

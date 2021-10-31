@@ -30,36 +30,14 @@
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.yusuf.bot.slash_commands.normal_commands;
+package io.github.yusufsdiscordbot.yusufsmoderationbot;
 
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import io.github.cdimascio.dotenv.Dotenv;
 
-public class BotInfoCommand implements Command {
-    @Override
-    public void onSlashCommand(SlashCommandEvent slashCommandEvent) {
-        // TODO Start work on the command when I have access to the Wi-Fi
-    }
+public class Config {
+    private static final Dotenv dotenv = Dotenv.load();
 
-    @Override
-    public String getName() {
-        return "botinfo";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Provides the user with info about the bot.";
-    }
-
-    @Override
-    public CommandVisibility getVisibility() {
-        return CommandVisibility.UNIVERSAL;
-    }
-
-    @Override
-    public CommandData getCommandData() {
-        return new CommandData(getName(), getDescription());
+    public static String get(String key) {
+        return dotenv.get(key.toUpperCase());
     }
 }

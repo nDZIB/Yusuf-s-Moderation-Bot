@@ -30,40 +30,26 @@
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.yusuf.bot.slash_commands.normal_commands;
+package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.normal_commands;
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 
-import java.util.Objects;
-
-
-public class HelpCommand implements Command {
-
+public class Support implements Command {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
-        EmbedBuilder builder = new EmbedBuilder();
-        User sender = event.getUser();
-        builder.setAuthor("Made by " + Objects.requireNonNull(event.getMember()).getEffectiveName(),
-                null, sender.getEffectiveAvatarUrl());
-        builder.setTitle("Help");
-        builder.setDescription("Support can be found by typing /support");
-        builder.setColor(0x34d8eb);
-        event.replyEmbeds(builder.build()).queue();
+        event.reply(event.getOption("This is the discord support server").getAsString()).queue();
+        event.reply(event.getOption("https://discord.gg/hpY6s6mh3N").getAsString()).queue();
     }
 
-    @Override
     public String getName() {
-        return "help";
+        return "support";
     }
 
-    @Override
     public String getDescription() {
-        return "Provides help";
+        return "Provides Support";
     }
 
     @Override
@@ -71,7 +57,6 @@ public class HelpCommand implements Command {
         return CommandVisibility.UNIVERSAL;
     }
 
-    @Override
     public CommandData getCommandData() {
         return new CommandData(getName(), getDescription());
     }

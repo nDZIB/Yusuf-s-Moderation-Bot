@@ -30,75 +30,58 @@
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.yusuf.bot.slash_commands.moderation;
+package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.normal_commands;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.User;
+import me.duncte123.botcommons.messaging.EmbedUtils;
+import me.duncte123.botcommons.web.WebUtils;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 
-
-import static net.dv8tion.jda.api.interactions.commands.OptionType.*;
-
-public class WarnCommand implements Command {
+public class MemeCommand implements Command {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
-        final User user = event.getUser();
-        final Member member = event.getMember();
+        final TextChannel channel = event.getTextChannel();
 
-        event.deferReply(true).queue(); // Let the user know we received the command before doing
-                                        // anything else
-        InteractionHook hook = event.getHook(); // This is a special webhook that allows you to send
-                                                // messages without having permissions in the
-                                                // channel and also allows ephemeral messages
-        hook.setEphemeral(true); // All messages here will now be ephemeral implicitly
-        if (!event.getMember().hasPermission(Permission.MANAGE_ROLES)) {
-            hook.sendMessage(
-                    "You do not have the required permissions to warn users from this server.")
-                .queue();
-            return;
-        }
+        WebUtils.ins.getJSONObject("https://apis.duncte123.me/meme").async((json) -> {
+            if (!json.get("success").asBoolean()) {
+                channel.sendMessage("Something went wrong, try again later").queue();
+                System.out.println(json);
+                return;
+            }
 
-        Member selfMember = event.getGuild().getSelfMember();
-        if (!selfMember.hasPermission(Permission.MANAGE_ROLES)) {
-            hook.sendMessage(
-                    "I don't have the required permissions to warn users from this server.")
-                .queue();
-            return;
-        }
+            final JsonNode data = json.get("data");
+            final String title = data.get("title").asText();
+            final String url = data.get("url").asText();
+            final String image = data.get("image").asText();
+            final EmbedBuilder embed = EmbedUtils.embedImageWithTitle(title, url, image);
 
-        if (member != null && !selfMember.canInteract(member)) {
-            hook.sendMessage("This user is too powerful for me to warn.").queue();
-            return;
-        }
-
+            event.replyEmbeds(embed.build()).queue();
+        });
     }
 
     @Override
     public String getName() {
-        return "warn";
+        return "meme";
     }
 
     @Override
     public String getDescription() {
-        return "Warn a user";
+        return "Shows you a random meme";
     }
 
     @Override
     public CommandVisibility getVisibility() {
-        return CommandVisibility.UNIVERSAL;
+        return CommandVisibility.SERVER;
     }
 
     @Override
     public CommandData getCommandData() {
-        return new CommandData(getName(), getDescription())
-            .addOptions(new OptionData(USER, "user", "The user to warn").setRequired(true))
-            .addOptions(
-                    new OptionData(STRING, "reason", "The reason why you want to warn the user"));
+        return new CommandData(getName(), getDescription());
     }
+
 }

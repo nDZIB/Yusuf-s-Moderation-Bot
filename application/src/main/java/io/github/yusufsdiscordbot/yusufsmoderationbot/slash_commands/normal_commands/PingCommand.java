@@ -30,28 +30,42 @@
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.yusuf.bot;
+package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.normal_commands;
 
-import net.dv8tion.jda.api.*;
-import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.requests.GatewayIntent;
-import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 
-import javax.security.auth.login.LoginException;
-import java.util.EnumSet;
+public class PingCommand implements Command {
+    @Override
+    public void onSlashCommand(SlashCommandEvent event) {
+        JDA jda = event.getJDA();
+        jda.getRestPing()
+            .queue((ping) -> event.getChannel()
+                .sendMessageFormat("Reset ping: %sms\nWS ping: %sms", ping, jda.getGatewayPing())
+                .queue());
+        event.reply("Here is the ping").queue();
+    }
 
-public class Bot {
-    public static void main(String[] args) throws LoginException, InterruptedException {
-        JDA jda = JDABuilder
-            .createDefault(Config.get("TOKEN"), GatewayIntent.GUILD_MEMBERS,
-                    GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_VOICE_STATES)
-            .disableCache(EnumSet.of(CacheFlag.CLIENT_STATUS, CacheFlag.ACTIVITY, CacheFlag.EMOTE))
-            .enableCache(CacheFlag.VOICE_STATE)
-            .setActivity(Activity.watching("/help"))
-            .setStatus(OnlineStatus.ONLINE)
-            .build();
+    @Override
+    public String getName() {
+        return "ping";
+    }
 
-        jda.awaitReady()
-            .addEventListener(new CommandHandler(jda, jda.getGuildById(842490150537527306L)));
+    @Override
+    public String getDescription() {
+        return "Shows the latency of the bot";
+    }
+
+    @Override
+    public CommandVisibility getVisibility() {
+        return CommandVisibility.SERVER;
+    }
+
+    @Override
+    public CommandData getCommandData() {
+        return new CommandData(getName(), getDescription());
     }
 }

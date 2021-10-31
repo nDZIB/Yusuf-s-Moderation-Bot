@@ -30,73 +30,75 @@
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.yusuf.bot.slash_commands.role;
+package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation;
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 
-import static net.dv8tion.jda.api.interactions.commands.OptionType.ROLE;
-import static net.dv8tion.jda.api.interactions.commands.OptionType.USER;
 
-public class RemoveRoleCommand implements Command {
+import static net.dv8tion.jda.api.interactions.commands.OptionType.*;
+
+public class WarnCommand implements Command {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
+        final User user = event.getUser();
         final Member member = event.getMember();
-        event.deferReply(true).queue();
-        InteractionHook hook = event.getHook();
-        hook.setEphemeral(true);
 
-        Member target = event.getOption("user").getAsMember();
-
-        if (!member.canInteract(target) || !member.hasPermission(Permission.MANAGE_ROLES)) {
-            hook.sendMessage("You are missing permission to add a role this member").queue();
+        event.deferReply(true).queue(); // Let the user know we received the command before doing
+                                        // anything else
+        InteractionHook hook = event.getHook(); // This is a special webhook that allows you to send
+                                                // messages without having permissions in the
+                                                // channel and also allows ephemeral messages
+        hook.setEphemeral(true); // All messages here will now be ephemeral implicitly
+        if (!event.getMember().hasPermission(Permission.MANAGE_ROLES)) {
+            hook.sendMessage(
+                    "You do not have the required permissions to warn users from this server.")
+                .queue();
             return;
         }
 
-        final Member selfMember = event.getGuild().getSelfMember();
-
-        if (!selfMember.canInteract(target) || !selfMember.hasPermission(Permission.MANAGE_ROLES)) {
-            hook.sendMessage("I am missing permissions to add a role to that member").queue();
+        Member selfMember = event.getGuild().getSelfMember();
+        if (!selfMember.hasPermission(Permission.MANAGE_ROLES)) {
+            hook.sendMessage(
+                    "I don't have the required permissions to warn users from this server.")
+                .queue();
             return;
         }
 
-        Role role = event.getOption("role").getAsRole();
+        if (member != null && !selfMember.canInteract(member)) {
+            hook.sendMessage("This user is too powerful for me to warn.").queue();
+            return;
+        }
 
-        event.getGuild()
-            .removeRoleFromMember(target, role)
-            .queue((__) -> event.reply("The role was remove.").queue(),
-                    (error) -> hook.sendMessage("Could not remove the role").queue());
     }
 
     @Override
     public String getName() {
-        return "removes_role";
+        return "warn";
     }
 
     @Override
     public String getDescription() {
-        return "removes a role";
+        return "Warn a user";
     }
 
     @Override
     public CommandVisibility getVisibility() {
-        return CommandVisibility.SERVER;
+        return CommandVisibility.UNIVERSAL;
     }
 
     @Override
     public CommandData getCommandData() {
         return new CommandData(getName(), getDescription())
+            .addOptions(new OptionData(USER, "user", "The user to warn").setRequired(true))
             .addOptions(
-                    new OptionData(USER, "user", "The user which you want to remove the role from.")
-                        .setRequired(true))
-            .addOptions(new OptionData(ROLE, "role", "The role which you want to remove")
-                .setRequired(true));
+                    new OptionData(STRING, "reason", "The reason why you want to warn the user"));
     }
 }

@@ -30,33 +30,51 @@
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.yusuf.bot.slash_commands.normal_commands;
+package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.normal_commands;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
-import net.dv8tion.jda.api.JDA;
+import me.duncte123.botcommons.messaging.EmbedUtils;
+import me.duncte123.botcommons.web.WebUtils;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 
-public class PingCommand implements Command {
+public class JokeCommand implements Command {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
-        JDA jda = event.getJDA();
-        jda.getRestPing()
-            .queue((ping) -> event.getChannel()
-                .sendMessageFormat("Reset ping: %sms\nWS ping: %sms", ping, jda.getGatewayPing())
-                .queue());
-        event.reply("Here is the ping").queue();
+        final TextChannel channel = event.getTextChannel();
+
+        WebUtils.ins.getJSONObject("https://apis.duncte123.me/joke").async((json) -> {
+            if (!json.get("success").asBoolean()) {
+                channel.sendMessage("Something went wrong, try again later").queue();
+                System.out.println(json);
+                return;
+            }
+
+            final JsonNode data = json.get("data");
+            final String title = data.get("title").asText();
+            final String url = data.get("url").asText();
+            final String body = data.get("body").asText();
+
+            final EmbedBuilder embed =
+                    EmbedUtils.getDefaultEmbed().setTitle(title, url).setDescription(body);
+
+
+            event.replyEmbeds(embed.build()).queue();
+        });
     }
 
     @Override
     public String getName() {
-        return "ping";
+        return "joke";
     }
 
     @Override
     public String getDescription() {
-        return "Shows the latency of the bot";
+        return "Shows you a random joke";
     }
 
     @Override
@@ -68,4 +86,5 @@ public class PingCommand implements Command {
     public CommandData getCommandData() {
         return new CommandData(getName(), getDescription());
     }
+
 }

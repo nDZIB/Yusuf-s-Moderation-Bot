@@ -19,6 +19,7 @@
  * endorse or promote products derived from this software without specific prior written permission.
  *
  *
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
@@ -29,43 +30,36 @@
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.yusuf.bot.slash_commands.moderation;
+package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.normal_commands;
 
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.User;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 
-public enum ModerationUtils {
-    ;
-
-    /**
-     * As stated in {@link Guild#ban(User, int, String)} <br>
-     * The reason can be only 512 characters.
-     */
-    private static final int REASON_MAX_LENGTH = 512;
-
-    @Contract(value = " -> fail", pure = true)
-    ModerationUtils() {
-        throw new UnsupportedOperationException(
-                "The Moderation Utility class has run into an error");
+public class BotInfoCommand implements Command {
+    @Override
+    public void onSlashCommand(SlashCommandEvent slashCommandEvent) {
+        // TODO Start work on the command when I have access to the Wi-Fi
     }
 
-    /**
-     * The Boolean reasonLimit will check if the reason is above the provided limit. <br>
-     * <br>
-     * If it is it will throw an error and will tell the user that the reason can not be over the
-     * {@link ModerationUtils#REASON_MAX_LENGTH} <br>
-     * If the reason is under the limit it will pass and will allow the command to continue.
-     */
-    public static boolean handleReason(@NotNull String reason, @NotNull SlashCommandEvent event) {
-        if (reason.length() <= REASON_MAX_LENGTH) {
-            return true;
-        }
-        event.reply("The reason can not be over " + REASON_MAX_LENGTH + " characters")
-            .setEphemeral(true)
-            .queue();
-        return false;
+    @Override
+    public String getName() {
+        return "botinfo";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Provides the user with info about the bot.";
+    }
+
+    @Override
+    public CommandVisibility getVisibility() {
+        return CommandVisibility.UNIVERSAL;
+    }
+
+    @Override
+    public CommandData getCommandData() {
+        return new CommandData(getName(), getDescription());
     }
 }

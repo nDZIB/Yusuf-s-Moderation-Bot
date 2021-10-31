@@ -30,9 +30,16 @@
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.yusuf.bot;
+package io.github.yusufsdiscordbot.yusufsmoderationbot;
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CoreSlashCommandHandler;
+import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation.BanCommand;
+import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation.KickCommand;
+import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation.PurgeCommand;
+import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation.UnBanCommand;
+import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.normal_commands.*;
+import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.role.AddRoleCommand;
+import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.role.RemoveRoleCommand;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.yusuf.bot.slash_commands.moderation.*;

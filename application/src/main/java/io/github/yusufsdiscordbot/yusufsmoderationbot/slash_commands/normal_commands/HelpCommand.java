@@ -30,58 +30,49 @@
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.yusuf.bot.slash_commands.normal_commands;
+package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.normal_commands;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
-import me.duncte123.botcommons.messaging.EmbedUtils;
-import me.duncte123.botcommons.web.WebUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 
-public class MemeCommand implements Command {
+import java.util.Objects;
+
+
+public class HelpCommand implements Command {
+
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
-        final TextChannel channel = event.getTextChannel();
-
-        WebUtils.ins.getJSONObject("https://apis.duncte123.me/meme").async((json) -> {
-            if (!json.get("success").asBoolean()) {
-                channel.sendMessage("Something went wrong, try again later").queue();
-                System.out.println(json);
-                return;
-            }
-
-            final JsonNode data = json.get("data");
-            final String title = data.get("title").asText();
-            final String url = data.get("url").asText();
-            final String image = data.get("image").asText();
-            final EmbedBuilder embed = EmbedUtils.embedImageWithTitle(title, url, image);
-
-            event.replyEmbeds(embed.build()).queue();
-        });
+        EmbedBuilder builder = new EmbedBuilder();
+        User sender = event.getUser();
+        builder.setAuthor("Made by " + Objects.requireNonNull(event.getMember()).getEffectiveName(),
+                null, sender.getEffectiveAvatarUrl());
+        builder.setTitle("Help");
+        builder.setDescription("Support can be found by typing /support");
+        builder.setColor(0x34d8eb);
+        event.replyEmbeds(builder.build()).queue();
     }
 
     @Override
     public String getName() {
-        return "meme";
+        return "help";
     }
 
     @Override
     public String getDescription() {
-        return "Shows you a random meme";
+        return "Provides help";
     }
 
     @Override
     public CommandVisibility getVisibility() {
-        return CommandVisibility.SERVER;
+        return CommandVisibility.UNIVERSAL;
     }
 
     @Override
     public CommandData getCommandData() {
         return new CommandData(getName(), getDescription());
     }
-
 }

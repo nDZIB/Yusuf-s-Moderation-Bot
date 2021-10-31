@@ -30,51 +30,59 @@
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.yusuf.bot.slash_commands.normal_commands;
+package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.role;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
-import me.duncte123.botcommons.messaging.EmbedUtils;
-import me.duncte123.botcommons.web.WebUtils;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 
-public class JokeCommand implements Command {
+import static net.dv8tion.jda.api.interactions.commands.OptionType.ROLE;
+import static net.dv8tion.jda.api.interactions.commands.OptionType.USER;
+
+public class AddRoleCommand implements Command {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
-        final TextChannel channel = event.getTextChannel();
+        final Member member = event.getMember();
+        event.deferReply(true).queue();
+        InteractionHook hook = event.getHook();
+        hook.setEphemeral(true);
 
-        WebUtils.ins.getJSONObject("https://apis.duncte123.me/joke").async((json) -> {
-            if (!json.get("success").asBoolean()) {
-                channel.sendMessage("Something went wrong, try again later").queue();
-                System.out.println(json);
-                return;
-            }
+        Member target = event.getOption("user").getAsMember();
 
-            final JsonNode data = json.get("data");
-            final String title = data.get("title").asText();
-            final String url = data.get("url").asText();
-            final String body = data.get("body").asText();
+        if (!member.canInteract(target) || !member.hasPermission(Permission.MANAGE_ROLES)) {
+            hook.sendMessage("You are missing permission to add a role this member").queue();
+            return;
+        }
 
-            final EmbedBuilder embed =
-                    EmbedUtils.getDefaultEmbed().setTitle(title, url).setDescription(body);
+        final Member selfMember = event.getGuild().getSelfMember();
 
+        if (!selfMember.canInteract(target) || !selfMember.hasPermission(Permission.MANAGE_ROLES)) {
+            hook.sendMessage("I am missing permissions to add a role to that member").queue();
+            return;
+        }
 
-            event.replyEmbeds(embed.build()).queue();
-        });
+        Role role = event.getOption("role").getAsRole();
+
+        event.getGuild()
+            .addRoleToMember(target, role)
+            .queue((__) -> event.reply("The role was given.").queue(),
+                    (error) -> hook.sendMessage("Could not give the role").queue());
     }
 
     @Override
     public String getName() {
-        return "joke";
+        return "give_role";
     }
 
     @Override
     public String getDescription() {
-        return "Shows you a random joke";
+        return "gives a role";
     }
 
     @Override
@@ -84,7 +92,10 @@ public class JokeCommand implements Command {
 
     @Override
     public CommandData getCommandData() {
-        return new CommandData(getName(), getDescription());
+        return new CommandData(getName(), getDescription())
+            .addOptions(new OptionData(USER, "user", "The user which you want to give the role to.")
+                .setRequired(true))
+            .addOptions(new OptionData(ROLE, "role", "The role which you want to give")
+                .setRequired(true));
     }
-
 }

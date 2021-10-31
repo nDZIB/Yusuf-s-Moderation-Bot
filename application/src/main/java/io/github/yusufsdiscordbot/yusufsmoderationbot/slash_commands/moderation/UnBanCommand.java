@@ -129,7 +129,7 @@ public class UnBanCommand implements Command {
 
     @Override
     public CommandVisibility getVisibility() {
-        return CommandVisibility.UNIVERSAL;
+        return CommandVisibility.SERVER;
     }
 
     @Override

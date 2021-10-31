@@ -34,13 +34,37 @@ package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.normal_com
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+
+import java.awt.*;
 
 public class BotInfoCommand implements Command {
     @Override
     public void onSlashCommand(SlashCommandEvent slashCommandEvent) {
-        // TODO Start work on the command when I have access to the Wi-Fi
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setTitle(slashCommandEvent.getGuild()
+                .getSelfMember()
+                .getEffectiveName() + " Info")
+                .setDescription(
+                        """
+                                Running on Yusuf's Moderation bot V2-1.0.2
+                                Developer:
+                                • [RealYusufIsmail](https://github.com/RealYusufIsmail)
+                                Runtime-Environment:
+                                Gradle 7.3
+                                Java 17
+                                Library's:
+                                [JDA](https://github.com/Javacord/Javacord)
+                                [YusufIsmail's Discord core](https://github.com/YusufsDiscordbot/YusufIsmails-Discord-core)
+                                Bots repo and org:
+                                [Yusuf's moderation bot](https://github.com/YusufsDiscordbot/Yusuf-s-Moderation-Bot)
+                                """)
+                .setFooter("Made by [Yusuf's Discord bot](https://github.com/YusufsDiscordbot)")
+                .setColor(Color.CYAN);
+
+        slashCommandEvent.replyEmbeds(builder.build()).queue();
     }
 
     @Override

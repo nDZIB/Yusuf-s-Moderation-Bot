@@ -54,7 +54,7 @@ public class Support implements Command {
 
     @Override
     public CommandVisibility getVisibility() {
-        return CommandVisibility.UNIVERSAL;
+        return CommandVisibility.SERVER;
     }
 
     public CommandData getCommandData() {

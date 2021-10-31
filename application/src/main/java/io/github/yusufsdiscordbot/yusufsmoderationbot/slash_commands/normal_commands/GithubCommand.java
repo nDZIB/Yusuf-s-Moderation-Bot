@@ -98,7 +98,7 @@ public class GithubCommand implements Command {
     @Override
     public CommandData getCommandData() {
         return new CommandData(getName(), getDescription()).addOptions(
-                new OptionData(STRING, "Github_user", "The Github link for the user you want")
+                new OptionData(STRING, "github_user", "The Github link for the user you want")
                     .setRequired(true)
                     .addChoices(githubUsers));
     }

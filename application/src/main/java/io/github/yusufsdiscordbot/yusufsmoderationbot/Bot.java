@@ -43,7 +43,7 @@ import java.util.EnumSet;
 public class Bot {
     public static void main(String[] args) throws LoginException, InterruptedException {
         final int cores = Runtime.getRuntime().availableProcessors();
-        
+
         if (cores <= 1) {
             System.out.println("Available Cores \"" + cores + "\", setting Parallelism Flag");
             System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "1");

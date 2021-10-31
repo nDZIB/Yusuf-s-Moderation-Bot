@@ -57,12 +57,12 @@ public class GithubCommand implements Command {
             .getAsString();
         HashMap<String, String> git = new HashMap<String, String>();
 
-        git.put("Dungeon_makers", "https://github.com/Dungeon-Maker");
-        git.put("Forge", "https://github.com/MinecraftForge");
-        git.put("RealYusufIsmail", "https://github.com/RealYusufIsmail");
-        git.put("SilentChaos512", "https://github.com/SilentChaos512");
-        git.put("Together-Java", "https://github.com/Together-Java");
-        git.put("Turtywurty", "https://github.com/DaRealTurtyWurty");
+        git.put("dungeonmakers", "https://github.com/Dungeon-Maker");
+        git.put("forge", "https://github.com/MinecraftForge");
+        git.put("realyusufismail", "https://github.com/RealYusufIsmail");
+        git.put("silentchaos512", "https://github.com/SilentChaos512");
+        git.put("togetherjava", "https://github.com/Together-Java");
+        git.put("turtywurty", "https://github.com/DaRealTurtyWurty");
 
         builder.setAuthor("Made by " + slashCommandEvent.getMember().getEffectiveName(), null,
                 sender.getEffectiveAvatarUrl());
@@ -105,17 +105,12 @@ public class GithubCommand implements Command {
 
     public static final List<net.dv8tion.jda.api.interactions.commands.Command.Choice> githubUsers =
             List.of(new net.dv8tion.jda.api.interactions.commands.Command.Choice("Dungeon_makers",
-                    "Dungeon_makers"),
+                    "dungeonmakers"),
                     new net.dv8tion.jda.api.interactions.commands.Command.Choice("SilentChaos512",
-                            "SilentChaos512"),
-                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("Forge", "Forge"),
+                            "forge"),
+                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("Forge", "realyusufismail"),
                     new net.dv8tion.jda.api.interactions.commands.Command.Choice("Together-Java",
-                            "Together-Java"),
-                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("Python",
-                            "python"),
-                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("RealYusufIsmail",
-                            "RealYusufIsmail"),
+                            "togetherjava"),
                     new net.dv8tion.jda.api.interactions.commands.Command.Choice("Turtywurty",
-                            "Turtywurty"),
-                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("Swift", "swift"));
+                            "turtywurty"));
 }

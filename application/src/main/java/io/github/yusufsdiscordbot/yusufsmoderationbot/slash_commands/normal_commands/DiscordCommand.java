@@ -57,10 +57,10 @@ public class DiscordCommand implements Command {
             .getAsString();
         HashMap<String, String> dis = new HashMap<String, String>();
 
-        dis.put("Cy4", "https://discord.gg/j5tBQx7uny");
-        dis.put("TurtyWurty", "https://discord.gg/BxD5JukyQs");
-        dis.put("Yusuf's_Discord_bot", "https://discord.gg/hpY6s6mh3N");
-        dis.put("TogetherJava", "https://discord.gg/GzvQjhv");
+        dis.put("cy4", "https://discord.gg/j5tBQx7uny");
+        dis.put("turtywurty", "https://discord.gg/BxD5JukyQs");
+        dis.put("yusufsdiscordbot", "https://discord.gg/hpY6s6mh3N");
+        dis.put("togetherjava", "https://discord.gg/GzvQjhv");
 
         builder.setAuthor("Made by " + slashCommandEvent.getMember().getEffectiveName(), null,
                 sender.getEffectiveAvatarUrl());
@@ -103,12 +103,12 @@ public class DiscordCommand implements Command {
     }
 
     public static final List<net.dv8tion.jda.api.interactions.commands.Command.Choice> githubUsers =
-            List.of(new net.dv8tion.jda.api.interactions.commands.Command.Choice("Cy4", "Cy4"),
+            List.of(new net.dv8tion.jda.api.interactions.commands.Command.Choice("Cy4", "cy4"),
                     new net.dv8tion.jda.api.interactions.commands.Command.Choice("TogetherJava",
-                            "TogetherJava"),
+                            "togetherjava"),
                     new net.dv8tion.jda.api.interactions.commands.Command.Choice("TurtyWurty",
-                            "TurtyWurty"),
+                            "turtywurty"),
                     new net.dv8tion.jda.api.interactions.commands.Command.Choice(
-                            "Yusuf's_Discord_bot", "Yusuf's_Discord_bot"));
+                            "Yusuf's_Discord_bot", "Yusuf'yusufsdiscordbot"));
 
 }

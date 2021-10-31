@@ -96,7 +96,7 @@ public class DiscordCommand implements Command {
     @Override
     public CommandData getCommandData() {
         return new CommandData(getName(), getDescription())
-            .addOptions(new OptionData(STRING, "Discord-server",
+            .addOptions(new OptionData(STRING, "discord-server",
                     "You will be provided with invite link for the server you requested")
                         .setRequired(true)
                         .addChoices(githubUsers));

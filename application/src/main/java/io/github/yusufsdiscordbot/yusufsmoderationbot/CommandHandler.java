@@ -42,9 +42,6 @@ import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.role.AddRol
 import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.role.RemoveRoleCommand;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
-import net.yusuf.bot.slash_commands.moderation.*;
-import net.yusuf.bot.slash_commands.normal_commands.*;
-import net.yusuf.bot.slash_commands.role.*;
 
 public class CommandHandler extends CoreSlashCommandHandler {
 

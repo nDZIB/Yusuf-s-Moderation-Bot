@@ -45,5 +45,3 @@
 rootProject.name = 'YusufIsmail_Discord_Bot_Java'
 
 include 'application'
-include 'database'
-include 'formatter'

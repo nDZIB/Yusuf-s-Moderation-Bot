@@ -48,6 +48,6 @@ dependencies {
     implementation group: 'io.github.cdimascio', name: 'dotenv-java', version: '2.2.0'
 }
 application {
-    mainClass = 'net.yusuf.bot.Bot'
+    mainClass = 'io.github.yusufsdiscordbot.yusufsmoderationbot.Bot'
 }
 compileJava.options.encoding = 'UTF-8'

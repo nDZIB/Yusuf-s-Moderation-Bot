@@ -40,7 +40,7 @@ plugins {
 }
 
 version 'v1-1.0.2'
-group 'net.yusuf'
+group 'io.github.yusufsdiscordbot'
 
 sourceCompatibility = JavaVersion.VERSION_17
 

@@ -51,7 +51,8 @@ import java.util.Objects;
 
 
 /**
- * @author yusuf
+ * Credits for Yusuf and great help from my other thorough my
+ * <a href="https://github.com/Together-Java/TJ-Bot/pull/196">pr</a> for tj bot
  */
 public class BanCommand implements Command {
     private static final String USER_OPTION = "user";

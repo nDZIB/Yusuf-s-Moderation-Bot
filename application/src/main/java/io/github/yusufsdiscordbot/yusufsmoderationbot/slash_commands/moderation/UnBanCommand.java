@@ -48,7 +48,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
-
+/**
+ * Credits for Yusuf and great help from my other thorough my
+ * <a href="https://github.com/Together-Java/TJ-Bot/pull/196">pr</a> for tj bot
+ */
 public class UnBanCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(UnBanCommand.class);
     private static final String USER_OPTION = "user";

@@ -37,6 +37,10 @@ import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Credits for Yusuf and great help from my other thorough my
+ * <a href="https://github.com/Together-Java/TJ-Bot/pull/196">pr</a> for tj bot
+ */
 public enum ModerationUtils {
     ;
 

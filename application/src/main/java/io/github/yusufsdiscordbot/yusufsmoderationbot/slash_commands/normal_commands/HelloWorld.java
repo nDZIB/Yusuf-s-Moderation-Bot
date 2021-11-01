@@ -100,10 +100,10 @@ public class HelloWorld implements Command {
 
         return new CommandData(getName(), getDescription()).addOptions(new OptionData(STRING,
                 "language", "which programming language you want hello world in").setRequired(true)
-                    .addChoices(discordSeversNames));
+                    .addChoices(helloWorld));
     }
 
-    public static final List<net.dv8tion.jda.api.interactions.commands.Command.Choice> discordSeversNames =
+    public static final List<net.dv8tion.jda.api.interactions.commands.Command.Choice> helloWorld =
             List.of(new Choice("Java", "java"), new Choice("Javascript", "javascript"),
                     new Choice("C#", "c#"), new Choice("C++", "c++"),
                     new Choice("Python", "python"), new Choice("Ruby", "ruby"),

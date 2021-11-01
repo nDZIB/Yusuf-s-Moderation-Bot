@@ -99,16 +99,16 @@ public class DiscordCommand implements Command {
             .addOptions(new OptionData(STRING, "discord-server",
                     "You will be provided with invite link for the server you requested")
                         .setRequired(true)
-                        .addChoices(githubUsers));
+                        .addChoices(discordServers));
     }
 
-    public static final List<net.dv8tion.jda.api.interactions.commands.Command.Choice> githubUsers =
+    public static final List<net.dv8tion.jda.api.interactions.commands.Command.Choice> discordServers =
             List.of(new net.dv8tion.jda.api.interactions.commands.Command.Choice("Cy4", "cy4"),
-                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("TogetherJava",
-                            "togetherjava"),
                     new net.dv8tion.jda.api.interactions.commands.Command.Choice("TurtyWurty",
                             "turtywurty"),
                     new net.dv8tion.jda.api.interactions.commands.Command.Choice(
-                            "Yusuf's_Discord_bot", "Yusuf'yusufsdiscordbot"));
+                            "Yusuf's_Discord_Bot", "yusufsdiscordbot"),
+                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("TogetherJava",
+                            "togetherjava"));
 
 }

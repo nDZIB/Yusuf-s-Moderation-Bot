@@ -104,13 +104,17 @@ public class GithubCommand implements Command {
     }
 
     public static final List<net.dv8tion.jda.api.interactions.commands.Command.Choice> githubUsers =
-            List.of(new net.dv8tion.jda.api.interactions.commands.Command.Choice("Dungeon_makers",
+            List.of(new net.dv8tion.jda.api.interactions.commands.Command.Choice("Cy4",
                     "dungeonmakers"),
-                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("forge", "forge"),
-                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("realyusufismail",
+                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("TurtyWurty",
+                            "forge"),
+                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("RealYusufIsmail",
                             "realyusufismail"),
-                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("Together-Java",
+                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("SilentChaos512",
+                            "silentchaos512"),
+                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("TogetherJava",
                             "togetherjava"),
-                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("Turtywurty",
+                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("TurtyWurty",
                             "turtywurty"));
+
 }

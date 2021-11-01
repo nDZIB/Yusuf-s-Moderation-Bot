@@ -40,14 +40,20 @@ import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 public class Support implements Command {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
-        event.reply(event.getOption("This is the discord support server").getAsString()).queue();
-        event.reply(event.getOption("https://discord.gg/hpY6s6mh3N").getAsString()).queue();
+        event
+            .reply(event
+                .getOption(
+                        "For support please vist this discord server https://discord.gg/hpY6s6mh3N")
+                .getAsString())
+            .queue();
     }
 
+    @Override
     public String getName() {
         return "support";
     }
 
+    @Override
     public String getDescription() {
         return "Provides Support";
     }
@@ -57,6 +63,7 @@ public class Support implements Command {
         return CommandVisibility.SERVER;
     }
 
+    @Override
     public CommandData getCommandData() {
         return new CommandData(getName(), getDescription());
     }

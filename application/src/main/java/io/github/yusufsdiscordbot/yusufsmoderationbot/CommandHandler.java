@@ -49,8 +49,8 @@ public class CommandHandler extends CoreSlashCommandHandler {
         super(jda, guild);
         addCommand(new HelloWorld());
         addCommand(new PingCommand());
-        // addCommand(new PasteCommand());
         addCommand(new HelpCommand());
+        addCommand(new UptimeCommand());
         addCommand(new Support());
         addCommand(new MemeCommand());
         addCommand(new JokeCommand());

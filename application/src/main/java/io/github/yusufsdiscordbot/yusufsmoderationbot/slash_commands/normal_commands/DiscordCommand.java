@@ -47,14 +47,14 @@ import java.util.Objects;
 import static net.dv8tion.jda.api.interactions.commands.OptionType.STRING;
 
 public class DiscordCommand implements Command {
+    private static final String COMMAND_OPTION_NAME = "discord-server";
+
     @Override
     public void onSlashCommand(SlashCommandEvent slashCommandEvent) {
         User sender = slashCommandEvent.getUser();
         EmbedBuilder builder = new EmbedBuilder();
 
-        final String discord = Objects
-            .requireNonNull(slashCommandEvent.getOption("Discord Server"), "Names is not provided")
-            .getAsString();
+        final String discord = slashCommandEvent.getOption(COMMAND_OPTION_NAME).getAsString();
         HashMap<String, String> dis = new HashMap<String, String>();
 
         dis.put("cy4", "https://discord.gg/j5tBQx7uny");
@@ -96,7 +96,7 @@ public class DiscordCommand implements Command {
     @Override
     public CommandData getCommandData() {
         return new CommandData(getName(), getDescription())
-            .addOptions(new OptionData(STRING, "discord-server",
+            .addOptions(new OptionData(STRING, COMMAND_OPTION_NAME,
                     "You will be provided with invite link for the server you requested")
                         .setRequired(true)
                         .addChoices(discordServers));

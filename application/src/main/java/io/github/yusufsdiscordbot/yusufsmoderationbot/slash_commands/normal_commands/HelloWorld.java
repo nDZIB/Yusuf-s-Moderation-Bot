@@ -47,12 +47,14 @@ import static net.dv8tion.jda.api.interactions.commands.OptionType.STRING;
 import static net.dv8tion.jda.api.interactions.commands.Command.Choice;
 
 public class HelloWorld implements Command {
+    private static final String COMMAND_OPTION_NAME = "language";
+
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         User sender = event.getUser();
         EmbedBuilder builder = new EmbedBuilder();
 
-        final String language = event.getOption("language").getAsString();
+        final String language = event.getOption("COMMAND_OPTION_NAME").getAsString();
         HashMap<String, String> langs = new HashMap<String, String>();
 
         langs.put("java", "System.out.println(\\\"Hello World\\\");");
@@ -98,9 +100,10 @@ public class HelloWorld implements Command {
     @Override
     public CommandData getCommandData() {
 
-        return new CommandData(getName(), getDescription()).addOptions(new OptionData(STRING,
-                "language", "which programming language you want hello world in").setRequired(true)
-                    .addChoices(helloWorld));
+        return new CommandData(getName(), getDescription())
+            .addOptions(new OptionData(STRING, COMMAND_OPTION_NAME,
+                    "which programming language you want hello world in").setRequired(true)
+                        .addChoices(helloWorld));
     }
 
     public static final List<net.dv8tion.jda.api.interactions.commands.Command.Choice> helloWorld =

@@ -47,14 +47,15 @@ import java.util.Objects;
 import static net.dv8tion.jda.api.interactions.commands.OptionType.STRING;
 
 public class GithubCommand implements Command {
+    private static final String COMMAND_OPTION_NAME = "github_user";
+
     @Override
     public void onSlashCommand(SlashCommandEvent slashCommandEvent) {
         User sender = slashCommandEvent.getUser();
         EmbedBuilder builder = new EmbedBuilder();
 
-        final String github = Objects
-            .requireNonNull(slashCommandEvent.getOption("Github link"), "Names is not provided")
-            .getAsString();
+        final String github = slashCommandEvent.getOption(COMMAND_OPTION_NAME).getAsString();
+
         HashMap<String, String> git = new HashMap<String, String>();
 
         git.put("dungeonmakers", "https://github.com/Dungeon-Maker");
@@ -98,18 +99,14 @@ public class GithubCommand implements Command {
     @Override
     public CommandData getCommandData() {
         return new CommandData(getName(), getDescription()).addOptions(
-                new OptionData(STRING, "github_user", "The Github link for the user you want")
+                new OptionData(STRING, COMMAND_OPTION_NAME, "The Github link for the user you want")
                     .setRequired(true)
                     .addChoices(githubUsers));
     }
 
     public static final List<net.dv8tion.jda.api.interactions.commands.Command.Choice> githubUsers =
-            List.of(new net.dv8tion.jda.api.interactions.commands.Command.Choice("Cy4",
-                    "dungeonmakers"),
-                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("TurtyWurty",
-                            "forge"),
-                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("RealYusufIsmail",
-                            "realyusufismail"),
+            List.of(new net.dv8tion.jda.api.interactions.commands.Command.Choice("RealYusufIsmail",
+                    "realyusufismail"),
                     new net.dv8tion.jda.api.interactions.commands.Command.Choice("SilentChaos512",
                             "silentchaos512"),
                     new net.dv8tion.jda.api.interactions.commands.Command.Choice("TogetherJava",

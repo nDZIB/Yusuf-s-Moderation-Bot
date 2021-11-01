@@ -49,21 +49,22 @@ public class AddRoleCommand implements Command {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         final Member member = event.getMember();
-        event.deferReply(true).queue();
-        InteractionHook hook = event.getHook();
-        hook.setEphemeral(true);
 
         Member target = event.getOption("user").getAsMember();
 
         if (!member.canInteract(target) || !member.hasPermission(Permission.MANAGE_ROLES)) {
-            hook.sendMessage("You are missing permission to add a role this member").queue();
+            event.reply("You are missing permission to add a role this member")
+                .setEphemeral(true)
+                .queue();
             return;
         }
 
         final Member selfMember = event.getGuild().getSelfMember();
 
         if (!selfMember.canInteract(target) || !selfMember.hasPermission(Permission.MANAGE_ROLES)) {
-            hook.sendMessage("I am missing permissions to add a role to that member").queue();
+            event.reply("I am missing permissions to add a role to that member")
+                .setEphemeral(true)
+                .queue();
             return;
         }
 
@@ -72,7 +73,7 @@ public class AddRoleCommand implements Command {
         event.getGuild()
             .addRoleToMember(target, role)
             .queue((__) -> event.reply("The role was given.").queue(),
-                    (error) -> hook.sendMessage("Could not give the role").queue());
+                    (error) -> event.reply("Could not give the role").setEphemeral(true).queue());
     }
 
     @Override

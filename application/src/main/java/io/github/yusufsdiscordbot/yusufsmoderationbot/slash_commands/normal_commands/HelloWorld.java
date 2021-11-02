@@ -54,7 +54,7 @@ public class HelloWorld implements Command {
         User sender = event.getUser();
         EmbedBuilder builder = new EmbedBuilder();
 
-        final String language = event.getOption("COMMAND_OPTION_NAME").getAsString();
+        final String language = event.getOption(COMMAND_OPTION_NAME).getAsString();
         HashMap<String, String> langs = new HashMap<String, String>();
 
         langs.put("java", "System.out.println(\\\"Hello World\\\");");

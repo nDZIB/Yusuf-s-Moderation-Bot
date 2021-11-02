@@ -1,15 +1,13 @@
+// Originally from https://github.com/Together-Java/TJ-Bot/pull/196, then modified by Yusuf
 /*
- * GNU GENERAL PUBLIC LICENSE
- *                        Version 3, 29 June 2007
+ * GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
  *
- *  Copyright (C) 2021 Free Software Foundation, Inc. <https://fsf.org/>
- *  Everyone is permitted to copy and distribute verbatim copies
- *  of this license document, but changing it is not allowed.
+ * Copyright (C) 2021 Free Software Foundation, Inc. <https://fsf.org/> Everyone is permitted to
+ * copy and distribute verbatim copies of this license document, but changing it is not allowed.
  *
- *                            Yusuf Arfan Ismail
+ * Yusuf Arfan Ismail
  *
- *   The GNU General Public License is a free, copyleft license for
- * software and other kinds of works.
+ * The GNU General Public License is a free, copyleft license for software and other kinds of works.
  */
 
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation;
@@ -20,13 +18,9 @@ import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Credits for Yusuf and great help from my other thorough my
- * <a href="https://github.com/Together-Java/TJ-Bot/pull/196">pr</a> for tj bot
- */
 public enum ModerationUtils {
     ;
-/**
+    /**
      * As stated in {@link Guild#ban(User, int, String)} <br>
      * The reason can be only 512 characters.
      */

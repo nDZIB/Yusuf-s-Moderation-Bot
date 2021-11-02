@@ -1,15 +1,13 @@
+// Originally from https://github.com/Together-Java/TJ-Bot/pull/196, then modified by Yusuf
 /*
- * GNU GENERAL PUBLIC LICENSE
- *                        Version 3, 29 June 2007
+ * GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
  *
- *  Copyright (C) 2021 Free Software Foundation, Inc. <https://fsf.org/>
- *  Everyone is permitted to copy and distribute verbatim copies
- *  of this license document, but changing it is not allowed.
+ * Copyright (C) 2021 Free Software Foundation, Inc. <https://fsf.org/> Everyone is permitted to
+ * copy and distribute verbatim copies of this license document, but changing it is not allowed.
  *
- *                            Yusuf Arfan Ismail
+ * Yusuf Arfan Ismail
  *
- *   The GNU General Public License is a free, copyleft license for
- * software and other kinds of works.
+ * The GNU General Public License is a free, copyleft license for software and other kinds of works.
  */
 
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation;
@@ -30,10 +28,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
-/**
- * Credits for Yusuf and great help from my other thorough my
- * <a href="https://github.com/Together-Java/TJ-Bot/pull/196">pr</a> for tj bot
- */
 public class UnBanCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(UnBanCommand.class);
     private static final String USER_OPTION = "user";

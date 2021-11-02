@@ -1,15 +1,13 @@
+// Originally from https://github.com/Together-Java/TJ-Bot/pull/196, then modified by Yusuf
 /*
- * GNU GENERAL PUBLIC LICENSE
- *                        Version 3, 29 June 2007
+ * GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
  *
- *  Copyright (C) 2021 Free Software Foundation, Inc. <https://fsf.org/>
- *  Everyone is permitted to copy and distribute verbatim copies
- *  of this license document, but changing it is not allowed.
+ * Copyright (C) 2021 Free Software Foundation, Inc. <https://fsf.org/> Everyone is permitted to
+ * copy and distribute verbatim copies of this license document, but changing it is not allowed.
  *
- *                            Yusuf Arfan Ismail
+ * Yusuf Arfan Ismail
  *
- *   The GNU General Public License is a free, copyleft license for
- * software and other kinds of works.
+ * The GNU General Public License is a free, copyleft license for software and other kinds of works.
  */
 
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation;
@@ -19,6 +17,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
@@ -28,10 +27,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
-/**
- * Credits for Yusuf and great help from my other thorough my
- * <a href="https://github.com/Together-Java/TJ-Bot/pull/196">pr</a> for tj bot
- */
 public class KickCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(KickCommand.class);
     private static final String USER_OPTION = "user";
@@ -39,7 +34,7 @@ public class KickCommand implements Command {
 
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
-         OptionMapping userOption =
+        OptionMapping userOption =
                 Objects.requireNonNull(event.getOption(USER_OPTION), "The target is null");
         Member target = userOption.getAsMember();
         Member author = Objects.requireNonNull(event.getMember(), "The author is null");
@@ -113,7 +108,7 @@ public class KickCommand implements Command {
                 author.getUser().getAsTag(), author.getIdLong(), target.getUser().getAsTag(),
                 target.getUser().getId(), reason);
     }
-    
+
     @Override
     public String getName() {
         return "kick";

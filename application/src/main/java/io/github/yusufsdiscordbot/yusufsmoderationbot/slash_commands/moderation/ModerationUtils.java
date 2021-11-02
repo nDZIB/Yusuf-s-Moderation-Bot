@@ -26,30 +26,28 @@ import org.jetbrains.annotations.NotNull;
  */
 public enum ModerationUtils {
     ;
-
-    /**
+/**
      * As stated in {@link Guild#ban(User, int, String)} <br>
      * The reason can be only 512 characters.
      */
     private static final int REASON_MAX_LENGTH = 512;
 
-    @Contract(value = " -> fail", pure = true)
-    ModerationUtils() {
-        throw new UnsupportedOperationException(
-                "The Moderation Utility class has run into an error");
-    }
-
     /**
-     * The Boolean reasonLimit will check if the reason is above the provided limit. <br>
-     * <br>
-     * If it is it will throw an error and will tell the user that the reason can not be over the
-     * {@link ModerationUtils#REASON_MAX_LENGTH} <br>
-     * If the reason is under the limit it will pass and will allow the command to continue.
+     * This boolean checks if the reason that the user has entered violates the max character length
+     * or not. <br>
+     * If it does the bot will tell the user has violated the mex character length and will
+     * terminate the command <br>
+     * If it does bot the bot will be allowed to continue running the command.
+     * 
+     * @param reason the reason of the action such as banning.
+     * @throws IllegalArgumentException if the reason is over 512 characters.
+     *
      */
     public static boolean handleReason(@NotNull String reason, @NotNull SlashCommandEvent event) {
         if (reason.length() <= REASON_MAX_LENGTH) {
             return true;
         }
+
         event.reply("The reason can not be over " + REASON_MAX_LENGTH + " characters")
             .setEphemeral(true)
             .queue();

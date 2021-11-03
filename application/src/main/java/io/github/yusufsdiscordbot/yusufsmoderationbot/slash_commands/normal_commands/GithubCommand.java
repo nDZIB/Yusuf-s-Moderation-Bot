@@ -12,7 +12,9 @@
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.normal_commands;
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandConnector;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
@@ -25,15 +27,38 @@ import java.util.Objects;
 
 import static net.dv8tion.jda.api.interactions.commands.OptionType.STRING;
 
-public class GithubCommand implements Command {
+public class GithubCommand extends CommandConnector {
     private static final String COMMAND_OPTION_NAME = "github_user";
 
+    /**
+     * Were the command is registered.
+     */
+    public GithubCommand() {
+        super("github", "Use this account to get Github users/org links", CommandVisibility.SERVER);
+
+        getCommandData()
+                .addOptions(
+                        new OptionData(STRING, COMMAND_OPTION_NAME, "The Github link for the user you want")
+                                .setRequired(true)
+                                .addChoices(githubUsers));
+    }
+
+    public static final List<net.dv8tion.jda.api.interactions.commands.Command.Choice> githubUsers =
+            List.of(new net.dv8tion.jda.api.interactions.commands.Command.Choice("RealYusufIsmail",
+                            "realyusufismail"),
+                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("SilentChaos512",
+                            "silentchaos512"),
+                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("TogetherJava",
+                            "togetherjava"),
+                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("TurtyWurty",
+                            "turtywurty"));
+
     @Override
-    public void onSlashCommand(SlashCommandEvent slashCommandEvent) {
-        User sender = slashCommandEvent.getUser();
+    public void onSlashCommand(YusufSlashCommandEvent yusufSlashCommandEvent) {
+        User sender = yusufSlashCommandEvent.getEvent().getUser();
         EmbedBuilder builder = new EmbedBuilder();
 
-        final String github = slashCommandEvent.getOption(COMMAND_OPTION_NAME).getAsString();
+        final String github = yusufSlashCommandEvent.getOption(COMMAND_OPTION_NAME).getAsString();
 
         HashMap<String, String> git = new HashMap<String, String>();
 
@@ -44,7 +69,7 @@ public class GithubCommand implements Command {
         git.put("togetherjava", "https://github.com/Together-Java");
         git.put("turtywurty", "https://github.com/DaRealTurtyWurty");
 
-        builder.setAuthor("Made by " + slashCommandEvent.getMember().getEffectiveName(), null,
+        builder.setAuthor("Made by " + yusufSlashCommandEvent.getMember().getName(), null,
                 sender.getEffectiveAvatarUrl());
         builder.setTitle("Github org/users");
         builder.setDescription("Github org/repo" + git);
@@ -53,44 +78,10 @@ public class GithubCommand implements Command {
         if (git.containsKey(github)) {
             builder.setDescription(git.get(github));
         } else {
-            slashCommandEvent.reply("Could not find the Github org/user").queue();
+            yusufSlashCommandEvent.replyMessage("Could not find the Github org/user");
             return;
         }
 
-        slashCommandEvent.replyEmbeds(builder.build()).queue();
+        yusufSlashCommandEvent.replyEmbed(builder.build());
     }
-
-    @Override
-    public String getName() {
-        return "github";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Use this account to get Github users/org links";
-    }
-
-    @Override
-    public CommandVisibility getVisibility() {
-        return CommandVisibility.SERVER;
-    }
-
-    @Override
-    public CommandData getCommandData() {
-        return new CommandData(getName(), getDescription()).addOptions(
-                new OptionData(STRING, COMMAND_OPTION_NAME, "The Github link for the user you want")
-                    .setRequired(true)
-                    .addChoices(githubUsers));
-    }
-
-    public static final List<net.dv8tion.jda.api.interactions.commands.Command.Choice> githubUsers =
-            List.of(new net.dv8tion.jda.api.interactions.commands.Command.Choice("RealYusufIsmail",
-                    "realyusufismail"),
-                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("SilentChaos512",
-                            "silentchaos512"),
-                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("TogetherJava",
-                            "togetherjava"),
-                    new net.dv8tion.jda.api.interactions.commands.Command.Choice("TurtyWurty",
-                            "turtywurty"));
-
 }

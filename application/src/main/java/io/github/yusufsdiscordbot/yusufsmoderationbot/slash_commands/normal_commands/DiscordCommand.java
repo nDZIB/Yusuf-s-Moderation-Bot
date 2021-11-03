@@ -12,7 +12,9 @@
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.normal_commands;
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandConnector;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
@@ -25,58 +27,19 @@ import java.util.Objects;
 
 import static net.dv8tion.jda.api.interactions.commands.OptionType.STRING;
 
-public class DiscordCommand implements Command {
+public class DiscordCommand extends CommandConnector {
     private static final String COMMAND_OPTION_NAME = "discord-server";
 
-    @Override
-    public void onSlashCommand(SlashCommandEvent slashCommandEvent) {
-        User sender = slashCommandEvent.getUser();
-        EmbedBuilder builder = new EmbedBuilder();
+    /**
+     * Were the command is registered.
+     *
+     */
+    public DiscordCommand() {
+        super("discord", "Provides a Discord server link", CommandVisibility.SERVER);
 
-        final String discord = slashCommandEvent.getOption(COMMAND_OPTION_NAME).getAsString();
-        HashMap<String, String> dis = new HashMap<String, String>();
-
-        dis.put("cy4", "https://discord.gg/j5tBQx7uny");
-        dis.put("turtywurty", "https://discord.gg/BxD5JukyQs");
-        dis.put("yusufsdiscordbot", "https://discord.gg/hpY6s6mh3N");
-        dis.put("togetherjava", "https://discord.gg/GzvQjhv");
-
-        builder.setAuthor("Made by " + slashCommandEvent.getMember().getEffectiveName(), null,
-                sender.getEffectiveAvatarUrl());
-        builder.setTitle("Discord server");
-        builder.setDescription("The Discord server" + dis);
-        builder.setColor(0x34d8eb);
-
-        if (dis.containsKey(discord)) {
-            builder.setDescription(dis.get(discord));
-        } else {
-            slashCommandEvent.reply("Could not find the Discord server").queue();
-            return;
-        }
-
-        slashCommandEvent.replyEmbeds(builder.build()).queue();
-    }
-
-    @Override
-    public String getName() {
-        return "discord";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Provides a Discord server link";
-    }
-
-    @Override
-    public CommandVisibility getVisibility() {
-        return CommandVisibility.SERVER;
-    }
-
-    @Override
-    public CommandData getCommandData() {
-        return new CommandData(getName(), getDescription())
-            .addOptions(new OptionData(STRING, COMMAND_OPTION_NAME,
-                    "You will be provided with invite link for the server you requested")
+        getCommandData()
+                .addOptions(new OptionData(STRING, COMMAND_OPTION_NAME,
+                        "You will be provided with invite link for the server you requested")
                         .setRequired(true)
                         .addChoices(discordServers));
     }
@@ -90,4 +53,32 @@ public class DiscordCommand implements Command {
                     new net.dv8tion.jda.api.interactions.commands.Command.Choice("TogetherJava",
                             "togetherjava"));
 
+    @Override
+    public void onSlashCommand(YusufSlashCommandEvent yusufSlashCommandEvent) {
+        User sender = yusufSlashCommandEvent.getMember().getUser();
+        EmbedBuilder builder = new EmbedBuilder();
+
+        final String discord = yusufSlashCommandEvent.getEvent().getOption(COMMAND_OPTION_NAME).getAsString();
+        HashMap<String, String> dis = new HashMap<String, String>();
+
+        dis.put("cy4", "https://discord.gg/j5tBQx7uny");
+        dis.put("turtywurty", "https://discord.gg/BxD5JukyQs");
+        dis.put("yusufsdiscordbot", "https://discord.gg/hpY6s6mh3N");
+        dis.put("togetherjava", "https://discord.gg/GzvQjhv");
+
+        builder.setAuthor("Made by " + yusufSlashCommandEvent.getMember().getName(), null,
+                sender.getEffectiveAvatarUrl());
+        builder.setTitle("Discord server");
+        builder.setDescription("The Discord server" + dis);
+        builder.setColor(0x34d8eb);
+
+        if (dis.containsKey(discord)) {
+            builder.setDescription(dis.get(discord));
+        } else {
+            yusufSlashCommandEvent.replyEphemeralMessage("Could not find the Discord server");
+            return;
+        }
+
+        yusufSlashCommandEvent.replyEmbed(builder.build());
+    }
 }

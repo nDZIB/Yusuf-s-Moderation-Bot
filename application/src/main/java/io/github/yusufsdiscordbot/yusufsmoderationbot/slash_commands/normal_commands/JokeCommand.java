@@ -24,7 +24,14 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 
 public class JokeCommand extends CommandConnector {
-    
+
+    /**
+     * Were the command is registered.
+     */
+    public JokeCommand() {
+        super("joke", "Shows you a random joke", CommandVisibility.SERVER);
+    }
+
     @Override
     public void onSlashCommand(YusufSlashCommandEvent event) {
         final TextChannel channel = event.getEvent().getTextChannel();
@@ -48,25 +55,4 @@ public class JokeCommand extends CommandConnector {
             event.replyEmbed(embed.build());
         });
     }
-
-    @Override
-    public String getName() {
-        return "joke";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Shows you a random joke";
-    }
-
-    @Override
-    public CommandVisibility getVisibility() {
-        return CommandVisibility.SERVER;
-    }
-
-    @Override
-    public CommandData getCommandData() {
-        return new CommandData(getName(), getDescription());
-    }
-
 }

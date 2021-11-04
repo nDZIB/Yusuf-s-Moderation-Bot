@@ -12,16 +12,12 @@
 
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation;
 
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.*;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -29,31 +25,37 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
-public class UnBanCommand implements Command {
+
+public class UnBanCommand extends CommandConnector {
     private static final Logger logger = LoggerFactory.getLogger(UnBanCommand.class);
     private static final String USER_OPTION = "user";
     private static final String REASON_OPTION = "reason";
+
+    public UnBanCommand() {
+        super("unban", "Unbans a user", CommandVisibility.SERVER);
+
+        getCommandData()
+                .addOption(OptionType.USER, USER_OPTION, "The user who you want to unban", true)
+                .addOption(OptionType.STRING, REASON_OPTION, "Why the user should be unbanned", true);
+    }
 
     @Override
     public void onSlashCommand(YusufSlashCommandEvent event) {
         User targetUser = Objects.requireNonNull(event.getOption(USER_OPTION), "The member is null")
             .getAsUser();
 
+        Member author = event.getMember().getAuthor();
 
         if (!author.hasPermission(Permission.BAN_MEMBERS)) {
-            event.reply(
-                    "You can not unban users in this guild since you do not have the BAN_MEMBERS permission.")
-                .setEphemeral(true)
-                .queue();
+            event.replyEphemeralMessage(
+                    "You can not unban users in this guild since you do not have the BAN_MEMBERS permission.");
             return;
         }
 
-        Member bot = Objects.requireNonNull(event.getGuild(), "The Bot is null").getSelfMember();
+        Member bot = Objects.requireNonNull(event.getGuild(), "The Bot is null").getBot();
         if (!bot.hasPermission(Permission.BAN_MEMBERS)) {
-            event.reply(
-                    "I can not unban users in this guild since I do not have the BAN_MEMBERS permission.")
-                .setEphemeral(true)
-                .queue();
+            event.replyEphemeralMessage(
+                    "I can not unban users in this guild since I do not have the BAN_MEMBERS permission.");
 
             logger.error("The bot does not have BAN_MEMBERS permission on the server '{}' ",
                     Objects.requireNonNull(event.getGuild()).getName());
@@ -71,11 +73,10 @@ public class UnBanCommand implements Command {
 
     private static void unban(@NotNull User targetUser, @NotNull String reason,
             @NotNull Member author, @NotNull YusufSlashCommandEvent event) {
-        event.getGuild().unban(targetUser).reason(reason).queue(v -> {
+        event.getGuild().unBan(targetUser).reason(reason).queue(v -> {
             event
-                .reply("The user " + author.getUser().getAsTag() + " unbanned the user "
-                        + targetUser.getAsTag() + " for: " + reason)
-                .queue();
+                .replyMessage("The user " + author.getUser().getAsTag() + " unbanned the user "
+                        + targetUser.getAsTag() + " for: " + reason);
 
             logger.info(" {} ({}) unbanned the user '{}' for: '{}'", author.getUser().getAsTag(),
                     author.getIdLong(), targetUser.getAsTag(), reason);
@@ -83,40 +84,17 @@ public class UnBanCommand implements Command {
             if (throwable instanceof ErrorResponseException errorResponseException
                     && errorResponseException.getErrorResponse() == ErrorResponse.UNKNOWN_USER) {
 
-                event.reply("The specified user doesn't exist").setEphemeral(true).queue();
+                event.replyEphemeralMessage("The specified user doesn't exist");
 
                 logger.debug("I could not unban the user '{}' because they do not exist",
                         targetUser.getAsTag());
             } else {
-                event.reply("Sorry, but something went wrong.").setEphemeral(true).queue();
+                event.replyEphemeralMessage("Sorry, but something went wrong.");
 
                 logger.warn("Something went wrong during the process of unbanning the user ",
                         throwable);
             }
         });
-    }
-
-    @Override
-    public String getName() {
-        return "unban";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Unban a user";
-    }
-
-    @Override
-    public CommandVisibility getVisibility() {
-        return CommandVisibility.SERVER;
-    }
-
-    @Override
-    public CommandData getCommandData() {
-        return new CommandData(getName(), getDescription())
-            .addOption(OptionType.USER, USER_OPTION, "The user who you want to unban", true)
-            .addOption(OptionType.STRING, REASON_OPTION, "Why the user should be unbanned", true);
-
     }
 }
 

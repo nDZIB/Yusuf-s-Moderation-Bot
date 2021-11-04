@@ -15,7 +15,6 @@ package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 public enum ModerationUtils {

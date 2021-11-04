@@ -11,6 +11,7 @@
 
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation;
 
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.ISnowflake;
@@ -19,7 +20,6 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

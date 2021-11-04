@@ -11,6 +11,7 @@
 
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation;
 
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -19,10 +20,9 @@ import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 
-
-import static net.dv8tion.jda.api.interactions.commands.OptionType.*;
+import static net.dv8tion.jda.api.interactions.commands.OptionType.STRING;
+import static net.dv8tion.jda.api.interactions.commands.OptionType.USER;
 
 public class WarnCommand implements Command {
     @Override

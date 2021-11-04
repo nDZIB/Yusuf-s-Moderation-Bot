@@ -11,13 +11,13 @@
 
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.role;
 
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.*;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandConnector;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufMember;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.interactions.InteractionHook;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import static net.dv8tion.jda.api.interactions.commands.OptionType.ROLE;

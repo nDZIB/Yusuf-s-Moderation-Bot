@@ -37,11 +37,10 @@ public class DiscordCommand extends CommandConnector {
     public DiscordCommand() {
         super("discord", "Provides a Discord server link", CommandVisibility.SERVER);
 
-        getCommandData()
-                .addOptions(new OptionData(STRING, COMMAND_OPTION_NAME,
-                        "You will be provided with invite link for the server you requested")
-                        .setRequired(true)
-                        .addChoices(discordServers));
+        getCommandData().addOptions(new OptionData(STRING, COMMAND_OPTION_NAME,
+                "You will be provided with invite link for the server you requested")
+                    .setRequired(true)
+                    .addChoices(discordServers));
     }
 
     public static final List<net.dv8tion.jda.api.interactions.commands.Command.Choice> discordServers =
@@ -55,10 +54,10 @@ public class DiscordCommand extends CommandConnector {
 
     @Override
     public void onSlashCommand(YusufSlashCommandEvent yusufSlashCommandEvent) {
-        User sender = yusufSlashCommandEvent.getMember().getUser();
+        User sender = yusufSlashCommandEvent.getUser().getUser();
         EmbedBuilder builder = new EmbedBuilder();
 
-        final String discord = yusufSlashCommandEvent.getEvent().getOption(COMMAND_OPTION_NAME).getAsString();
+        final String discord = yusufSlashCommandEvent.getOption(COMMAND_OPTION_NAME).getAsString();
         HashMap<String, String> dis = new HashMap<String, String>();
 
         dis.put("cy4", "https://discord.gg/j5tBQx7uny");
@@ -66,7 +65,7 @@ public class DiscordCommand extends CommandConnector {
         dis.put("yusufsdiscordbot", "https://discord.gg/hpY6s6mh3N");
         dis.put("togetherjava", "https://discord.gg/GzvQjhv");
 
-        builder.setAuthor("Made by " + yusufSlashCommandEvent.getMember().getName(), null,
+        builder.setAuthor("Made by " + yusufSlashCommandEvent.getName(), null,
                 sender.getEffectiveAvatarUrl());
         builder.setTitle("Discord server");
         builder.setDescription("The Discord server" + dis);

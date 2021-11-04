@@ -30,23 +30,23 @@ public class BotInfoCommand extends CommandConnector {
     public void onSlashCommand(YusufSlashCommandEvent yusufSlashCommandEvent) {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setTitle(yusufSlashCommandEvent.getGuild().getBot().getEffectiveName() + " Info")
-                .setDescription(
-                        """
-                                Running on Yusuf's Moderation bot V2-1.0.2
-                                Developer:
-                                • [RealYusufIsmail](https://github.com/RealYusufIsmail)
-                                Runtime-Environment:
-                                Gradle 7.3
-                                Java 17
-                                Library's:
-                                [JDA](https://github.com/Javacord/Javacord)
-                                [YusufIsmail's Discord core](https://github.com/YusufsDiscordbot/YusufIsmails-Discord-core)
-                                Bots repo and org:
-                                [Yusuf's moderation bot](https://github.com/YusufsDiscordbot/Yusuf-s-Moderation-Bot)
-                                [Yusuf's Discord bot](https://github.com/YusufsDiscordbot)
-                                """)
-                .setFooter("Made by Yusuf's Discord bot")
-                .setColor(Color.CYAN);
+            .setDescription(
+                    """
+                            Running on Yusuf's Moderation bot V2-1.0.2
+                            Developer:
+                            • [RealYusufIsmail](https://github.com/RealYusufIsmail)
+                            Runtime-Environment:
+                            Gradle 7.3
+                            Java 17
+                            Library's:
+                            [JDA](https://github.com/Javacord/Javacord)
+                            [YusufIsmail's Discord core](https://github.com/YusufsDiscordbot/YusufIsmails-Discord-core)
+                            Bots repo and org:
+                            [Yusuf's moderation bot](https://github.com/YusufsDiscordbot/Yusuf-s-Moderation-Bot)
+                            [Yusuf's Discord bot](https://github.com/YusufsDiscordbot)
+                            """)
+            .setFooter("Made by Yusuf's Discord bot")
+            .setColor(Color.CYAN);
 
         yusufSlashCommandEvent.replyEmbed(builder.build());
 

@@ -36,16 +36,15 @@ public class GithubCommand extends CommandConnector {
     public GithubCommand() {
         super("github", "Use this account to get Github users/org links", CommandVisibility.SERVER);
 
-        getCommandData()
-                .addOptions(
-                        new OptionData(STRING, COMMAND_OPTION_NAME, "The Github link for the user you want")
-                                .setRequired(true)
-                                .addChoices(githubUsers));
+        getCommandData().addOptions(
+                new OptionData(STRING, COMMAND_OPTION_NAME, "The Github link for the user you want")
+                    .setRequired(true)
+                    .addChoices(githubUsers));
     }
 
     public static final List<net.dv8tion.jda.api.interactions.commands.Command.Choice> githubUsers =
             List.of(new net.dv8tion.jda.api.interactions.commands.Command.Choice("RealYusufIsmail",
-                            "realyusufismail"),
+                    "realyusufismail"),
                     new net.dv8tion.jda.api.interactions.commands.Command.Choice("SilentChaos512",
                             "silentchaos512"),
                     new net.dv8tion.jda.api.interactions.commands.Command.Choice("TogetherJava",

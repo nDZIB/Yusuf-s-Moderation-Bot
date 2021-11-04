@@ -12,7 +12,9 @@
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.normal_commands;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandConnector;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import me.duncte123.botcommons.web.WebUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -21,10 +23,11 @@ import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 
-public class JokeCommand implements Command {
+public class JokeCommand extends CommandConnector {
+    
     @Override
-    public void onSlashCommand(SlashCommandEvent event) {
-        final TextChannel channel = event.getTextChannel();
+    public void onSlashCommand(YusufSlashCommandEvent event) {
+        final TextChannel channel = event.getEvent().getTextChannel();
 
         WebUtils.ins.getJSONObject("https://apis.duncte123.me/joke").async((json) -> {
             if (!json.get("success").asBoolean()) {
@@ -42,7 +45,7 @@ public class JokeCommand implements Command {
                     EmbedUtils.getDefaultEmbed().setTitle(title, url).setDescription(body);
 
 
-            event.replyEmbeds(embed.build()).queue();
+            event.replyEmbed(embed.build());
         });
     }
 

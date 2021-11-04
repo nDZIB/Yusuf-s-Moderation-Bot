@@ -11,13 +11,10 @@
 
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.normal_commands;
 
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandConnector;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 
 import java.awt.*;
 

@@ -11,56 +11,21 @@
 
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.normal_commands;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandConnector;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
-import me.duncte123.botcommons.messaging.EmbedUtils;
-import me.duncte123.botcommons.web.WebUtils;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
 
-public class MemeCommand implements Command {
-    @Override
-    public void onSlashCommand(SlashCommandEvent event) {
-        final TextChannel channel = event.getTextChannel();
+public class MemeCommand extends CommandConnector {
 
-        WebUtils.ins.getJSONObject("https://apis.duncte123.me/meme").async((json) -> {
-            if (!json.get("success").asBoolean()) {
-                channel.sendMessage("Something went wrong, try again later").queue();
-                System.out.println(json);
-                return;
-            }
-
-            final JsonNode data = json.get("data");
-            final String title = data.get("title").asText();
-            final String url = data.get("url").asText();
-            final String image = data.get("image").asText();
-            final EmbedBuilder embed = EmbedUtils.embedImageWithTitle(title, url, image);
-
-            event.replyEmbeds(embed.build()).queue();
-        });
+    /**
+     * Were the command is registered.
+     */
+    public MemeCommand() {
+        super("meme", "Shows you a random meme", CommandVisibility.SERVER);
     }
 
     @Override
-    public String getName() {
-        return "meme";
+    public void onSlashCommand(YusufSlashCommandEvent event) {
+        NormalUtils.Success("https://apis.duncte123.me/meme", event, true);
     }
-
-    @Override
-    public String getDescription() {
-        return "Shows you a random meme";
-    }
-
-    @Override
-    public CommandVisibility getVisibility() {
-        return CommandVisibility.SERVER;
-    }
-
-    @Override
-    public CommandData getCommandData() {
-        return new CommandData(getName(), getDescription());
-    }
-
 }

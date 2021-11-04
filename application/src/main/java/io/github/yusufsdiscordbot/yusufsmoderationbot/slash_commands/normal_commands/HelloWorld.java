@@ -16,16 +16,13 @@ import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVis
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 
 import java.util.HashMap;
 import java.util.List;
 
-import static net.dv8tion.jda.api.interactions.commands.OptionType.STRING;
 import static net.dv8tion.jda.api.interactions.commands.Command.Choice;
+import static net.dv8tion.jda.api.interactions.commands.OptionType.STRING;
 
 public class HelloWorld extends CommandConnector {
     private static final String COMMAND_OPTION_NAME = "language";

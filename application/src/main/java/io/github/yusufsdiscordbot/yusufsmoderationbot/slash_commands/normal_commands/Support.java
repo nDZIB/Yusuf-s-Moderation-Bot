@@ -11,39 +11,27 @@
 
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.normal_commands;
 
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandConnector;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
 
-public class Support implements Command {
+public class Support extends CommandConnector {
+
+    /**
+     * Were the command is registered.
+     */
+    public Support() {
+        super("support", "Provides Support", CommandVisibility.SERVER);
+    }
+
+    /**
+     * The command.
+     *
+     * @param event The event.
+     */
     @Override
-    public void onSlashCommand(SlashCommandEvent event) {
+    public void onSlashCommand(YusufSlashCommandEvent event) {
         event
-            .reply(event
-                .getOption(
-                        "For support please vist this discord server https://discord.gg/hpY6s6mh3N")
-                .getAsString())
-            .queue();
-    }
-
-    @Override
-    public String getName() {
-        return "support";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Provides Support";
-    }
-
-    @Override
-    public CommandVisibility getVisibility() {
-        return CommandVisibility.SERVER;
-    }
-
-    @Override
-    public CommandData getCommandData() {
-        return new CommandData(getName(), getDescription());
+            .replyMessage("For support please visit this discord server " + " https://discord.gg/hpY6s6mh3N");
     }
 }

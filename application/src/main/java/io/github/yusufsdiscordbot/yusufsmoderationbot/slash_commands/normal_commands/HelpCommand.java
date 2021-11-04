@@ -16,9 +16,6 @@ import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVis
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 
 import java.util.Objects;
 
@@ -36,8 +33,8 @@ public class HelpCommand extends CommandConnector {
     public void onSlashCommand(YusufSlashCommandEvent event) {
         EmbedBuilder builder = new EmbedBuilder();
         User sender = event.getUser().getUser();
-        builder.setAuthor("Made by " + Objects.requireNonNull(event.getMember()).getName(),
-                null, sender.getEffectiveAvatarUrl());
+        builder.setAuthor("Made by " + Objects.requireNonNull(event.getMember()).getName(), null,
+                sender.getEffectiveAvatarUrl());
         builder.setTitle("Help");
         builder.setDescription("Support can be found by typing /support");
         builder.setColor(0x34d8eb);

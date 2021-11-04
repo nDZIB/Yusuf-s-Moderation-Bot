@@ -11,19 +11,15 @@
 
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.normal_commands;
 
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandConnector;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 import static net.dv8tion.jda.api.interactions.commands.OptionType.STRING;
 

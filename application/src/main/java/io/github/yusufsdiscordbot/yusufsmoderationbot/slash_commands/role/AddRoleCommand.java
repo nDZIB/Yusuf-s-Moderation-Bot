@@ -11,7 +11,7 @@
 
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.role;
 
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.*;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -19,15 +19,14 @@ import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 
 import static net.dv8tion.jda.api.interactions.commands.OptionType.ROLE;
 import static net.dv8tion.jda.api.interactions.commands.OptionType.USER;
 
-public class AddRoleCommand implements Command {
+public class AddRoleCommand extends CommandConnector {
     @Override
-    public void onSlashCommand(SlashCommandEvent event) {
-        final Member member = event.getMember();
+    public void onSlashCommand(YusufSlashCommandEvent event) {
+        final YusufMember member = event.getMember();
 
         Member target = event.getOption("user").getAsMember();
 

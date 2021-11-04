@@ -24,25 +24,34 @@ import static net.dv8tion.jda.api.interactions.commands.OptionType.ROLE;
 import static net.dv8tion.jda.api.interactions.commands.OptionType.USER;
 
 public class AddRoleCommand extends CommandConnector {
+    /**
+     * Were the command is registered.
+     */
+    public AddRoleCommand() {
+        super("add_role", "add a role to the given user", CommandVisibility.SERVER);
+
+        getCommandData()
+                .addOptions(new OptionData(USER, RoleCommandUtil.USER, "The user which you want to give the role to.")
+                        .setRequired(true))
+                .addOptions(new OptionData(ROLE, "role", "The role which you want to give")
+                        .setRequired(true));
+    }
+
     @Override
     public void onSlashCommand(YusufSlashCommandEvent event) {
         final YusufMember member = event.getMember();
 
-        Member target = event.getOption("user").getAsMember();
+        Member target = event.getOption(RoleCommandUtil.USER).getAsMember();
 
         if (!member.canInteract(target) || !member.hasPermission(Permission.MANAGE_ROLES)) {
-            event.reply("You are missing permission to add a role this member")
-                .setEphemeral(true)
-                .queue();
+            event.replyEphemeralMessage("You are missing permission to add a role this member");
             return;
         }
 
-        final Member selfMember = event.getGuild().getSelfMember();
+        final Member selfMember = event.getGuild().getBot();
 
         if (!selfMember.canInteract(target) || !selfMember.hasPermission(Permission.MANAGE_ROLES)) {
-            event.reply("I am missing permissions to add a role to that member")
-                .setEphemeral(true)
-                .queue();
+            event.replyEphemeralMessage("I am missing permissions to add a role to that member");
             return;
         }
 
@@ -50,31 +59,7 @@ public class AddRoleCommand extends CommandConnector {
 
         event.getGuild()
             .addRoleToMember(target, role)
-            .queue((__) -> event.reply("The role was given.").queue(),
-                    (error) -> event.reply("Could not give the role").setEphemeral(true).queue());
-    }
-
-    @Override
-    public String getName() {
-        return "give_role";
-    }
-
-    @Override
-    public String getDescription() {
-        return "gives a role";
-    }
-
-    @Override
-    public CommandVisibility getVisibility() {
-        return CommandVisibility.SERVER;
-    }
-
-    @Override
-    public CommandData getCommandData() {
-        return new CommandData(getName(), getDescription())
-            .addOptions(new OptionData(USER, "user", "The user which you want to give the role to.")
-                .setRequired(true))
-            .addOptions(new OptionData(ROLE, "role", "The role which you want to give")
-                .setRequired(true));
+            .queue((__) -> event.replyMessage("The role was given."),
+                    (error) -> event.replyEphemeralMessage("Could not give the role"));
     }
 }

@@ -11,7 +11,7 @@
 
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.role;
 
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.*;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -19,31 +19,36 @@ import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 
 import static net.dv8tion.jda.api.interactions.commands.OptionType.ROLE;
 import static net.dv8tion.jda.api.interactions.commands.OptionType.USER;
 
-public class RemoveRoleCommand implements Command {
-    @Override
-    public void onSlashCommand(SlashCommandEvent event) {
-        final Member member = event.getMember();
+public class RemoveRoleCommand extends CommandConnector {
 
-        Member target = event.getOption("user").getAsMember();
+    public RemoveRoleCommand() {
+        super("remove_role", "removes a role to the given user", CommandVisibility.SERVER);
+
+        getCommandData()
+                .addOptions(new OptionData(USER, RoleCommandUtil.USER, "The user which you want to remove the role from.")
+                        .setRequired(true))
+                .addOptions(new OptionData(ROLE, "role", "The role which you want to give")
+                        .setRequired(true));
+    }
+    @Override
+    public void onSlashCommand(YusufSlashCommandEvent event) {
+        final YusufMember member = event.getMember();
+
+        Member target = event.getOption(RoleCommandUtil.USER).getAsMember();
 
         if (!member.canInteract(target) || !member.hasPermission(Permission.MANAGE_ROLES)) {
-            event.reply("You are missing permission to add a role this member")
-                .setEphemeral(true)
-                .queue();
+            event.replyMessage("You are missing permission to add a role this member");
             return;
         }
 
-        final Member selfMember = event.getGuild().getSelfMember();
+        final Member selfMember = event.getGuild().getBot();
 
         if (!selfMember.canInteract(target) || !selfMember.hasPermission(Permission.MANAGE_ROLES)) {
-            event.reply("I am missing permissions to add a role to that member")
-                .setEphemeral(true)
-                .queue();
+            event.replyMessage("I am missing permissions to add a role to that member");
             return;
         }
 
@@ -51,32 +56,7 @@ public class RemoveRoleCommand implements Command {
 
         event.getGuild()
             .removeRoleFromMember(target, role)
-            .queue((__) -> event.reply("The role was remove.").queue(),
-                    (error) -> event.reply("Could not remove the role").setEphemeral(true).queue());
-    }
-
-    @Override
-    public String getName() {
-        return "removes_role";
-    }
-
-    @Override
-    public String getDescription() {
-        return "removes a role";
-    }
-
-    @Override
-    public CommandVisibility getVisibility() {
-        return CommandVisibility.SERVER;
-    }
-
-    @Override
-    public CommandData getCommandData() {
-        return new CommandData(getName(), getDescription())
-            .addOptions(
-                    new OptionData(USER, "user", "The user which you want to remove the role from.")
-                        .setRequired(true))
-            .addOptions(new OptionData(ROLE, "role", "The role which you want to remove")
-                .setRequired(true));
+            .queue((__) -> event.replyMessage("The role was remove."),
+                    (error) -> event.replyEphemeralMessage("Could not remove the role"));
     }
 }

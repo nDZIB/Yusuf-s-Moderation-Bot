@@ -39,7 +39,6 @@ public class UnBanCommand implements Command {
         User targetUser = Objects.requireNonNull(event.getOption(USER_OPTION), "The member is null")
             .getAsUser();
 
-        Member author = Objects.requireNonNull(event.getMember(), "The member is null");
 
         if (!author.hasPermission(Permission.BAN_MEMBERS)) {
             event.reply(
@@ -67,11 +66,11 @@ public class UnBanCommand implements Command {
         if (!event.getGuild().checkReasonLength(reason, event)) {
             return;
         }
-            unban(targetUser, reason, author, event);
+            unban(targetUser, reason, event.getMember().getAuthor(), event);
     }
 
     private static void unban(@NotNull User targetUser, @NotNull String reason,
-            @NotNull Member author, @NotNull SlashCommandEvent event) {
+            @NotNull Member author, @NotNull YusufSlashCommandEvent event) {
         event.getGuild().unban(targetUser).reason(reason).queue(v -> {
             event
                 .reply("The user " + author.getUser().getAsTag() + " unbanned the user "

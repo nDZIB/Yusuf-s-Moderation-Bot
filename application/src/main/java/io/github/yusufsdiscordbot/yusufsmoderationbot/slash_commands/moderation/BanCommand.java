@@ -14,6 +14,7 @@ package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -36,7 +37,7 @@ public class BanCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(BanCommand.class);
 
     @Override
-    public void onSlashCommand(SlashCommandEvent event) {
+    public void onSlashCommand(YusufSlashCommandEvent event) {
         OptionMapping userOption =
                 Objects.requireNonNull(event.getOption(USER_OPTION), "The target is null");
         Member target = userOption.getAsMember();
@@ -60,7 +61,7 @@ public class BanCommand implements Command {
         int deleteHistoryDays = Math
             .toIntExact(Objects.requireNonNull(event.getOption(DELETE_HISTORY_OPTION)).getAsLong());
 
-        if (!ModerationUtils.handleReason(reason, event)) {
+        if (!event.getGuild().checkReasonLength(reason, event)) {
             return;
         }
 

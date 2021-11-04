@@ -14,6 +14,7 @@ package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
@@ -34,7 +35,7 @@ public class UnBanCommand implements Command {
     private static final String REASON_OPTION = "reason";
 
     @Override
-    public void onSlashCommand(SlashCommandEvent event) {
+    public void onSlashCommand(YusufSlashCommandEvent event) {
         User targetUser = Objects.requireNonNull(event.getOption(USER_OPTION), "The member is null")
             .getAsUser();
 
@@ -63,10 +64,10 @@ public class UnBanCommand implements Command {
         String reason = Objects.requireNonNull(event.getOption(REASON_OPTION), "The reason is null")
             .getAsString();
 
-        boolean reasonIsUnderLimit = ModerationUtils.handleReason(reason, event);
-        if (reasonIsUnderLimit) {
-            unban(targetUser, reason, author, event);
+        if (!event.getGuild().checkReasonLength(reason, event)) {
+            return;
         }
+            unban(targetUser, reason, author, event);
     }
 
     private static void unban(@NotNull User targetUser, @NotNull String reason,

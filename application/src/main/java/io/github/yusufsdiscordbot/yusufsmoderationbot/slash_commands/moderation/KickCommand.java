@@ -14,6 +14,8 @@ package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufMember;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -33,11 +35,11 @@ public class KickCommand implements Command {
     private static final String REASON_OPTION = "reason";
 
     @Override
-    public void onSlashCommand(SlashCommandEvent event) {
+    public void onSlashCommand(YusufSlashCommandEvent event) {
         OptionMapping userOption =
                 Objects.requireNonNull(event.getOption(USER_OPTION), "The target is null");
         Member target = userOption.getAsMember();
-        Member author = Objects.requireNonNull(event.getMember(), "The author is null");
+        YusufMember author = Objects.requireNonNull(event.getMember(), "The author is null");
 
         String reason = Objects.requireNonNull(event.getOption(REASON_OPTION), "The reason is null")
             .getAsString();
@@ -80,7 +82,7 @@ public class KickCommand implements Command {
             return;
         }
 
-        if (!ModerationUtils.handleReason(reason, event)) {
+        if (!event.getGuild().checkReasonLength(reason, event)) {
             return;
         }
 

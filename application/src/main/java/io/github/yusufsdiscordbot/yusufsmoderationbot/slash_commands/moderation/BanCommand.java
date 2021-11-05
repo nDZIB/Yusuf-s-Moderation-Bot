@@ -90,7 +90,7 @@ public class BanCommand extends CommandConnector {
             .mapToResult()
             .flatMap(result -> guild.ban(target, deleteHistoryDays, reason))
             .flatMap(v -> event.getEvent().reply(target.getAsTag() + " was banned by "
-                    + author.getUser().getAsTag() + " for: " + reason));
+                    + author.getUser().getAsTag() + " for: " + reason)).queue();
 
         logger.info(
                 " '{} ({})' banned the user '{} ({})' and deleted their message history of the last '{}' days. Reason being'{}'",

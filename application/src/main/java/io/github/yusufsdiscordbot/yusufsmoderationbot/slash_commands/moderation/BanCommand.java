@@ -44,22 +44,22 @@ public class BanCommand extends CommandConnector {
 
 
     private static void banUser(@NotNull User target, @NotNull YusufMember author,
-                                @NotNull String reason, int deleteHistoryDays, @NotNull YusufGuild guild,
-                                @NotNull YusufSlashCommandEvent event) {
+            @NotNull String reason, int deleteHistoryDays, @NotNull YusufGuild guild,
+            @NotNull YusufSlashCommandEvent event) {
         event.getJDA()
-                .openPrivateChannelById(target.getIdLong())
-                .flatMap(channel -> channel.sendMessage(
-                        """
-                                Hey there, sorry to tell you but unfortunately you have been banned from the server %s.
-                                If you think this was a mistake, please contact a moderator or admin of the server.
-                                The reason for the ban is: %s
-                                """
-                                .formatted(guild.getName(), reason)))
-                .mapToResult()
-                .flatMap(result -> guild.ban(target, deleteHistoryDays, reason))
-                .flatMap(v -> event.reply(target.getAsTag() + " was banned by "
-                        + author.getUser().getAsTag() + " for: " + reason))
-                .queue();
+            .openPrivateChannelById(target.getIdLong())
+            .flatMap(channel -> channel.sendMessage(
+                    """
+                            Hey there, sorry to tell you but unfortunately you have been banned from the server %s.
+                            If you think this was a mistake, please contact a moderator or admin of the server.
+                            The reason for the ban is: %s
+                            """
+                        .formatted(guild.getName(), reason)))
+            .mapToResult()
+            .flatMap(result -> guild.ban(target, deleteHistoryDays, reason))
+            .flatMap(v -> event.reply(target.getAsTag() + " was banned by "
+                    + author.getUser().getAsTag() + " for: " + reason))
+            .queue();
 
         logger.info(
                 " '{} ({})' banned the user '{} ({})' and deleted their message history of the last '{}' days. Reason being'{}'",
@@ -68,7 +68,7 @@ public class BanCommand extends CommandConnector {
     }
 
     private static boolean handleCanInteractWithTarget(Member target, Member bot,
-                                                       @NotNull YusufMember author, @NotNull YusufSlashCommandEvent event) {
+            @NotNull YusufMember author, @NotNull YusufSlashCommandEvent event) {
         String targetTag = target.getUser().getAsTag();
         if (!author.canInteract(target)) {
             event.replyEphemeral("The user " + targetTag + " is too powerful for you to ban.");
@@ -83,7 +83,7 @@ public class BanCommand extends CommandConnector {
     }
 
     private static boolean handleHasPermissions(@NotNull YusufMember author, @NotNull Member bot,
-                                                @NotNull YusufSlashCommandEvent event, @NotNull YusufGuild guild) {
+            @NotNull YusufSlashCommandEvent event, @NotNull YusufGuild guild) {
         if (!author.hasPermission(Permission.BAN_MEMBERS)) {
             event.replyEphemeral(
                     "You can not ban users in this guild since you do not have the BAN_MEMBERS permission.");
@@ -100,7 +100,7 @@ public class BanCommand extends CommandConnector {
         }
         return true;
     }
-    
+
     @Override
     public void onSlashCommand(YusufSlashCommandEvent event) {
         OptionMapping userOption =

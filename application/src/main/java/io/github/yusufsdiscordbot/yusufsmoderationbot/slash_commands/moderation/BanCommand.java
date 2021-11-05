@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
-// TODO: The command still has some issues, but it works for now.
 public class BanCommand extends CommandConnector {
     private static final String USER_OPTION = "user";
     private static final String DELETE_HISTORY_OPTION = "delete-history";
@@ -73,11 +72,10 @@ public class BanCommand extends CommandConnector {
             return;
         }
 
-        banUser(userOption.getAsUser(), event.getMember().getMember(), reason, deleteHistoryDays,
-                guild, event);
+        banUser(userOption.getAsUser(), event.getMember(), reason, deleteHistoryDays, guild, event);
     }
 
-    private static void banUser(@NotNull User target, @NotNull Member author,
+    private static void banUser(@NotNull User target, @NotNull YusufMember author,
             @NotNull String reason, int deleteHistoryDays, @NotNull YusufGuild guild,
             @NotNull YusufSlashCommandEvent event) {
         event.getJDA()
@@ -97,8 +95,8 @@ public class BanCommand extends CommandConnector {
 
         logger.info(
                 " '{} ({})' banned the user '{} ({})' and deleted their message history of the last '{}' days. Reason being'{}'",
-                author.getUser().getAsTag(), author.getId(), target.getAsTag(), target.getIdLong(),
-                deleteHistoryDays, reason);
+                author.getUser().getAsTag(), author.getUserId(), target.getAsTag(),
+                target.getIdLong(), deleteHistoryDays, reason);
     }
 
     private static boolean handleCanInteractWithTarget(Member target, Member bot,

@@ -57,7 +57,7 @@ public class RemoveRoleCommand extends CommandConnector {
 
         event.getGuild()
             .removeRoleFromMember(target, role)
-            .queue(__ -> event.replyMessage("The role was remove."),
+            .queue(success -> event.replyMessage("The role was remove."),
                     error -> event.replyEphemeral("Could not remove the role"));
     }
 }

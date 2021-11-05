@@ -59,7 +59,7 @@ public class AddRoleCommand extends CommandConnector {
 
         event.getGuild()
             .addRoleToMember(target, role)
-            .queue((__) -> event.replyMessage("The role was given."),
-                    (error) -> event.replyEphemeral("Could not give the role"));
+            .queue(success -> event.replyMessage("The role was given."),
+                    error -> event.replyEphemeral("Could not give the role"));
     }
 }

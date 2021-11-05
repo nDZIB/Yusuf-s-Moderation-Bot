@@ -57,7 +57,8 @@ public class PurgeCommand extends CommandConnector {
         final Member author = event.getMember().getAuthor();
 
         if (!author.hasPermission(Permission.MESSAGE_MANAGE)) {
-            event.replyEphemeral("You are missing MESSAGE_MANAGE permission to delete these the message");
+            event.replyEphemeral(
+                    "You are missing MESSAGE_MANAGE permission to delete these the message");
             return;
         }
 

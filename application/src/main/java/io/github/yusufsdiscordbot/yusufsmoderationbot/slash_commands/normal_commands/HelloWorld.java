@@ -73,7 +73,7 @@ public class HelloWorld extends CommandConnector {
         if (langs.containsKey(language)) {
             builder.setDescription(langs.get(language));
         } else {
-            event.replyEphemeralMessage("Could not find hello world for this language.");
+            event.replyEphemeral("Could not find hello world for this language.");
             return;
         }
 

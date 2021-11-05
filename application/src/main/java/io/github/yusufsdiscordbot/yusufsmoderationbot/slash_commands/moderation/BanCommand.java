@@ -14,13 +14,10 @@ package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.*;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -28,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
+//TODO: The command still has some issues, but it works for now.
 public class BanCommand extends CommandConnector {
     private static final String USER_OPTION = "user";
     private static final String DELETE_HISTORY_OPTION = "delete-history";
@@ -74,11 +72,11 @@ public class BanCommand extends CommandConnector {
             return;
         }
 
-        banUser(userOption.getAsUser(), author, reason, deleteHistoryDays, guild, event);
+        banUser(userOption.getAsUser(), event.getMember().getMember(), reason, deleteHistoryDays, guild, event);
     }
 
     private static void banUser(@NotNull User target, @NotNull Member author,
-            @NotNull String reason, int deleteHistoryDays, @NotNull Guild guild,
+            @NotNull String reason, int deleteHistoryDays, @NotNull YusufGuild guild,
             @NotNull YusufSlashCommandEvent event) {
         event.getJDA()
             .openPrivateChannelById(target.getIdLong())
@@ -91,12 +89,12 @@ public class BanCommand extends CommandConnector {
                         .formatted(guild.getName(), reason)))
             .mapToResult()
             .flatMap(result -> guild.ban(target, deleteHistoryDays, reason))
-            .flatMap(v -> event.replyMessage(target.getAsTag() + " was banned by "
+            .flatMap(v -> event.getEvent().reply(target.getAsTag() + " was banned by "
                     + author.getUser().getAsTag() + " for: " + reason));
 
         logger.info(
                 " '{} ({})' banned the user '{} ({})' and deleted their message history of the last '{}' days. Reason being'{}'",
-                author.getUser().getAsTag(), author.getUserId(), target.getAsTag(),
+                author.getUser().getAsTag(), author.getId(), target.getAsTag(),
                 target.getIdLong(), deleteHistoryDays, reason);
     }
 

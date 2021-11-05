@@ -14,6 +14,7 @@ package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandConnector;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufMember;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -46,7 +47,7 @@ public class UnBanCommand extends CommandConnector {
         User targetUser = Objects.requireNonNull(event.getOption(USER_OPTION), "The member is null")
             .getAsUser();
 
-        Member author = event.getMember().getAuthor();
+        YusufMember author = event.getMember();
 
         if (!author.hasPermission(Permission.BAN_MEMBERS)) {
             event.replyEphemeral(
@@ -70,17 +71,17 @@ public class UnBanCommand extends CommandConnector {
         if (!event.getGuild().checkReasonLength(reason, event)) {
             return;
         }
-        unban(targetUser, reason, event.getMember().getAuthor(), event);
+        unban(targetUser, reason, author, event);
     }
 
     private static void unban(@NotNull User targetUser, @NotNull String reason,
-            @NotNull Member author, @NotNull YusufSlashCommandEvent event) {
+            @NotNull YusufMember author, @NotNull YusufSlashCommandEvent event) {
         event.getGuild().unBan(targetUser).reason(reason).queue(v -> {
             event.replyMessage("The user " + author.getUser().getAsTag() + " unbanned the user "
                     + targetUser.getAsTag() + " for: " + reason);
 
             logger.info(" {} ({}) unbanned the user '{}' for: '{}'", author.getUser().getAsTag(),
-                    author.getIdLong(), targetUser.getAsTag(), reason);
+                    author.getUserId(), targetUser.getAsTag(), reason);
         }, throwable -> {
             if (throwable instanceof ErrorResponseException errorResponseException
                     && errorResponseException.getErrorResponse() == ErrorResponse.UNKNOWN_USER) {

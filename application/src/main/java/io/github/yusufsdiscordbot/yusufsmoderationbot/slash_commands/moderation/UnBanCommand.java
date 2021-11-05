@@ -41,8 +41,9 @@ public class UnBanCommand extends CommandConnector {
 
     @Override
     public void onSlashCommand(YusufSlashCommandEvent event) {
-        YusufUser targetUser = Objects.requireNonNull(event.getYusufOption(USER_OPTION), "The member is null")
-            .getAsUser();
+        YusufUser targetUser =
+                Objects.requireNonNull(event.getYusufOption(USER_OPTION), "The member is null")
+                    .getAsUser();
 
         YusufMember author = event.getMember();
 
@@ -68,12 +69,12 @@ public class UnBanCommand extends CommandConnector {
         if (!event.getGuild().checkReasonLength(reason, event)) {
             return;
         }
-        
+
         unban(targetUser, reason, author, event);
     }
 
     private static void unban(@NotNull YusufUser targetUser, @NotNull String reason,
-                              @NotNull YusufMember author, @NotNull YusufSlashCommandEvent event) {
+            @NotNull YusufMember author, @NotNull YusufSlashCommandEvent event) {
         event.getGuild().unBan(targetUser).reason(reason).queue(v -> {
             event.replyMessage("The user " + author.getUser().getAsTag() + " unbanned the user "
                     + targetUser.getUserTag() + " for: " + reason);

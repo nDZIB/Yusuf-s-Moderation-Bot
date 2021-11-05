@@ -84,8 +84,9 @@ public class BanCommand extends CommandConnector {
         return true;
     }
 
-    private static boolean handleHasPermissions(@NotNull YusufMember author, @NotNull YusufMember bot,
-            @NotNull YusufSlashCommandEvent event, @NotNull YusufGuild guild) {
+    private static boolean handleHasPermissions(@NotNull YusufMember author,
+            @NotNull YusufMember bot, @NotNull YusufSlashCommandEvent event,
+            @NotNull YusufGuild guild) {
         if (!author.hasPermission(Permission.BAN_MEMBERS)) {
             event.replyEphemeral(
                     "You can not ban users in this guild since you do not have the BAN_MEMBERS permission.");

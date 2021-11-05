@@ -104,11 +104,6 @@ public class BanCommand extends CommandConnector {
         return true;
     }
 
-    @ForRemoval(deadline = "YDC = 1.0.17")
-    public YusufMember getBot(YusufSlashCommandEvent event) {
-        return new YusufMember(event.getGuild().getBot());
-    }
-
     @Override
     public void onSlashCommand(YusufSlashCommandEvent event) {
         YusufOptionMapping userOption =
@@ -122,8 +117,7 @@ public class BanCommand extends CommandConnector {
             .getAsString();
 
         YusufGuild guild = Objects.requireNonNull(event.getGuild());
-        YusufMember bot = getBot(event);
-
+        YusufMember bot = guild.getBot();
 
         // Member doesn't exist if attempting to ban a user who is not part of the guild.
         if (target != null && !handleCanInteractWithTarget(target, bot, author, event)) {

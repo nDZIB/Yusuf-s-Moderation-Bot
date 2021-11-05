@@ -26,6 +26,6 @@ public class MemeCommand extends CommandConnector {
 
     @Override
     public void onSlashCommand(YusufSlashCommandEvent event) {
-        NormalUtils.Success("https://apis.duncte123.me/meme", event, true);
+        NormalUtils.success("https://apis.duncte123.me/meme", event, true);
     }
 }

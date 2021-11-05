@@ -26,6 +26,6 @@ public class JokeCommand extends CommandConnector {
 
     @Override
     public void onSlashCommand(YusufSlashCommandEvent event) {
-        NormalUtils.Success("https://apis.duncte123.me/joke", event, false);
+        NormalUtils.success("https://apis.duncte123.me/joke", event, false);
     }
 }

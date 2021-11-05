@@ -12,11 +12,10 @@ public enum NormalUtils {
     ;
     private static final Logger logger = LoggerFactory.getLogger(NormalUtils.class);
 
-    public static void Success(String link, YusufSlashCommandEvent event, Boolean meme) {
+    public static void success(String link, YusufSlashCommandEvent event, Boolean meme) {
         WebUtils.ins.getJSONObject(link).async(json -> {
             if (!json.get("success").asBoolean()) {
                 event.replyEphemeralMessage("Something went wrong, try again later");
-                logger.info("Here is the json: " + json);
                 return;
             }
 
@@ -27,7 +26,7 @@ public enum NormalUtils {
             final EmbedBuilder embed;
 
 
-            if (meme == true) {
+            if (meme.equals(true)) {
                 final String image = data.get("image").asText();
                 embed = EmbedUtils.embedImageWithTitle(title, url, image);
             } else {

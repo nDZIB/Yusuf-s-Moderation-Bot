@@ -12,7 +12,9 @@
 
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation;
 
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.*;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandConnector;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
@@ -35,8 +37,8 @@ public class UnBanCommand extends CommandConnector {
         super("unban", "Unbans a user", CommandVisibility.SERVER);
 
         getCommandData()
-                .addOption(OptionType.USER, USER_OPTION, "The user who you want to unban", true)
-                .addOption(OptionType.STRING, REASON_OPTION, "Why the user should be unbanned", true);
+            .addOption(OptionType.USER, USER_OPTION, "The user who you want to unban", true)
+            .addOption(OptionType.STRING, REASON_OPTION, "Why the user should be unbanned", true);
     }
 
     @Override
@@ -47,14 +49,14 @@ public class UnBanCommand extends CommandConnector {
         Member author = event.getMember().getAuthor();
 
         if (!author.hasPermission(Permission.BAN_MEMBERS)) {
-            event.replyEphemeralMessage(
+            event.replyEphemeral(
                     "You can not unban users in this guild since you do not have the BAN_MEMBERS permission.");
             return;
         }
 
         Member bot = Objects.requireNonNull(event.getGuild(), "The Bot is null").getBot();
         if (!bot.hasPermission(Permission.BAN_MEMBERS)) {
-            event.replyEphemeralMessage(
+            event.replyEphemeral(
                     "I can not unban users in this guild since I do not have the BAN_MEMBERS permission.");
 
             logger.error("The bot does not have BAN_MEMBERS permission on the server '{}' ",
@@ -68,15 +70,14 @@ public class UnBanCommand extends CommandConnector {
         if (!event.getGuild().checkReasonLength(reason, event)) {
             return;
         }
-            unban(targetUser, reason, event.getMember().getAuthor(), event);
+        unban(targetUser, reason, event.getMember().getAuthor(), event);
     }
 
     private static void unban(@NotNull User targetUser, @NotNull String reason,
             @NotNull Member author, @NotNull YusufSlashCommandEvent event) {
         event.getGuild().unBan(targetUser).reason(reason).queue(v -> {
-            event
-                .replyMessage("The user " + author.getUser().getAsTag() + " unbanned the user "
-                        + targetUser.getAsTag() + " for: " + reason);
+            event.replyMessage("The user " + author.getUser().getAsTag() + " unbanned the user "
+                    + targetUser.getAsTag() + " for: " + reason);
 
             logger.info(" {} ({}) unbanned the user '{}' for: '{}'", author.getUser().getAsTag(),
                     author.getIdLong(), targetUser.getAsTag(), reason);
@@ -84,12 +85,12 @@ public class UnBanCommand extends CommandConnector {
             if (throwable instanceof ErrorResponseException errorResponseException
                     && errorResponseException.getErrorResponse() == ErrorResponse.UNKNOWN_USER) {
 
-                event.replyEphemeralMessage("The specified user doesn't exist");
+                event.replyEphemeral("The specified user doesn't exist");
 
                 logger.debug("I could not unban the user '{}' because they do not exist",
                         targetUser.getAsTag());
             } else {
-                event.replyEphemeralMessage("Sorry, but something went wrong.");
+                event.replyEphemeral("Sorry, but something went wrong.");
 
                 logger.warn("Something went wrong during the process of unbanning the user ",
                         throwable);

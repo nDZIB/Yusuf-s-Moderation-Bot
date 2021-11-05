@@ -29,11 +29,12 @@ public class RemoveRoleCommand extends CommandConnector {
         super("remove_role", "removes a role to the given user", CommandVisibility.SERVER);
 
         getCommandData()
-                .addOptions(new OptionData(USER, RoleCommandUtil.USER, "The user which you want to remove the role from.")
-                        .setRequired(true))
-                .addOptions(new OptionData(ROLE, "role", "The role which you want to give")
-                        .setRequired(true));
+            .addOptions(new OptionData(USER, RoleCommandUtil.USER,
+                    "The user which you want to remove the role from.").setRequired(true))
+            .addOptions(new OptionData(ROLE, "role", "The role which you want to give")
+                .setRequired(true));
     }
+
     @Override
     public void onSlashCommand(YusufSlashCommandEvent event) {
         final YusufMember member = event.getMember();

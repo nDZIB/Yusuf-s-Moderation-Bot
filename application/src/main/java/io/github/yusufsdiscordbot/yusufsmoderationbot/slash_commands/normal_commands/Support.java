@@ -31,7 +31,7 @@ public class Support extends CommandConnector {
      */
     @Override
     public void onSlashCommand(YusufSlashCommandEvent event) {
-        event
-            .replyMessage("For support please visit this discord server " + " https://discord.gg/hpY6s6mh3N");
+        event.replyMessage(
+                "For support please visit this discord server " + " https://discord.gg/hpY6s6mh3N");
     }
 }

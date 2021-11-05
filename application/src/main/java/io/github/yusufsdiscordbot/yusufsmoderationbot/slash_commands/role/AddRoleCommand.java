@@ -31,10 +31,10 @@ public class AddRoleCommand extends CommandConnector {
         super("add_role", "add a role to the given user", CommandVisibility.SERVER);
 
         getCommandData()
-                .addOptions(new OptionData(USER, RoleCommandUtil.USER, "The user which you want to give the role to.")
-                        .setRequired(true))
-                .addOptions(new OptionData(ROLE, "role", "The role which you want to give")
-                        .setRequired(true));
+            .addOptions(new OptionData(USER, RoleCommandUtil.USER,
+                    "The user which you want to give the role to.").setRequired(true))
+            .addOptions(new OptionData(ROLE, "role", "The role which you want to give")
+                .setRequired(true));
     }
 
     @Override

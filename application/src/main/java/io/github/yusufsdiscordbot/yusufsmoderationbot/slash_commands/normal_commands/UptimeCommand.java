@@ -30,7 +30,8 @@ public class UptimeCommand extends CommandConnector {
      * Were the command is registered.
      */
     public UptimeCommand() {
-        super("uptime", "Tells you how long the discord bot has been up for", CommandVisibility.SERVER);
+        super("uptime", "Tells you how long the discord bot has been up for",
+                CommandVisibility.SERVER);
     }
 
     @Override

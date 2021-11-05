@@ -14,13 +14,9 @@ package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.*;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,11 +32,11 @@ public class KickCommand extends CommandConnector {
         super("kick", "Kicks a given user", CommandVisibility.SERVER);
 
         getCommandData()
-                .addOption(OptionType.USER, USER_OPTION, "The user who you want to kick", true)
-                .addOption(OptionType.STRING, REASON_OPTION, "Why the user should be kicked", true);
+            .addOption(OptionType.USER, USER_OPTION, "The user who you want to kick", true)
+            .addOption(OptionType.STRING, REASON_OPTION, "Why the user should be kicked", true);
     }
 
-        @Override
+    @Override
     public void onSlashCommand(YusufSlashCommandEvent event) {
         OptionMapping userOption =
                 Objects.requireNonNull(event.getOption(USER_OPTION), "The target is null");
@@ -55,10 +51,8 @@ public class KickCommand extends CommandConnector {
         Member bot = guild.getBot();
 
         if (!author.hasPermission(Permission.KICK_MEMBERS)) {
-            event.reply(
-                    "You can not kick users in this guild since you do not have the KICK_MEMBERS permission.")
-                .setEphemeral(true)
-                .queue();
+            event.replyEphemeral(
+                    "You can not kick users in this guild since you do not have the KICK_MEMBERS permission.");
             return;
         }
 
@@ -71,10 +65,8 @@ public class KickCommand extends CommandConnector {
         }
 
         if (!bot.hasPermission(Permission.KICK_MEMBERS)) {
-            event.reply(
-                    "I can not kick users in this guild since I do not have the KICK_MEMBERS permission.")
-                .setEphemeral(true)
-                .queue();
+            event.replyEphemeral(
+                    "I can not kick users in this guild since I do not have the KICK_MEMBERS permission.");
 
             logger.error("The bot does not have KICK_MEMBERS permission on the server '{}' ",
                     event.getGuild().getName());
@@ -82,9 +74,7 @@ public class KickCommand extends CommandConnector {
         }
 
         if (!bot.canInteract(target)) {
-            event.reply("The user " + userTag + " is too powerful for me to kick.")
-                .setEphemeral(true)
-                .queue();
+            event.replyEphemeral("The user " + userTag + " is too powerful for me to kick.");
             return;
         }
 
@@ -96,7 +86,8 @@ public class KickCommand extends CommandConnector {
     }
 
     private static void kickUser(@NotNull Member target, @NotNull YusufMember author,
-            @NotNull String reason, @NotNull YusufGuild guild, @NotNull YusufSlashCommandEvent event) {
+            @NotNull String reason, @NotNull YusufGuild guild,
+            @NotNull YusufSlashCommandEvent event) {
         event.getJDA()
             .openPrivateChannelById(target.getUser().getId())
             .flatMap(channel -> channel.sendMessage(

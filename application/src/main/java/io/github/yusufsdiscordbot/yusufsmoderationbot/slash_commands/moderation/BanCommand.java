@@ -89,7 +89,7 @@ public class BanCommand extends CommandConnector {
                         .formatted(guild.getName(), reason)))
             .mapToResult()
             .flatMap(result -> guild.ban(target, deleteHistoryDays, reason))
-            .flatMap(v -> event.getEvent().reply(target.getAsTag() + " was banned by "
+            .flatMap(v -> event.reply(target.getAsTag() + " was banned by "
                     + author.getUser().getAsTag() + " for: " + reason)).queue();
 
         logger.info(
@@ -102,12 +102,12 @@ public class BanCommand extends CommandConnector {
             @NotNull YusufMember author, @NotNull YusufSlashCommandEvent event) {
         String targetTag = target.getUser().getAsTag();
         if (!author.canInteract(target)) {
-            event.replyEphemeralMessage("The user " + targetTag + " is too powerful for you to ban.");
+            event.replyEphemeral("The user " + targetTag + " is too powerful for you to ban.");
             return false;
         }
 
         if (!bot.canInteract(target)) {
-            event.replyEphemeralMessage("The user " + targetTag + " is too powerful for me to ban.");
+            event.replyEphemeral("The user " + targetTag + " is too powerful for me to ban.");
             return false;
         }
         return true;
@@ -116,13 +116,13 @@ public class BanCommand extends CommandConnector {
     private static boolean handleHasPermissions(@NotNull YusufMember author, @NotNull Member bot,
             @NotNull YusufSlashCommandEvent event, @NotNull YusufGuild guild) {
         if (!author.hasPermission(Permission.BAN_MEMBERS)) {
-            event.replyEphemeralMessage(
+            event.replyEphemeral(
                     "You can not ban users in this guild since you do not have the BAN_MEMBERS permission.");
             return false;
         }
 
         if (!bot.hasPermission(Permission.BAN_MEMBERS)) {
-            event.replyEphemeralMessage(
+            event.replyEphemeral(
                     "I can not ban users in this guild since I do not have the BAN_MEMBERS permission.");
 
             logger.error("The bot does not have BAN_MEMBERS permission on the server '{}' ",

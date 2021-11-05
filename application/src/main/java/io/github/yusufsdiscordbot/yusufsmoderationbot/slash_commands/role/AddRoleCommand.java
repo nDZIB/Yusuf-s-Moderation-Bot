@@ -44,14 +44,14 @@ public class AddRoleCommand extends CommandConnector {
         Member target = event.getOption(RoleCommandUtil.USER).getAsMember();
 
         if (!member.canInteract(target) || !member.hasPermission(Permission.MANAGE_ROLES)) {
-            event.replyEphemeralMessage("You are missing permission to add a role this member");
+            event.replyEphemeral("You are missing permission to add a role this member");
             return;
         }
 
         final Member selfMember = event.getGuild().getBot();
 
         if (!selfMember.canInteract(target) || !selfMember.hasPermission(Permission.MANAGE_ROLES)) {
-            event.replyEphemeralMessage("I am missing permissions to add a role to that member");
+            event.replyEphemeral("I am missing permissions to add a role to that member");
             return;
         }
 
@@ -60,6 +60,6 @@ public class AddRoleCommand extends CommandConnector {
         event.getGuild()
             .addRoleToMember(target, role)
             .queue((__) -> event.replyMessage("The role was given."),
-                    (error) -> event.replyEphemeralMessage("Could not give the role"));
+                    (error) -> event.replyEphemeral("Could not give the role"));
     }
 }

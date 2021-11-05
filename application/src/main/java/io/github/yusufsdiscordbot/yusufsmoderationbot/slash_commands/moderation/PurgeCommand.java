@@ -13,6 +13,7 @@ package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.ISnowflake;
 import net.dv8tion.jda.api.entities.Member;
@@ -44,8 +45,8 @@ public class PurgeCommand implements Command {
     private static final String LAST_MESSAGE_ID = "last_message_id";
 
     @Override
-    public void onSlashCommand(SlashCommandEvent event) {
-        final Member author = event.getMember();
+    public void onSlashCommand(YusufSlashCommandEvent event) {
+        final Member author = event.getMember().getAuthor();
 
         if (!author.hasPermission(Permission.MESSAGE_MANAGE)) {
             event.reply("You are missing MESSAGE_MANAGE permission to delete these the message")
@@ -54,7 +55,7 @@ public class PurgeCommand implements Command {
             return;
         }
 
-        final Member bot = Objects.requireNonNull(event.getGuild()).getSelfMember();
+        final Member bot = Objects.requireNonNull(event.getGuild()).getBot();
         if (!bot.hasPermission(Permission.MESSAGE_MANAGE)) {
             event.reply(
                     "I am missing MESSAGE_MANAGE permission which means I am unable to delete messages in this server.")
@@ -69,7 +70,7 @@ public class PurgeCommand implements Command {
         long firstMessageId = Objects.requireNonNull(event.getOption(FIRST_MESSAGE_ID)).getAsLong();
         long lastMessageId = Objects.requireNonNull(event.getOption(LAST_MESSAGE_ID)).getAsLong();
 
-        deleteMessagesById(firstMessageId, lastMessageId, event.getMessageChannel(), strings -> {
+        deleteMessagesById(firstMessageId, lastMessageId, event.getEvent().getMessageChannel(), strings -> {
 
         });
     }

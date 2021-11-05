@@ -12,10 +12,7 @@
 
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation;
 
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.Command;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufMember;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.*;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -23,18 +20,27 @@ import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
-public class KickCommand implements Command {
+public class KickCommand extends CommandConnector {
     private static final Logger logger = LoggerFactory.getLogger(KickCommand.class);
     private static final String USER_OPTION = "user";
     private static final String REASON_OPTION = "reason";
 
-    @Override
+    public KickCommand() {
+        super("kick", "Kicks a given user", CommandVisibility.SERVER);
+
+        getCommandData()
+                .addOption(OptionType.USER, USER_OPTION, "The user who you want to kick", true)
+                .addOption(OptionType.STRING, REASON_OPTION, "Why the user should be kicked", true);
+    }
+
+        @Override
     public void onSlashCommand(YusufSlashCommandEvent event) {
         OptionMapping userOption =
                 Objects.requireNonNull(event.getOption(USER_OPTION), "The target is null");
@@ -45,8 +51,8 @@ public class KickCommand implements Command {
             .getAsString();
 
 
-        Guild guild = event.getGuild();
-        Member bot = guild.getSelfMember();
+        YusufGuild guild = event.getGuild();
+        Member bot = guild.getBot();
 
         if (!author.hasPermission(Permission.KICK_MEMBERS)) {
             event.reply(
@@ -89,8 +95,8 @@ public class KickCommand implements Command {
         kickUser(target, author, reason, guild, event);
     }
 
-    private static void kickUser(@NotNull Member target, @NotNull Member author,
-            @NotNull String reason, @NotNull Guild guild, @NotNull SlashCommandEvent event) {
+    private static void kickUser(@NotNull Member target, @NotNull YusufMember author,
+            @NotNull String reason, @NotNull YusufGuild guild, @NotNull YusufSlashCommandEvent event) {
         event.getJDA()
             .openPrivateChannelById(target.getUser().getId())
             .flatMap(channel -> channel.sendMessage(
@@ -107,31 +113,8 @@ public class KickCommand implements Command {
             .queue();
 
         logger.info(" '{} ({})' kicked the user '{} ({})' due to reason being '{}'",
-                author.getUser().getAsTag(), author.getIdLong(), target.getUser().getAsTag(),
+                author.getUser().getAsTag(), author.getUserId(), target.getUser().getAsTag(),
                 target.getUser().getId(), reason);
     }
 
-    @Override
-    public String getName() {
-        return "kick";
-    }
-
-    @Override
-    public String getDescription() {
-        return "kicks a given user";
-    }
-
-    @Override
-    public CommandVisibility getVisibility() {
-        return CommandVisibility.SERVER;
-    }
-
-    @Override
-    public CommandData getCommandData() {
-        return new CommandData(getName(), getDescription())
-            .addOption(OptionType.USER, USER_OPTION, "The user who you want to kick", true)
-            .addOption(OptionType.STRING, REASON_OPTION, "Why the user should be kicked", true);
-
-
-    }
 }

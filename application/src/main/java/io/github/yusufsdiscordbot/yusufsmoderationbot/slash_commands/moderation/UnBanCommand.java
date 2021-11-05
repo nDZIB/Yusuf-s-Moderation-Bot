@@ -68,6 +68,7 @@ public class UnBanCommand extends CommandConnector {
         if (!event.getGuild().checkReasonLength(reason, event)) {
             return;
         }
+        
         unban(targetUser, reason, author, event);
     }
 

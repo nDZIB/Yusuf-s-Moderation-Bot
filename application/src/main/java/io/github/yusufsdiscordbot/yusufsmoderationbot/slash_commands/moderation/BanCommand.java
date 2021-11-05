@@ -13,6 +13,7 @@
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation;
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.*;
+import net.dv8tion.jda.annotations.ForRemoval;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
@@ -23,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import java.util.Objects;
 
 public class BanCommand extends CommandConnector {
@@ -43,11 +45,11 @@ public class BanCommand extends CommandConnector {
     }
 
 
-    private static void banUser(@NotNull User target, @NotNull YusufMember author,
+    private static void banUser(@NotNull YusufUser target, @NotNull YusufMember author,
             @NotNull String reason, int deleteHistoryDays, @NotNull YusufGuild guild,
             @NotNull YusufSlashCommandEvent event) {
         event.getJDA()
-            .openPrivateChannelById(target.getIdLong())
+            .openPrivateChannelById(target.getUserId())
             .flatMap(channel -> channel.sendMessage(
                     """
                             Hey there, sorry to tell you but unfortunately you have been banned from the server %s.
@@ -57,17 +59,17 @@ public class BanCommand extends CommandConnector {
                         .formatted(guild.getName(), reason)))
             .mapToResult()
             .flatMap(result -> guild.ban(target, deleteHistoryDays, reason))
-            .flatMap(v -> event.reply(target.getAsTag() + " was banned by "
+            .flatMap(v -> event.reply(target.getUserTag() + " was banned by "
                     + author.getUser().getAsTag() + " for: " + reason))
             .queue();
 
         logger.info(
                 " '{} ({})' banned the user '{} ({})' and deleted their message history of the last '{}' days. Reason being'{}'",
-                author.getUser().getAsTag(), author.getUserId(), target.getAsTag(),
-                target.getIdLong(), deleteHistoryDays, reason);
+                author.getUser().getAsTag(), author.getUserId(), target.getUserTag(),
+                target.getUserId(), deleteHistoryDays, reason);
     }
 
-    private static boolean handleCanInteractWithTarget(Member target, Member bot,
+    private static boolean handleCanInteractWithTarget(YusufMember target, YusufMember bot,
             @NotNull YusufMember author, @NotNull YusufSlashCommandEvent event) {
         String targetTag = target.getUser().getAsTag();
         if (!author.canInteract(target)) {
@@ -82,7 +84,7 @@ public class BanCommand extends CommandConnector {
         return true;
     }
 
-    private static boolean handleHasPermissions(@NotNull YusufMember author, @NotNull Member bot,
+    private static boolean handleHasPermissions(@NotNull YusufMember author, @NotNull YusufMember bot,
             @NotNull YusufSlashCommandEvent event, @NotNull YusufGuild guild) {
         if (!author.hasPermission(Permission.BAN_MEMBERS)) {
             event.replyEphemeral(
@@ -101,11 +103,17 @@ public class BanCommand extends CommandConnector {
         return true;
     }
 
+    @ForRemoval(deadline = "YDC = 1.0.17")
+    public YusufMember getBot(YusufSlashCommandEvent event) {
+        return new YusufMember(event.getGuild().getBot());
+    }
+
     @Override
     public void onSlashCommand(YusufSlashCommandEvent event) {
-        OptionMapping userOption =
-                Objects.requireNonNull(event.getOption(USER_OPTION), "The target is null");
-        Member target = userOption.getAsMember();
+        YusufOptionMapping userOption =
+                Objects.requireNonNull(event.getYusufOption(USER_OPTION), "The target is null");
+
+        YusufMember target = userOption.getAsMember();
         @NotNull
         YusufMember author = Objects.requireNonNull(event.getMember(), "The author is null");
 
@@ -113,7 +121,8 @@ public class BanCommand extends CommandConnector {
             .getAsString();
 
         YusufGuild guild = Objects.requireNonNull(event.getGuild());
-        Member bot = guild.getBot();
+        YusufMember bot = getBot(event);
+
 
         // Member doesn't exist if attempting to ban a user who is not part of the guild.
         if (target != null && !handleCanInteractWithTarget(target, bot, author, event)) {

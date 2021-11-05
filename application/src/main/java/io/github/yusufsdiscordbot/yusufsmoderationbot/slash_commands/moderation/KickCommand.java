@@ -38,9 +38,9 @@ public class KickCommand extends CommandConnector {
 
     @Override
     public void onSlashCommand(YusufSlashCommandEvent event) {
-        OptionMapping userOption =
-                Objects.requireNonNull(event.getOption(USER_OPTION), "The target is null");
-        Member target = userOption.getAsMember();
+        YusufOptionMapping userOption =
+                Objects.requireNonNull(event.getYusufOption(USER_OPTION), "The target is null");
+        YusufMember target = userOption.getAsMember();
         YusufMember author = Objects.requireNonNull(event.getMember(), "The author is null");
 
         String reason = Objects.requireNonNull(event.getOption(REASON_OPTION), "The reason is null")
@@ -56,7 +56,7 @@ public class KickCommand extends CommandConnector {
             return;
         }
 
-        String userTag = userOption.getAsUser().getAsTag();
+        String userTag = userOption.getAsUser().getUserTag();
         if (!author.canInteract(target)) {
             event.reply("The user " + userTag + " is too powerful for you to kick.")
                 .setEphemeral(true)
@@ -73,7 +73,7 @@ public class KickCommand extends CommandConnector {
             return;
         }
 
-        if (!bot.canInteract(target)) {
+        if (!bot.canInteract(target.getMember())) {
             event.replyEphemeral("The user " + userTag + " is too powerful for me to kick.");
             return;
         }
@@ -85,7 +85,7 @@ public class KickCommand extends CommandConnector {
         kickUser(target, author, reason, guild, event);
     }
 
-    private static void kickUser(@NotNull Member target, @NotNull YusufMember author,
+    private static void kickUser(@NotNull YusufMember target, @NotNull YusufMember author,
             @NotNull String reason, @NotNull YusufGuild guild,
             @NotNull YusufSlashCommandEvent event) {
         event.getJDA()

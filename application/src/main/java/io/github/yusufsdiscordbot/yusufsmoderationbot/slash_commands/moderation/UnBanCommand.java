@@ -12,10 +12,7 @@
 
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation;
 
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandConnector;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufMember;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.*;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
@@ -44,7 +41,7 @@ public class UnBanCommand extends CommandConnector {
 
     @Override
     public void onSlashCommand(YusufSlashCommandEvent event) {
-        User targetUser = Objects.requireNonNull(event.getOption(USER_OPTION), "The member is null")
+        YusufUser targetUser = Objects.requireNonNull(event.getYusufOption(USER_OPTION), "The member is null")
             .getAsUser();
 
         YusufMember author = event.getMember();
@@ -74,14 +71,14 @@ public class UnBanCommand extends CommandConnector {
         unban(targetUser, reason, author, event);
     }
 
-    private static void unban(@NotNull User targetUser, @NotNull String reason,
-            @NotNull YusufMember author, @NotNull YusufSlashCommandEvent event) {
+    private static void unban(@NotNull YusufUser targetUser, @NotNull String reason,
+                              @NotNull YusufMember author, @NotNull YusufSlashCommandEvent event) {
         event.getGuild().unBan(targetUser).reason(reason).queue(v -> {
             event.replyMessage("The user " + author.getUser().getAsTag() + " unbanned the user "
-                    + targetUser.getAsTag() + " for: " + reason);
+                    + targetUser.getUserTag() + " for: " + reason);
 
             logger.info(" {} ({}) unbanned the user '{}' for: '{}'", author.getUser().getAsTag(),
-                    author.getUserId(), targetUser.getAsTag(), reason);
+                    author.getUserId(), targetUser.getUserTag(), reason);
         }, throwable -> {
             if (throwable instanceof ErrorResponseException errorResponseException
                     && errorResponseException.getErrorResponse() == ErrorResponse.UNKNOWN_USER) {
@@ -89,7 +86,7 @@ public class UnBanCommand extends CommandConnector {
                 event.replyEphemeral("The specified user doesn't exist");
 
                 logger.debug("I could not unban the user '{}' because they do not exist",
-                        targetUser.getAsTag());
+                        targetUser.getUserTag());
             } else {
                 event.replyEphemeral("Sorry, but something went wrong.");
 

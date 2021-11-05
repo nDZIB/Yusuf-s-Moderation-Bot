@@ -46,7 +46,7 @@ public class RemoveRoleCommand extends CommandConnector {
             return;
         }
 
-        final Member selfMember = event.getGuild().getBot();
+        final YusufMember selfMember = event.getGuild().getBot();
 
         if (!selfMember.canInteract(target) || !selfMember.hasPermission(Permission.MANAGE_ROLES)) {
             event.replyMessage("I am missing permissions to add a role to that member");

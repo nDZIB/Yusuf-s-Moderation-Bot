@@ -44,7 +44,7 @@ public class DiscordCommand extends CommandConnector {
                     new net.dv8tion.jda.api.interactions.commands.Command.Choice("TurtyWurty",
                             "turtywurty"),
                     new net.dv8tion.jda.api.interactions.commands.Command.Choice(
-                            "Yusuf's_Discord_Bot", "yusufsdiscordbot"),
+                            "Yusuf's Discord Bot", "yusufsdiscordbot"),
                     new net.dv8tion.jda.api.interactions.commands.Command.Choice("TogetherJava",
                             "togetherjava"));
 

@@ -36,6 +36,7 @@ public class CommandHandler extends CoreSlashCommandHandler {
         addCommand(new GithubCommand());
         addCommand(new DiscordCommand());
         addCommand(new BotInfoCommand());
+        addCommand(new VcEventsCommand());
 
         addCommand(new BanCommand());
         addCommand(new UnBanCommand());

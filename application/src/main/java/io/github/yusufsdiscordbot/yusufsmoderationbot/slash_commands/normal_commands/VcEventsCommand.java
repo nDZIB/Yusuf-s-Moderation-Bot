@@ -56,7 +56,7 @@ public class VcEventsCommand extends CommandConnector {
         YusufMember member =
                 Objects.requireNonNull(yusufSlashCommandEvent.getMember(), "member is null");
         GuildVoiceState voiceState = Objects.requireNonNull(member.getVoiceState(),
-                "Voic estates aren't being cached, check the JDABuilder");
+                "Voice states aren't being cached, check the JDABuilder");
 
         YusufMember bot = yusufSlashCommandEvent.getGuild().getBot();
 

@@ -26,7 +26,7 @@ public class BotInfoCommand extends CommandConnector {
     @Override
     public void onSlashCommand(YusufSlashCommandEvent yusufSlashCommandEvent) {
         EmbedBuilder builder = new EmbedBuilder();
-        builder.setTitle(yusufSlashCommandEvent.getGuild().getBot().getEffectiveName() + " Info")
+        builder.setTitle(yusufSlashCommandEvent.getGuild().getBot().getName() + " Info")
             .setDescription(
                     """
                             Running on Yusuf's Moderation bot V2-1.0.2

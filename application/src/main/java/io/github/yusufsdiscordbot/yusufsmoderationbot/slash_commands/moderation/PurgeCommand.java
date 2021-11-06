@@ -13,6 +13,7 @@ package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandConnector;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufMember;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.ISnowflake;
@@ -62,7 +63,7 @@ public class PurgeCommand extends CommandConnector {
             return;
         }
 
-        final Member bot = Objects.requireNonNull(event.getGuild()).getBot();
+        final YusufMember bot = Objects.requireNonNull(event.getGuild()).getBot();
         if (!bot.hasPermission(Permission.MESSAGE_MANAGE)) {
             event.replyEphemeral(
                     "I am missing MESSAGE_MANAGE permission which means I am unable to delete messages in this server.");

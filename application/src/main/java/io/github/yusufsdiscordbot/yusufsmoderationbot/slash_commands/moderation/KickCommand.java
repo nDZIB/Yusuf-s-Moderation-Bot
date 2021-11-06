@@ -48,7 +48,7 @@ public class KickCommand extends CommandConnector {
 
 
         YusufGuild guild = event.getGuild();
-        Member bot = guild.getBot();
+        YusufMember bot = guild.getBot();
 
         if (!author.hasPermission(Permission.KICK_MEMBERS)) {
             event.replyEphemeral(

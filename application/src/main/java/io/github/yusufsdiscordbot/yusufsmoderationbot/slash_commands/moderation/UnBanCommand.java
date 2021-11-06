@@ -15,7 +15,6 @@ package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.*;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.requests.ErrorResponse;

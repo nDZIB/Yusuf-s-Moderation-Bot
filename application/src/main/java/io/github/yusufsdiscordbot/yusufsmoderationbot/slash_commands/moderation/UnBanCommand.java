@@ -52,7 +52,7 @@ public class UnBanCommand extends CommandConnector {
             return;
         }
 
-        Member bot = Objects.requireNonNull(event.getGuild(), "The Bot is null").getBot();
+        YusufMember bot = Objects.requireNonNull(event.getGuild(), "The Bot is null").getBot();
         if (!bot.hasPermission(Permission.BAN_MEMBERS)) {
             event.replyEphemeral(
                     "I can not unban users in this guild since I do not have the BAN_MEMBERS permission.");

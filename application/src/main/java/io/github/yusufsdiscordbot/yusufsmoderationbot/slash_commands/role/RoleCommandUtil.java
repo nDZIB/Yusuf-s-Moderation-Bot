@@ -5,14 +5,9 @@
  * License is a free, copyleft license for software and other kinds of works.
  */
 
-package io.github.yusufsdiscordbot.yusufsmoderationbot;
+package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.role;
 
-import io.github.cdimascio.dotenv.Dotenv;
-
-public class Config {
-    private static final Dotenv dotenv = Dotenv.load();
-
-    public static String get(String key) {
-        return dotenv.get(key.toUpperCase());
-    }
+public enum RoleCommandUtil {
+    ;
+    public static final String USER = "user";
 }

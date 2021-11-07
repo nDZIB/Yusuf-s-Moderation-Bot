@@ -32,7 +32,7 @@ public class WarnCommand extends CommandConnector {
     /**
      * Were the command is registered.
      */
-    protected WarnCommand() {
+    public WarnCommand() {
         super("warn", "Warn a user", CommandVisibility.SERVER);
 
         getCommandData().addOption(OptionType.USER, USER_OPTION, "The user to warn", true)

@@ -8,10 +8,7 @@
 package io.github.yusufsdiscordbot.yusufsmoderationbot;
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CoreSlashCommandHandler;
-import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation.BanCommand;
-import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation.KickCommand;
-import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation.PurgeCommand;
-import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation.UnBanCommand;
+import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation.*;
 import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.normal_commands.*;
 import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.role.AddRoleCommand;
 import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.role.RemoveRoleCommand;
@@ -36,7 +33,7 @@ public class CommandHandler extends CoreSlashCommandHandler {
 
         addCommand(new BanCommand());
         addCommand(new UnBanCommand());
-        // addCommand(new WarnCommand());
+        addCommand(new WarnCommand());
         // addCommand(new MuteCommand());
         addCommand(new KickCommand());
         addCommand(new PurgeCommand());

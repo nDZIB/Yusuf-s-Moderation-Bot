@@ -33,7 +33,6 @@ public class DataBase {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
             logger.error("Error while loading database", e);
         }
 
@@ -55,7 +54,6 @@ public class DataBase {
 
             logger.info("Database table created");
         } catch (SQLException e) {
-            e.printStackTrace();
             logger.error("Error while loading database", e);
         }
     }

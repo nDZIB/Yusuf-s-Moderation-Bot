@@ -29,7 +29,7 @@ sonarqube {
     }
 }
 subprojects {
-    //credits for some of this part of the gradle goes toward https://github.com/Together-Java/TJ-Bot/blob/develop/build.gradle#L24
+    //credits for some of this part of the gradle goes toward https://github.com/Together-Java/TJ-Bot/blob/a2a963a9e51792018f1beff3b41b6ba9eab0ca50/build.gradle#L25
     apply plugin: "java"
     apply plugin: "com.diffplug.spotless"
     apply plugin: "org.sonarqube"

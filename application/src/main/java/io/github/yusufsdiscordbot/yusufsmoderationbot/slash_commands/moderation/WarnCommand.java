@@ -7,18 +7,26 @@
 
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation;
 
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandConnector;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.*;
+import io.github.yusufsdiscordbot.yusufsmoderationbot.DataBase;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Objects;
 
 /**
  * The user will be able to type {@code /warn user reason} which will store the user who has been
  * warned, the reason and the amount of times they have been warned.
  */
 public class WarnCommand extends CommandConnector {
+    private static final Logger logger = LoggerFactory.getLogger(WarnCommand.class);
     private static final String USER_OPTION = "user";
     private static final String REASON_OPTION = "reason";
+    private static final String COMMAND_TYPE = "warn";
 
     /**
      * Were the command is registered.
@@ -32,6 +40,37 @@ public class WarnCommand extends CommandConnector {
 
     @Override
     public void onSlashCommand(YusufSlashCommandEvent yusufSlashCommandEvent) {
+        YusufGuild guild = yusufSlashCommandEvent.getGuild();
+        YusufOptionMapping userOption =
+                Objects.requireNonNull(yusufSlashCommandEvent.getYusufOption(USER_OPTION), "The target is null");
+        YusufUser user = userOption.getAsUser();
+        String reason = userOption.getOptionMapping().getAsString();
 
+        if (!ModerationHelper.handleHasPermissions(yusufSlashCommandEvent.getMember(),
+                guild.getBot(), yusufSlashCommandEvent, guild, COMMAND_TYPE)) {
+            return;
+        }
+        int amountOfWarns = 1;
+
+        updateWarn(yusufSlashCommandEvent.getEvent().getGuild().getIdLong(), reason, user.getUserIdLong(), amountOfWarns);
+    }
+
+
+    private void updateWarn(long guildId, @NotNull String reason, long userId,
+            int amountOfWarns) {
+        try (final PreparedStatement preparedStatement = DataBase.getConnection()
+            // language=SQLite
+            .prepareStatement("" + "UPDATE warn_settings " + "SET user_id = ? " + "AND guid_id = ? "
+                    + "AND warn_reason = ? " + "WHERE amount_of_warns = ?")) {
+
+            preparedStatement.setLong(1, userId);
+            preparedStatement.setLong(2, guildId);
+            preparedStatement.setString(3, reason);
+            preparedStatement.setInt(4, amountOfWarns);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Failed to update the warn settings", e);
+        }
     }
 }

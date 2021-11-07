@@ -13,7 +13,6 @@
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation;
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.*;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
@@ -26,6 +25,7 @@ public class BanCommand extends CommandConnector {
     private static final String USER_OPTION = "user";
     private static final String DELETE_HISTORY_OPTION = "delete-history";
     private static final String REASON_OPTION = "reason";
+    private static final String COMMAND_TYPE = "ban";
     private static final Logger logger = LoggerFactory.getLogger(BanCommand.class);
 
     public BanCommand() {
@@ -79,26 +79,6 @@ public class BanCommand extends CommandConnector {
         return true;
     }
 
-    private static boolean handleHasPermissions(@NotNull YusufMember author,
-            @NotNull YusufMember bot, @NotNull YusufSlashCommandEvent event,
-            @NotNull YusufGuild guild) {
-        if (!author.hasPermission(Permission.BAN_MEMBERS)) {
-            event.replyEphemeral(
-                    "You can not ban users in this guild since you do not have the BAN_MEMBERS permission.");
-            return false;
-        }
-
-        if (!bot.hasPermission(Permission.BAN_MEMBERS)) {
-            event.replyEphemeral(
-                    "I can not ban users in this guild since I do not have the BAN_MEMBERS permission.");
-
-            logger.error("The bot does not have BAN_MEMBERS permission on the server '{}' ",
-                    guild.getName());
-            return false;
-        }
-        return true;
-    }
-
     @Override
     public void onSlashCommand(YusufSlashCommandEvent event) {
         YusufOptionMapping userOption =
@@ -119,7 +99,7 @@ public class BanCommand extends CommandConnector {
             return;
         }
 
-        if (!handleHasPermissions(author, bot, event, guild)) {
+        if (!ModerationHelper.handleHasPermissions(author, bot, event, guild, COMMAND_TYPE)) {
             return;
         }
 

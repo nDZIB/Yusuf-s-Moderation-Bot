@@ -22,7 +22,6 @@ shadowJar {
     archiveClassifier.set('')
     archiveVersion.set('')
 }
-
 repositories {
     mavenCentral()
     maven {
@@ -41,6 +40,7 @@ repositories {
 }
 
 dependencies {
+
     //JDA
     implementation group: 'net.dv8tion', name: 'JDA', version: '4.3.0_339'
     implementation group: 'pw.chew', name: 'jda-chewtils-command', version: '1.22.0'
@@ -52,6 +52,7 @@ dependencies {
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.1'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j18-impl', version: '2.14.1'
     implementation group: 'io.github.cdimascio', name: 'dotenv-java', version: '2.2.0'
+    implementation project(':database')
 }
 application {
     mainClass = 'io.github.yusufsdiscordbot.yusufsmoderationbot.Bot'

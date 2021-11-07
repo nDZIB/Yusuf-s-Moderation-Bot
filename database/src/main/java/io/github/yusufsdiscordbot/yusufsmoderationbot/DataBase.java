@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Objects;
 
 public class DataBase {
     private static final Logger logger = LoggerFactory.getLogger(DataBase.class);
@@ -51,7 +52,7 @@ public class DataBase {
             File folder = new File("application/src/main/resources/database");
             File[] listOfFiles = folder.listFiles();
 
-            for (File file : listOfFiles) {
+            for (File file : Objects.requireNonNull(listOfFiles)) {
                 if (file.isFile()) {
                     statement.execute(new String(Files.readAllBytes(Path.of(file.getPath()))));
                 }

@@ -23,14 +23,14 @@ public enum ModerationHelper {
             @NotNull YusufMember bot, @NotNull YusufSlashCommandEvent event,
             @NotNull YusufGuild guild, String commandType) {
         if (!author.hasPermission(Permission.BAN_MEMBERS)) {
-            event.replyEphemeral(
-                    "You can not " + commandType + " users in this guild since you do not have the BAN_MEMBERS permission.");
+            event.replyEphemeral("You can not " + commandType
+                    + " users in this guild since you do not have the BAN_MEMBERS permission.");
             return false;
         }
 
         if (!bot.hasPermission(Permission.BAN_MEMBERS)) {
-            event.replyEphemeral(
-                    "I can not " + commandType + " users in this guild since I do not have the BAN_MEMBERS permission.");
+            event.replyEphemeral("I can not " + commandType
+                    + " users in this guild since I do not have the BAN_MEMBERS permission.");
 
             logger.error("The bot does not have BAN_MEMBERS permission on the server '{}' ",
                     guild.getName());

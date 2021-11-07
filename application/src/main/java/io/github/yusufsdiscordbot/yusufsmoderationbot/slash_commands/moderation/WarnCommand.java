@@ -41,8 +41,8 @@ public class WarnCommand extends CommandConnector {
     @Override
     public void onSlashCommand(YusufSlashCommandEvent yusufSlashCommandEvent) {
         YusufGuild guild = yusufSlashCommandEvent.getGuild();
-        YusufOptionMapping userOption =
-                Objects.requireNonNull(yusufSlashCommandEvent.getYusufOption(USER_OPTION), "The target is null");
+        YusufOptionMapping userOption = Objects.requireNonNull(
+                yusufSlashCommandEvent.getYusufOption(USER_OPTION), "The target is null");
         YusufUser user = userOption.getAsUser();
         String reason = userOption.getOptionMapping().getAsString();
 
@@ -52,12 +52,12 @@ public class WarnCommand extends CommandConnector {
         }
         int amountOfWarns = 1;
 
-        updateWarn(yusufSlashCommandEvent.getEvent().getGuild().getIdLong(), reason, user.getUserIdLong(), amountOfWarns);
+        updateWarn(yusufSlashCommandEvent.getEvent().getGuild().getIdLong(), reason,
+                user.getUserIdLong(), amountOfWarns);
     }
 
 
-    private void updateWarn(long guildId, @NotNull String reason, long userId,
-            int amountOfWarns) {
+    private void updateWarn(long guildId, @NotNull String reason, long userId, int amountOfWarns) {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
             // language=SQLite
             .prepareStatement("UPDATE warn_settings " + "SET user_id = ? " + "AND guid_id = ? "

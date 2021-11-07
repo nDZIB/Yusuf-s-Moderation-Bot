@@ -29,14 +29,14 @@ public class BotInfoCommand extends CommandConnector {
                             Developer:
                             • [RealYusufIsmail](https://github.com/RealYusufIsmail)
                             Runtime-Environment:
-                            Gradle 7.3
-                            Java 17
+                            • Gradle 7.3
+                            • Java 17
                             Library's:
-                            [JDA](https://github.com/Javacord/Javacord)
-                            [YusufIsmail's Discord core](https://github.com/YusufsDiscordbot/YusufIsmails-Discord-core)
+                            • [JDA](https://github.com/Javacord/Javacord)
+                            • [YusufIsmail's Discord core](https://github.com/YusufsDiscordbot/YusufIsmails-Discord-core)
                             Bots repo and org:
-                            [Yusuf's moderation bot](https://github.com/YusufsDiscordbot/Yusuf-s-Moderation-Bot)
-                            [Yusuf's Discord bot](https://github.com/YusufsDiscordbot)
+                            • [Yusuf's moderation bot](https://github.com/YusufsDiscordbot/Yusuf-s-Moderation-Bot)
+                            • [Yusuf's Discord bot](https://github.com/YusufsDiscordbot)
                             """)
             .setFooter("Made by Yusuf's Discord bot")
             .setColor(Color.CYAN);

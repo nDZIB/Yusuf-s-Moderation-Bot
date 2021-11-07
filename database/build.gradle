@@ -27,3 +27,4 @@ dependencies {
 application {
     mainClass = 'io.github.yusufsdiscordbot.yusufsmoderationbot.DataBase'
 }
+compileJava.options.encoding = 'UTF-8'

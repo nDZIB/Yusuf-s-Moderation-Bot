@@ -60,9 +60,7 @@ public class DataBase {
         }
     }
 
-    private DataBase() {
-
-    }
+    private DataBase() {}
 
     public static Connection getConnection() throws SQLException {
         return dataSource.getConnection();

@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -46,14 +48,19 @@ public class DataBase {
         dataSource = new HikariDataSource(config);
 
         try (final Statement statement = getConnection().createStatement()) {
+            File folder = new File("application/src/main/resources/database");
+            File[] listOfFiles = folder.listFiles();
 
-            // language=SQLite
-            statement.execute("CREATE TABLE IF NOT EXISTS warn_settings("
-                    + "user_id BIGINT NOT NULL PRIMARY KEY," + "guid_id BIGINT NOT NULL,"
-                    + "warn_reason TEXT NOT NULL," + "amount_of_warns INTEGER NOT NULL" + ");");
+            for (File file : listOfFiles) {
+                if (file.isFile()) {
+                    statement.execute(new String(Files.readAllBytes(Path.of(file.getPath()))));
+                }
+            }
+
+
 
             logger.info("Database table created");
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             logger.error("Error while loading database", e);
         }
     }

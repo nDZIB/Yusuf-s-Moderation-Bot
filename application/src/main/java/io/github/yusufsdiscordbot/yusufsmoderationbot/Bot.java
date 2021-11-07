@@ -13,11 +13,11 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 import javax.security.auth.login.LoginException;
+import java.sql.SQLException;
 import java.util.EnumSet;
 
 public class Bot {
-
-    public static void main(String[] args) throws LoginException, InterruptedException {
+    public static void main(String[] args) throws LoginException, InterruptedException, SQLException {
         final int cores = Runtime.getRuntime().availableProcessors();
 
         if (cores <= 1) {
@@ -25,6 +25,7 @@ public class Bot {
             System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "1");
         }
 
+        DataBase.getConnection();
         JDA jda = JDABuilder
             .createDefault(Config.get("TOKEN"), GatewayIntent.GUILD_MEMBERS,
                     GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_VOICE_STATES)

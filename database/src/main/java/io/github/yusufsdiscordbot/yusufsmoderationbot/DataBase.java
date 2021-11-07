@@ -6,7 +6,7 @@
  *  The GNU General Public License is a free, copyleft license for software and other kinds of works.
  */
 
-package io.github.yusufsdiscordbot.yusufsmoderationbot.database;
+package io.github.yusufsdiscordbot.yusufsmoderationbot;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

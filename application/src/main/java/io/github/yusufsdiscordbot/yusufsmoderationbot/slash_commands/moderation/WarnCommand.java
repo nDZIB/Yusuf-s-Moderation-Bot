@@ -60,7 +60,7 @@ public class WarnCommand extends CommandConnector {
             int amountOfWarns) {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
             // language=SQLite
-            .prepareStatement("" + "UPDATE warn_settings " + "SET user_id = ? " + "AND guid_id = ? "
+            .prepareStatement("UPDATE warn_settings " + "SET user_id = ? " + "AND guid_id = ? "
                     + "AND warn_reason = ? " + "WHERE amount_of_warns = ?")) {
 
             preparedStatement.setLong(1, userId);
@@ -72,5 +72,9 @@ public class WarnCommand extends CommandConnector {
         } catch (SQLException e) {
             logger.error("Failed to update the warn settings", e);
         }
+    }
+
+    private void getAmountOfWarns() {
+
     }
 }

@@ -17,11 +17,6 @@ plugins {
 
 sourceCompatibility = JavaVersion.VERSION_17
 
-def gpr_creds = {
-    username = property('gpr.username')
-    password = property('gpr.token')
-}
-
 shadowJar {
     archiveBaseName.set('YusufsModerationBot')
     archiveClassifier.set('')

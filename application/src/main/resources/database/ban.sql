@@ -6,7 +6,7 @@
  *  The GNU General Public License is a free, copyleft license for software and other kinds of works.
  */
 
-CREATE TABLE ban_settings
+CREATE TABLE IF NOT EXISTS ban_settings
 (
     user_id BIGINT NOT NULL PRIMARY KEY,
     guid_id BIGINT NOT NULL,

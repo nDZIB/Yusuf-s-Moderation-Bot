@@ -25,7 +25,7 @@ public class DataBase {
 
     static {
         try {
-            final File dbFile = new File("database/src/main/resources/database.db");
+            final File dbFile = new File("database/build/database.db");
 
             if (!dbFile.exists()) {
                 if (dbFile.createNewFile()) {
@@ -36,7 +36,7 @@ public class DataBase {
             logger.error("Error while loading database", e);
         }
 
-        config.setJdbcUrl("jdbc:sqlite:database.db");
+        config.setJdbcUrl("jdbc:sqlite:database/build/database.db");
         config.setUsername("");
         config.setPassword("");
         config.addDataSourceProperty("cachePrepStmts", "true");

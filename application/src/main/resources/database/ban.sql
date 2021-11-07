@@ -10,5 +10,5 @@ CREATE TABLE ban_settings
 (
     user_id BIGINT NOT NULL PRIMARY KEY,
     guid_id BIGINT NOT NULL,
-    ban_reason TEXT NOT NULL,
+    ban_reason TEXT NOT NULL
 )

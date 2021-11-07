@@ -16,6 +16,7 @@ import javax.security.auth.login.LoginException;
 import java.util.EnumSet;
 
 public class Bot {
+
     public static void main(String[] args) throws LoginException, InterruptedException {
         final int cores = Runtime.getRuntime().availableProcessors();
 

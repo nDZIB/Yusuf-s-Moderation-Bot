@@ -22,4 +22,3 @@
 rootProject.name = 'Yusuf-s-Moderation-Bot'
 
 include 'application'
-include 'database'

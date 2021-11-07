@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
@@ -50,7 +51,9 @@ public class WarnCommand extends CommandConnector {
                 guild.getBot(), yusufSlashCommandEvent, guild, COMMAND_TYPE)) {
             return;
         }
-        int amountOfWarns = 1;
+        int oldAmountOfWarns = getCurrentAmountOfWarns(user.getUserIdLong());
+
+        int amountOfWarns = oldAmountOfWarns + 1;
 
         updateWarn(yusufSlashCommandEvent.getEvent().getGuild().getIdLong(), reason,
                 user.getUserIdLong(), amountOfWarns);
@@ -74,7 +77,30 @@ public class WarnCommand extends CommandConnector {
         }
     }
 
-    private void getAmountOfWarns() {
+    private Integer getCurrentAmountOfWarns(long userId) {
+        try (final PreparedStatement preparedStatement = DataBase.getConnection()
 
+            // language=SQLite
+            .prepareStatement("SELECT amount_of_warns FROM warn_settings WHERE user_id = ?")) {
+
+            preparedStatement.setLong(1, userId);
+
+            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("amount_of_warns");
+                }
+            }
+            try (final PreparedStatement insertStatement = DataBase.getConnection()
+                // language=SQLite
+                .prepareStatement("INSERT INTO warn_settings(user_id) VALUES(?)")) {
+
+                insertStatement.setLong(1, userId);
+                insertStatement.execute();
+            }
+
+        } catch (SQLException e) {
+            logger.error("Failed to update retrieve the wanr amount settings", e);
+        }
+        return getCurrentAmountOfWarns(userId);
     }
 }

@@ -25,7 +25,7 @@ public class DataBase {
 
     static {
         try {
-            final File dbFile = new File("database.db");
+            final File dbFile = new File("database/src/main/resources/database.db");
 
             if (!dbFile.exists()) {
                 if (dbFile.createNewFile()) {

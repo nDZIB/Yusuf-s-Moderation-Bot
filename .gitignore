@@ -21,8 +21,7 @@ build
 eclipse
 run
 .DS_Store
-<<<<<<< Updated upstream
 =======
 *.log
 .env
->>>>>>> Stashed changes
+database.db

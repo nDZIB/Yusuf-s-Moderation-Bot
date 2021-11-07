@@ -7,7 +7,9 @@
 
 package io.github.yusufsdiscordbot.yusufsmoderationbot;
 
-import net.dv8tion.jda.api.*;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
@@ -17,7 +19,8 @@ import java.sql.SQLException;
 import java.util.EnumSet;
 
 public class Bot {
-    public static void main(String[] args) throws LoginException, InterruptedException, SQLException {
+    public static void main(String[] args)
+            throws LoginException, InterruptedException, SQLException {
         final int cores = Runtime.getRuntime().availableProcessors();
 
         if (cores <= 1) {

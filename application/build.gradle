@@ -22,7 +22,6 @@ shadowJar {
     archiveClassifier.set('')
     archiveVersion.set('')
 }
-
 repositories {
     mavenCentral()
     maven {
@@ -41,6 +40,8 @@ repositories {
 }
 
 dependencies {
+    implementation project(':database')
+
     //JDA
     implementation group: 'net.dv8tion', name: 'JDA', version: '4.3.0_339'
     implementation group: 'pw.chew', name: 'jda-chewtils-command', version: '1.22.0'

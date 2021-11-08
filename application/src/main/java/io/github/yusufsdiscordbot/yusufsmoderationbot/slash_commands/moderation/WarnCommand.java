@@ -55,7 +55,7 @@ public class WarnCommand extends CommandConnector {
 
         int amountOfWarns = oldAmountOfWarns + 1;
 
-        updateWarn(yusufSlashCommandEvent.getEvent().getGuild().getIdLong(), reason,
+        updateWarn(guild.getGuild().getIdLong(), reason,
                 user.getUserIdLong(), amountOfWarns);
 
         yusufSlashCommandEvent.replyEphemeral("I have warned the user" + user.getUserTag());

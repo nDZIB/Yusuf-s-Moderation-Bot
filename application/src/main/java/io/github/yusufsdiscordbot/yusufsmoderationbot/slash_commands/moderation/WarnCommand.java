@@ -51,13 +51,16 @@ public class WarnCommand extends CommandConnector {
                 guild.getBot(), yusufSlashCommandEvent, guild, COMMAND_TYPE)) {
             return;
         }
-        int oldAmountOfWarns = getCurrentAmountOfWarns(user.getUserIdLong());
 
-        int amountOfWarns = oldAmountOfWarns + 1;
+        Integer oldAmountOfWarns = getCurrentAmountOfWarns(user.getUserIdLong());
+        int amountOfWarns;
+        if (oldAmountOfWarns == null) {
+            amountOfWarns = 0;
+        } else {
+            amountOfWarns = oldAmountOfWarns + 1;
+        }
 
-        updateWarn(guild.getGuild().getIdLong(), reason,
-                user.getUserIdLong(), amountOfWarns);
-
+        updateWarn(guild.getGuild().getIdLong(), reason, user.getUserIdLong(), amountOfWarns);
         yusufSlashCommandEvent.replyEphemeral("I have warned the user" + user.getUserTag());
     }
 
@@ -65,8 +68,8 @@ public class WarnCommand extends CommandConnector {
     private void updateWarn(long guildId, @NotNull String reason, long userId, int amountOfWarns) {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
             // language=SQLite
-            .prepareStatement("UPDATE warn_settings " + "SET user_id = ? " + "AND guid_id = ? "
-                    + "AND warn_reason = ? " + "AND amount_of_warns = ?")) {
+            .prepareStatement(
+                    "UPDATE warn_settings SET guid_id= ?, warn_reason= ?, amount_of_warns = ? WHERE user_id = ?")) {
 
             preparedStatement.setLong(1, userId);
             preparedStatement.setLong(2, guildId);
@@ -88,7 +91,9 @@ public class WarnCommand extends CommandConnector {
             preparedStatement.setLong(1, userId);
 
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
+                if (resultSet.wasNull()) {
+                    return 0;
+                } else if (resultSet.next()) {
                     return resultSet.getInt("amount_of_warns");
                 }
             }

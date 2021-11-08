@@ -101,7 +101,7 @@ public class WarnCommand extends CommandConnector {
             }
 
         } catch (SQLException e) {
-            logger.error("Failed to update retrieve the wanr amount settings", e);
+            logger.error("Failed to update retrieve the warn amount settings", e);
         }
         return getCurrentAmountOfWarns(userId);
     }

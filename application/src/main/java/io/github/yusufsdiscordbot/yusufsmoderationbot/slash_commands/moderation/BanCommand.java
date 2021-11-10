@@ -13,12 +13,16 @@
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation;
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.*;
+import io.github.yusufsdiscordbot.yusufsmoderationbot.DataBase;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class BanCommand extends CommandConnector {
@@ -79,6 +83,23 @@ public class BanCommand extends CommandConnector {
         return true;
     }
 
+
+    private void updateBanDatabase(long userId, long guildId, @NotNull String reason) {
+        try (final PreparedStatement preparedStatement = DataBase.getConnection()
+                // language=SQLite
+                .prepareStatement(
+                        "UPDATE ban_settings SET user_id= ?, guid_id= ?, ban_reason = ?")) {
+
+            preparedStatement.setLong(1, userId);
+            preparedStatement.setLong(2, guildId);
+            preparedStatement.setString(3, reason);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Failed to update the warn settings", e);
+        }
+    }
+
     @Override
     public void onSlashCommand(YusufSlashCommandEvent event) {
         YusufOptionMapping userOption =
@@ -110,6 +131,8 @@ public class BanCommand extends CommandConnector {
             return;
         }
 
-        banUser(userOption.getAsUser(), event.getMember(), reason, deleteHistoryDays, guild, event);
+        YusufUser user = userOption.getAsUser();
+        banUser(user, event.getMember(), reason, deleteHistoryDays, guild, event);
+        updateBanDatabase(user.getUserIdLong(), guild.getGuild().getIdLong(), reason);
     }
 }

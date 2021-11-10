@@ -131,6 +131,6 @@ public class BanCommand extends CommandConnector {
 
         YusufUser user = userOption.getAsUser();
         banUser(user, event.getMember(), reason, deleteHistoryDays, guild, event);
-        updateBanDatabase(user.getUserIdLong(), guild.getGuild().getIdLong(), reason);
+        updateBanDatabase(user.getUserIdLong(), guild.getIdLong(), reason);
     }
 }

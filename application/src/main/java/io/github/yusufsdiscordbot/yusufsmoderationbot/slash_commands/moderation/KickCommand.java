@@ -84,7 +84,7 @@ public class KickCommand extends CommandConnector {
         }
 
         kickUser(target, author, reason, guild, event);
-        updateKickDatabase(target.getYusufUser().getUserIdLong(), guild.getGuild().getIdLong(), reason);
+        updateKickDatabase(target.getUserIdLong(), guild.getIdLong(), reason);
     }
 
     private static void kickUser(@NotNull YusufMember target, @NotNull YusufMember author,

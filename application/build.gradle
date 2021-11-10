@@ -45,7 +45,7 @@ dependencies {
     implementation group: 'net.dv8tion', name: 'JDA', version: '4.3.0_346'
     implementation group: 'pw.chew', name: 'jda-chewtils-command', version: '1.22.0'
     //Yusuf Ismail's Discord Core
-    implementation group: 'io.github.yusufsdiscordbot', name: 'application', version: '1.0.21'
+    implementation group: 'io.github.yusufsdiscordbot', name: 'application', version: '1.0.22'
     implementation group: 'me.duncte123', name: 'botCommons', version: '2.3.8'
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'

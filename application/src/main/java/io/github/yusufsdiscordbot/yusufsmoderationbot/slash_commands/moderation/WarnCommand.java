@@ -52,8 +52,8 @@ public class WarnCommand extends CommandConnector {
             return;
         }
 
-        Integer oldAmountOfWarns =
-                getCurrentAmountOfWarns(user.getUserIdLong(), guild.getGuild().getIdLong());
+        Integer oldAmountOfWarns = getCurrentAmountOfWarns(user.getUserIdLong(), guild.getIdLong(),
+                "For breaking the rules", 0);
         int amountOfWarns;
         if (oldAmountOfWarns == null) {
             amountOfWarns = 0;
@@ -61,12 +61,12 @@ public class WarnCommand extends CommandConnector {
             amountOfWarns = oldAmountOfWarns + 1;
         }
 
-        updateWarn(guild.getIdLong(), reason, user.getUserIdLong(), amountOfWarns);
-        yusufSlashCommandEvent.replyEphemeral("I have warned the user" + user.getUserTag());
+        updateWarn(user.getUserIdLong(), guild.getIdLong(), reason, amountOfWarns);
+        yusufSlashCommandEvent.replyMessage("I have warned the user" + user.getUserTag());
     }
 
 
-    private void updateWarn(long guildId, @NotNull String reason, long userId, int amountOfWarns) {
+    private void updateWarn(long userId, long guildId, @NotNull String reason, int amountOfWarns) {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
             // language=SQLite
             .prepareStatement(
@@ -83,7 +83,8 @@ public class WarnCommand extends CommandConnector {
         }
     }
 
-    private Integer getCurrentAmountOfWarns(long userId, long guildId) {
+    private Integer getCurrentAmountOfWarns(long userId, long guildId, @NotNull String reason,
+            int amountOfWarns) {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
 
             // language=SQLite
@@ -101,16 +102,19 @@ public class WarnCommand extends CommandConnector {
             }
             try (final PreparedStatement insertStatement = DataBase.getConnection()
                 // language=SQLite
-                .prepareStatement("INSERT INTO warn_settings(user_id, guild_id) VALUES(?,?) ")) {
+                .prepareStatement(
+                        "INSERT INTO warn_settings(user_id, guild_id, warn_reason, amount_of_warns) VALUES(?,?, ?, ?) ")) {
 
                 insertStatement.setLong(1, userId);
                 insertStatement.setLong(2, guildId);
+                insertStatement.setString(3, reason);
+                insertStatement.setLong(4, amountOfWarns);
                 insertStatement.execute();
             }
 
         } catch (SQLException e) {
             logger.error("Failed to update retrieve the warn amount settings", e);
         }
-        return getCurrentAmountOfWarns(userId, guildId);
+        return getCurrentAmountOfWarns(userId, guildId, reason, amountOfWarns);
     }
 }

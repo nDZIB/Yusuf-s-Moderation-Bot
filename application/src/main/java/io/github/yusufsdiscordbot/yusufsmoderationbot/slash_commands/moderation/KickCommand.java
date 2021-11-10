@@ -112,8 +112,9 @@ public class KickCommand extends CommandConnector {
 
     private void updateKickDatabase(long userId, long guildId, @NotNull String reason) {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
-                // language=SQLite
-                .prepareStatement("UPDATE kick_settings SET user_id = ?, guild_id = ?, kick_reason = ?")) {
+            // language=SQLite
+            .prepareStatement(
+                    "UPDATE kick_settings SET user_id = ?, guild_id = ?, kick_reason = ?")) {
 
             preparedStatement.setLong(1, userId);
             preparedStatement.setLong(2, guildId);

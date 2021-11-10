@@ -24,3 +24,4 @@ run
 .DS_Store
 .env
 database.db
+identifier.sqlite

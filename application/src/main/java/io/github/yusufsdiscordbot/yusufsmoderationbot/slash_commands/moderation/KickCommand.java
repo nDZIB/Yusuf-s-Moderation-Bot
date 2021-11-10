@@ -13,12 +13,15 @@
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation;
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.*;
+import io.github.yusufsdiscordbot.yusufsmoderationbot.DataBase;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class KickCommand extends CommandConnector {
@@ -81,6 +84,7 @@ public class KickCommand extends CommandConnector {
         }
 
         kickUser(target, author, reason, guild, event);
+        updateKickDatabase(target.getYusufUser().getUserIdLong(), guild.getGuild().getIdLong(), reason);
     }
 
     private static void kickUser(@NotNull YusufMember target, @NotNull YusufMember author,
@@ -106,4 +110,18 @@ public class KickCommand extends CommandConnector {
                 target.getUser().getId(), reason);
     }
 
+    private void updateKickDatabase(long userId, long guildId, @NotNull String reason) {
+        try (final PreparedStatement preparedStatement = DataBase.getConnection()
+                // language=SQLite
+                .prepareStatement("UPDATE kick_settings SET user_id = ?, guild_id = ?, kick_reason = ?")) {
+
+            preparedStatement.setLong(1, userId);
+            preparedStatement.setLong(2, guildId);
+            preparedStatement.setString(3, reason);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Failed to update the warn settings", e);
+        }
+    }
 }

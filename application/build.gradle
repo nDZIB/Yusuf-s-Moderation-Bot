@@ -42,7 +42,7 @@ repositories {
 dependencies {
 
     //JDA
-    implementation group: 'net.dv8tion', name: 'JDA', version: '4.3.0_339'
+    implementation group: 'net.dv8tion', name: 'JDA', version: '4.3.0_346'
     implementation group: 'pw.chew', name: 'jda-chewtils-command', version: '1.22.0'
     //Yusuf Ismail's Discord Core
     implementation group: 'io.github.yusufsdiscordbot', name: 'application', version: '1.0.21'

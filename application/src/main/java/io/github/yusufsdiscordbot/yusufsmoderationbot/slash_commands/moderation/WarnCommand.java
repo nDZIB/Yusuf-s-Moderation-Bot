@@ -52,7 +52,8 @@ public class WarnCommand extends CommandConnector {
             return;
         }
 
-        Integer oldAmountOfWarns = getCurrentAmountOfWarns(user.getUserIdLong(), guild.getGuild().getIdLong());
+        Integer oldAmountOfWarns =
+                getCurrentAmountOfWarns(user.getUserIdLong(), guild.getGuild().getIdLong());
         int amountOfWarns;
         if (oldAmountOfWarns == null) {
             amountOfWarns = 0;
@@ -100,9 +101,10 @@ public class WarnCommand extends CommandConnector {
             }
             try (final PreparedStatement insertStatement = DataBase.getConnection()
                 // language=SQLite
-                .prepareStatement("INSERT INTO warn_settings(user_id, guid_id) VALUES(?) ")) {
+                .prepareStatement("INSERT INTO warn_settings(user_id, guild_id) VALUES(?,?) ")) {
 
                 insertStatement.setLong(1, userId);
+                insertStatement.setLong(2, guildId);
                 insertStatement.execute();
             }
 

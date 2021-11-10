@@ -45,15 +45,15 @@ public class WarnCommand extends CommandConnector {
         YusufOptionMapping userOption = Objects.requireNonNull(
                 yusufSlashCommandEvent.getYusufOption(USER_OPTION), "The target is null");
         YusufUser user = userOption.getAsUser();
-        String reason = userOption.getOptionMapping().getAsString();
+        String reason = yusufSlashCommandEvent.getOption(REASON_OPTION).getAsString();
 
         if (!ModerationHelper.handleHasPermissions(yusufSlashCommandEvent.getMember(),
                 guild.getBot(), yusufSlashCommandEvent, guild, COMMAND_TYPE)) {
             return;
         }
 
-        Integer oldAmountOfWarns = getCurrentAmountOfWarns(user.getUserIdLong(), guild.getIdLong(),
-                "For breaking the rules", 0);
+        Integer oldAmountOfWarns =
+                getCurrentAmountOfWarns(user.getUserIdLong(), guild.getIdLong(), reason, 0);
         int amountOfWarns;
         if (oldAmountOfWarns == null) {
             amountOfWarns = 0;

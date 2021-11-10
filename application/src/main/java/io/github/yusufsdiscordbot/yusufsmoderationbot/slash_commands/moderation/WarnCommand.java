@@ -52,7 +52,7 @@ public class WarnCommand extends CommandConnector {
             return;
         }
 
-        Integer oldAmountOfWarns = getCurrentAmountOfWarns(user.getUserIdLong());
+        Integer oldAmountOfWarns = getCurrentAmountOfWarns(user.getUserIdLong(), guild.getGuild().getIdLong());
         int amountOfWarns;
         if (oldAmountOfWarns == null) {
             amountOfWarns = 0;
@@ -69,7 +69,7 @@ public class WarnCommand extends CommandConnector {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
             // language=SQLite
             .prepareStatement(
-                    "UPDATE warn_settings SET user_id = ?, guid_id = ?, warn_reason = ?, amount_of_warns = ?")) {
+                    "UPDATE warn_settings SET user_id = ?, guild_id = ?, warn_reason = ?, amount_of_warns = ?")) {
 
             preparedStatement.setLong(1, userId);
             preparedStatement.setLong(2, guildId);
@@ -82,13 +82,16 @@ public class WarnCommand extends CommandConnector {
         }
     }
 
-    private Integer getCurrentAmountOfWarns(long userId) {
+    private Integer getCurrentAmountOfWarns(long userId, long guildId) {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
 
             // language=SQLite
-            .prepareStatement("SELECT amount_of_warns FROM warn_settings WHERE user_id = ?")) {
+            .prepareStatement(
+                    "SELECT amount_of_warns FROM warn_settings WHERE user_id = ? AND guild_id = ?")) {
 
             preparedStatement.setLong(1, userId);
+            preparedStatement.setLong(2, guildId);
+
 
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
@@ -97,7 +100,7 @@ public class WarnCommand extends CommandConnector {
             }
             try (final PreparedStatement insertStatement = DataBase.getConnection()
                 // language=SQLite
-                .prepareStatement("INSERT INTO warn_settings(user_id) VALUES(?)")) {
+                .prepareStatement("INSERT INTO warn_settings(user_id, guid_id) VALUES(?) ")) {
 
                 insertStatement.setLong(1, userId);
                 insertStatement.execute();
@@ -106,6 +109,6 @@ public class WarnCommand extends CommandConnector {
         } catch (SQLException e) {
             logger.error("Failed to update retrieve the warn amount settings", e);
         }
-        return getCurrentAmountOfWarns(userId);
+        return getCurrentAmountOfWarns(userId, guildId);
     }
 }

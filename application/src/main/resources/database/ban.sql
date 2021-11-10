@@ -9,6 +9,6 @@
 CREATE TABLE IF NOT EXISTS ban_settings
 (
     user_id BIGINT NOT NULL PRIMARY KEY,
-    guid_id BIGINT NOT NULL,
+    guild_id BIGINT NOT NULL,
     ban_reason TEXT NOT NULL
 )

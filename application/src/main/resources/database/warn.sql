@@ -9,7 +9,7 @@
 CREATE TABLE IF NOT EXISTS warn_settings
 (
     user_id BIGINT NOT NULL PRIMARY KEY,
-    guid_id BIGINT NOT NULL,
+    guild_id BIGINT NOT NULL,
     warn_reason TEXT NOT NULL,
     amount_of_warns INTEGER NOT NULL
 )

@@ -9,6 +9,6 @@
 CREATE TABLE IF NOT EXISTS kick_settings
 (
     user_id BIGINT NOT NULL PRIMARY KEY,
-    guid_id BIGINT NOT NULL,
+    guild_id BIGINT NOT NULL,
     kick_reason TEXT NOT NULL
 )

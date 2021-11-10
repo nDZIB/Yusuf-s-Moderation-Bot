@@ -91,9 +91,7 @@ public class WarnCommand extends CommandConnector {
             preparedStatement.setLong(1, userId);
 
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.wasNull()) {
-                    return 0;
-                } else if (resultSet.next()) {
+                if (resultSet.next()) {
                     return resultSet.getInt("amount_of_warns");
                 }
             }

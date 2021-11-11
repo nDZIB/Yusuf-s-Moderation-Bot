@@ -14,12 +14,14 @@ package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.*;
 import io.github.yusufsdiscordbot.yusufsmoderationbot.DataBase;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.*;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Objects;
@@ -71,12 +73,18 @@ public class BanCommand extends CommandConnector {
             @NotNull YusufMember author, @NotNull YusufSlashCommandEvent event) {
         String targetTag = target.getUser().getAsTag();
         if (!author.canInteract(target)) {
-            event.replyEphemeral("The user " + targetTag + " is too powerful for you to ban.");
+            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("To powerful")
+                .setDescription("The user " + targetTag + " is too powerful for you to ban.")
+                .setColor(Color.CYAN)
+                .build());
             return false;
         }
 
         if (!bot.canInteract(target)) {
-            event.replyEphemeral("The user " + targetTag + " is too powerful for me to ban.");
+            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("To powerful")
+                    .setDescription("The user " + targetTag + " is too powerful for me to ban.")
+                    .setColor(Color.CYAN)
+                    .build());
             return false;
         }
         return true;

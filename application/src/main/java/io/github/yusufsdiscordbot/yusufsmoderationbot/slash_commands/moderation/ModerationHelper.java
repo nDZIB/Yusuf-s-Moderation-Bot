@@ -10,10 +10,13 @@ package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufGuild;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufMember;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.awt.*;
 
 public enum ModerationHelper {
     ;
@@ -23,14 +26,20 @@ public enum ModerationHelper {
             @NotNull YusufMember bot, @NotNull YusufSlashCommandEvent event,
             @NotNull YusufGuild guild, String commandType) {
         if (!author.hasPermission(Permission.BAN_MEMBERS)) {
-            event.replyEphemeral("You can not " + commandType
-                    + " users in this guild since you do not have the BAN_MEMBERS permission.");
+            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("Lack of perms")
+                .setDescription("You can not " + commandType
+                        + " users in this guild since you do not have the BAN_MEMBERS permission.")
+                .setColor(Color.CYAN)
+                .build());
             return false;
         }
 
         if (!bot.hasPermission(Permission.BAN_MEMBERS)) {
-            event.replyEphemeral("I can not " + commandType
-                    + " users in this guild since I do not have the BAN_MEMBERS permission.");
+            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("Lack of perms")
+                .setDescription("I can not " + commandType
+                        + " users in this guild since I do not have the BAN_MEMBERS permission.")
+                .setColor(Color.CYAN)
+                .build());
 
             logger.error("The bot does not have BAN_MEMBERS permission on the server '{}' ",
                     guild.getName());

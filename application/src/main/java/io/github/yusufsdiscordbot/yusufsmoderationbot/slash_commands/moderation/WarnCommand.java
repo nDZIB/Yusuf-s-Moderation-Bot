@@ -9,11 +9,13 @@ package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.*;
 import io.github.yusufsdiscordbot.yusufsmoderationbot.DataBase;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -63,7 +65,10 @@ public class WarnCommand extends CommandConnector {
         }
 
         updateWarn(user.getUserIdLong(), guild.getIdLong(), reason, amountOfWarns);
-        yusufSlashCommandEvent.replyMessage("I have warned the user" + user.getUserTag());
+        yusufSlashCommandEvent.replyEmbed(new EmbedBuilder().setTitle("Success")
+            .setDescription("I have warned the user" + user.getUserTag())
+            .setColor(Color.CYAN)
+            .build());
     }
 
 

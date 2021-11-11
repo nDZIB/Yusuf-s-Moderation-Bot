@@ -14,12 +14,14 @@ package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.*;
 import io.github.yusufsdiscordbot.yusufsmoderationbot.DataBase;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.*;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Objects;
@@ -52,8 +54,11 @@ public class KickCommand extends CommandConnector {
         YusufMember bot = guild.getBot();
 
         if (!author.hasPermission(Permission.KICK_MEMBERS)) {
-            event.replyEphemeral(
-                    "You can not kick users in this guild since you do not have the KICK_MEMBERS permission.");
+            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("Lack of perms")
+                .setDescription(
+                        "You can not kick users in this guild since you do not have the KICK_MEMBERS permission.")
+                .setColor(Color.CYAN)
+                .build());
             return;
         }
 
@@ -66,8 +71,11 @@ public class KickCommand extends CommandConnector {
         }
 
         if (!bot.hasPermission(Permission.KICK_MEMBERS)) {
-            event.replyEphemeral(
-                    "I can not kick users in this guild since I do not have the KICK_MEMBERS permission.");
+            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("Lack of perms")
+                .setDescription(
+                        "I can not kick users in this guild since I do not have the KICK_MEMBERS permission.")
+                .setColor(Color.CYAN)
+                .build());
 
             logger.error("The bot does not have KICK_MEMBERS permission on the server '{}' ",
                     event.getGuild().getName());
@@ -101,8 +109,11 @@ public class KickCommand extends CommandConnector {
                         .formatted(guild.getName(), reason)))
             .mapToResult()
             .flatMap(result -> guild.kick(target, reason).reason(reason))
-            .flatMap(v -> event.reply(target.getUser().getAsTag() + " was kicked by "
-                    + author.getUser().getAsTag() + " for: " + reason))
+            .flatMap(v -> event.replyEmbeds(new EmbedBuilder().setTitle("Kicked")
+                .setDescription(target.getUser().getAsTag() + " was kicked by "
+                        + author.getUser().getAsTag() + " for: " + reason)
+                .setColor(Color.CYAN)
+                .build()))
             .queue();
 
         logger.info(" '{} ({})' kicked the user '{} ({})' due to reason being '{}'",

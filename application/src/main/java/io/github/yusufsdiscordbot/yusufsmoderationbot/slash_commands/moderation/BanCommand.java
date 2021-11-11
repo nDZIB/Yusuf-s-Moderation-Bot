@@ -82,9 +82,9 @@ public class BanCommand extends CommandConnector {
 
         if (!bot.canInteract(target)) {
             event.replyEphemeralEmbed(new EmbedBuilder().setTitle("To powerful")
-                    .setDescription("The user " + targetTag + " is too powerful for me to ban.")
-                    .setColor(Color.CYAN)
-                    .build());
+                .setDescription("The user " + targetTag + " is too powerful for me to ban.")
+                .setColor(Color.CYAN)
+                .build());
             return false;
         }
         return true;

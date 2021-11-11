@@ -26,3 +26,4 @@ run
 *.log
 .env
 >>>>>>> Stashed changes
+identifier.sqlite

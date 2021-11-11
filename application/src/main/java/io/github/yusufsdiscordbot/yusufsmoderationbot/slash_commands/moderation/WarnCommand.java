@@ -45,7 +45,7 @@ public class WarnCommand extends CommandConnector {
         YusufOptionMapping userOption = Objects.requireNonNull(
                 yusufSlashCommandEvent.getYusufOption(USER_OPTION), "The target is null");
         YusufUser user = userOption.getAsUser();
-        String reason = yusufSlashCommandEvent.getOption(REASON_OPTION).getAsString();
+        String reason = Objects.requireNonNull(yusufSlashCommandEvent.getOption(REASON_OPTION)).getAsString();
 
         if (!ModerationHelper.handleHasPermissions(yusufSlashCommandEvent.getMember(),
                 guild.getBot(), yusufSlashCommandEvent, guild, COMMAND_TYPE)) {

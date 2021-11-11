@@ -86,7 +86,8 @@ public class BanCommand extends CommandConnector {
     private void updateBanDatabase(long userId, long guildId, @NotNull String reason) {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
             // language=SQLite
-            .prepareStatement("UPDATE ban_settings SET user_id= ?, guild_id = ?, ban_reason = ?")) {
+            .prepareStatement(
+                    "UPDATE ban_settings SET guild_id = ?, ban_reason = ? WHERE user_id = ?")) {
 
             preparedStatement.setLong(1, userId);
             preparedStatement.setLong(2, guildId);
@@ -94,7 +95,7 @@ public class BanCommand extends CommandConnector {
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Failed to update the warn settings", e);
+            logger.error("Failed to update the ban settings", e);
         }
     }
 

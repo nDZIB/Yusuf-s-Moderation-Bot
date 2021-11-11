@@ -114,7 +114,7 @@ public class KickCommand extends CommandConnector {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
             // language=SQLite
             .prepareStatement(
-                    "UPDATE kick_settings SET user_id = ?, guild_id = ?, kick_reason = ?")) {
+                    "UPDATE kick_settings SET guild_id = ?, kick_reason = ? WHERE user_id = ?")) {
 
             preparedStatement.setLong(1, userId);
             preparedStatement.setLong(2, guildId);
@@ -122,7 +122,7 @@ public class KickCommand extends CommandConnector {
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Failed to update the warn settings", e);
+            logger.error("Failed to update the kick settings", e);
         }
     }
 }

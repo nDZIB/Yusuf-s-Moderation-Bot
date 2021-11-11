@@ -55,7 +55,7 @@ public class AuditCommand extends CommandConnector {
     private void handleWarnCommand(@NotNull YusufSlashCommandEvent event) {
 
     }
-
+    
     private void handleKickCommand(@NotNull YusufSlashCommandEvent event) {
 
     }

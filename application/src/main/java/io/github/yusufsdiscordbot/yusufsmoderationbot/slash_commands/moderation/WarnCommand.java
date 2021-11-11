@@ -57,7 +57,7 @@ public class WarnCommand extends CommandConnector {
                 getCurrentAmountOfWarns(user.getUserIdLong(), guild.getIdLong(), reason, 0);
         int amountOfWarns;
         if (oldAmountOfWarns == null) {
-            amountOfWarns = 0;
+            amountOfWarns = 1;
         } else {
             amountOfWarns = oldAmountOfWarns + 1;
         }

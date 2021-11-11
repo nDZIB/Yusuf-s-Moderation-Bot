@@ -35,7 +35,6 @@ public class CommandHandler extends CoreSlashCommandHandler {
         addCommand(new UnBanCommand());
         addCommand(new WarnCommand());
         addCommand(new KickCommand());
-        addCommand(new PurgeCommand());
         addCommand(new AddRoleCommand());
         addCommand(new RemoveRoleCommand());
 

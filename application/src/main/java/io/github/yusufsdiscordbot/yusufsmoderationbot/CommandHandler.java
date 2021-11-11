@@ -37,6 +37,7 @@ public class CommandHandler extends CoreSlashCommandHandler {
         addCommand(new KickCommand());
         addCommand(new AddRoleCommand());
         addCommand(new RemoveRoleCommand());
+        addCommand(new AuditCommand());
 
         globalCommandsData.queue();
         guildCommandsData.queue();

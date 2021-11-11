@@ -47,4 +47,28 @@ public enum ModerationHelper {
         }
         return true;
     }
+
+    public static boolean handleCanInteractWithTarget(YusufMember target, YusufMember bot,
+            @NotNull YusufMember author, @NotNull YusufSlashCommandEvent event,
+            String commandType) {
+        String targetTag = target.getUser().getAsTag();
+        if (!author.canInteract(target)) {
+            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("To powerful")
+                .setDescription("The user " + targetTag + " is too powerful for you to "
+                        + commandType + ".")
+                .setColor(Color.CYAN)
+                .build());
+            return false;
+        }
+
+        if (!bot.canInteract(target)) {
+            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("To powerful")
+                .setDescription(
+                        "The user " + targetTag + " is too powerful for me to " + commandType + ".")
+                .setColor(Color.CYAN)
+                .build());
+            return false;
+        }
+        return true;
+    }
 }

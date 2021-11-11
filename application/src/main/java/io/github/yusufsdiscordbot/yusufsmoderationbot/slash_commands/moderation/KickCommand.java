@@ -49,41 +49,15 @@ public class KickCommand extends CommandConnector {
         String reason = Objects.requireNonNull(event.getOption(REASON_OPTION), "The reason is null")
             .getAsString();
 
-
         YusufGuild guild = event.getGuild();
         YusufMember bot = guild.getBot();
 
-        if (!author.hasPermission(Permission.KICK_MEMBERS)) {
-            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("Lack of perms")
-                .setDescription(
-                        "You can not kick users in this guild since you do not have the KICK_MEMBERS permission.")
-                .setColor(Color.CYAN)
-                .build());
+        if (target != null && !ModerationHelper.handleCanInteractWithTarget(target, bot, author,
+                event, "kick")) {
             return;
         }
 
-        String userTag = userOption.getAsUser().getUserTag();
-        if (!author.canInteract(target)) {
-            event.reply("The user " + userTag + " is too powerful for you to kick.")
-                .setEphemeral(true)
-                .queue();
-            return;
-        }
-
-        if (!bot.hasPermission(Permission.KICK_MEMBERS)) {
-            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("Lack of perms")
-                .setDescription(
-                        "I can not kick users in this guild since I do not have the KICK_MEMBERS permission.")
-                .setColor(Color.CYAN)
-                .build());
-
-            logger.error("The bot does not have KICK_MEMBERS permission on the server '{}' ",
-                    event.getGuild().getName());
-            return;
-        }
-
-        if (!bot.canInteract(target.getMember())) {
-            event.replyEphemeral("The user " + userTag + " is too powerful for me to kick.");
+        if (!hasKickPerms(author, bot, event)) {
             return;
         }
 
@@ -119,6 +93,31 @@ public class KickCommand extends CommandConnector {
         logger.info(" '{} ({})' kicked the user '{} ({})' due to reason being '{}'",
                 author.getUser().getAsTag(), author.getUserId(), target.getUser().getAsTag(),
                 target.getUser().getId(), reason);
+    }
+
+    private static boolean hasKickPerms(@NotNull YusufMember author, @NotNull YusufMember bot,
+            @NotNull YusufSlashCommandEvent event) {
+        if (!author.hasPermission(Permission.KICK_MEMBERS)) {
+            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("Lack of perms")
+                .setDescription(
+                        "You can not kick users in this guild since you do not have the KICK_MEMBERS permission.")
+                .setColor(Color.CYAN)
+                .build());
+            return false;
+        }
+
+        if (!bot.hasPermission(Permission.KICK_MEMBERS)) {
+            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("Lack of perms")
+                .setDescription(
+                        "I can not kick users in this guild since I do not have the KICK_MEMBERS permission.")
+                .setColor(Color.CYAN)
+                .build());
+
+            logger.error("The bot does not have KICK_MEMBERS permission on the server '{}' ",
+                    event.getGuild().getName());
+            return false;
+        }
+        return true;
     }
 
     private void updateKickDatabase(long userId, long guildId, @NotNull String reason) {

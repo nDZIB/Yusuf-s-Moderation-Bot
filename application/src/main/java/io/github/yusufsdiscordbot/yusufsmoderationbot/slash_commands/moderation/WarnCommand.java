@@ -44,23 +44,40 @@ public class WarnCommand extends CommandConnector {
     @Override
     public void onSlashCommand(YusufSlashCommandEvent yusufSlashCommandEvent) {
         YusufGuild guild = yusufSlashCommandEvent.getGuild();
+
         YusufOptionMapping userOption = Objects.requireNonNull(
                 yusufSlashCommandEvent.getYusufOption(USER_OPTION), "The target is null");
-        YusufUser user = userOption.getAsUser();
+
+        YusufMember author =
+                Objects.requireNonNull(yusufSlashCommandEvent.getMember(), "The author is null");
+
+        YusufMember targetMember = userOption.getAsMember();
+        YusufUser targetUser = userOption.getAsUser();
         String reason = Objects.requireNonNull(yusufSlashCommandEvent.getOption(REASON_OPTION))
             .getAsString();
+
+
+        if (targetMember != null && !ModerationHelper.handleCanInteractWithTarget(targetMember,
+                guild.getBot(), author, yusufSlashCommandEvent, "warn")) {
+            return;
+        }
 
         if (!ModerationHelper.handleHasPermissions(yusufSlashCommandEvent.getMember(),
                 guild.getBot(), yusufSlashCommandEvent, guild, COMMAND_TYPE)) {
             return;
         }
 
-        Integer oldAmountOfWarns = getCurrentAmountOfWarns(user.getUserIdLong(), guild.getIdLong());
+        Integer oldAmountOfWarns =
+                getCurrentAmountOfWarns(targetUser.getUserIdLong(), guild.getIdLong());
         int amountOfWarns = oldAmountOfWarns + 1;
 
-        updateWarn(user.getUserIdLong(), guild.getIdLong(), reason, amountOfWarns);
+        if (!yusufSlashCommandEvent.getGuild().checkReasonLength(reason, yusufSlashCommandEvent)) {
+            return;
+        }
+
+        updateWarn(targetUser.getUserIdLong(), guild.getIdLong(), reason, amountOfWarns);
         yusufSlashCommandEvent.replyEmbed(new EmbedBuilder().setTitle("Success")
-            .setDescription("I have warned the user " + user.getUserTag())
+            .setDescription("I have warned the user " + targetUser.getUserTag())
             .setColor(Color.CYAN)
             .build());
     }

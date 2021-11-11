@@ -14,14 +14,12 @@ package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.*;
 import io.github.yusufsdiscordbot.yusufsmoderationbot.DataBase;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.*;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Objects;
@@ -69,28 +67,6 @@ public class BanCommand extends CommandConnector {
                 target.getUserId(), deleteHistoryDays, reason);
     }
 
-    private static boolean handleCanInteractWithTarget(YusufMember target, YusufMember bot,
-            @NotNull YusufMember author, @NotNull YusufSlashCommandEvent event) {
-        String targetTag = target.getUser().getAsTag();
-        if (!author.canInteract(target)) {
-            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("To powerful")
-                .setDescription("The user " + targetTag + " is too powerful for you to ban.")
-                .setColor(Color.CYAN)
-                .build());
-            return false;
-        }
-
-        if (!bot.canInteract(target)) {
-            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("To powerful")
-                .setDescription("The user " + targetTag + " is too powerful for me to ban.")
-                .setColor(Color.CYAN)
-                .build());
-            return false;
-        }
-        return true;
-    }
-
-
     private void updateBanDatabase(long userId, long guildId, @NotNull String reason) {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
             // language=SQLite
@@ -123,7 +99,8 @@ public class BanCommand extends CommandConnector {
         YusufMember bot = guild.getBot();
 
         // Member doesn't exist if attempting to ban a user who is not part of the guild.
-        if (target != null && !handleCanInteractWithTarget(target, bot, author, event)) {
+        if (target != null && !ModerationHelper.handleCanInteractWithTarget(target, bot, author,
+                event, COMMAND_TYPE)) {
             return;
         }
 

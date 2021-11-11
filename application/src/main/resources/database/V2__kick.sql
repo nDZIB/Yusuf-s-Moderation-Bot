@@ -10,5 +10,5 @@ CREATE TABLE kick_settings
 (
     user_id BIGINT NOT NULL PRIMARY KEY,
     guild_id BIGINT NOT NULL,
-    kick_reason TEXT NOT NULL
+    kick_reason TEXT DEFAULT 'This user has been kicked for breaking the rules'
 )

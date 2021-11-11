@@ -55,18 +55,12 @@ public class WarnCommand extends CommandConnector {
             return;
         }
 
-        Integer oldAmountOfWarns =
-                getCurrentAmountOfWarns(user.getUserIdLong(), guild.getIdLong(), reason, 0);
-        int amountOfWarns;
-        if (oldAmountOfWarns == null) {
-            amountOfWarns = 1;
-        } else {
-            amountOfWarns = oldAmountOfWarns + 1;
-        }
+        Integer oldAmountOfWarns = getCurrentAmountOfWarns(user.getUserIdLong(), guild.getIdLong());
+        int amountOfWarns = oldAmountOfWarns + 1;
 
         updateWarn(user.getUserIdLong(), guild.getIdLong(), reason, amountOfWarns);
         yusufSlashCommandEvent.replyEmbed(new EmbedBuilder().setTitle("Success")
-            .setDescription("I have warned the user" + user.getUserTag())
+            .setDescription("I have warned the user " + user.getUserTag())
             .setColor(Color.CYAN)
             .build());
     }
@@ -89,8 +83,7 @@ public class WarnCommand extends CommandConnector {
         }
     }
 
-    private Integer getCurrentAmountOfWarns(long userId, long guildId, @NotNull String reason,
-            int amountOfWarns) {
+    private Integer getCurrentAmountOfWarns(long userId, long guildId) {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
 
             // language=SQLite
@@ -108,13 +101,10 @@ public class WarnCommand extends CommandConnector {
             }
             try (final PreparedStatement insertStatement = DataBase.getConnection()
                 // language=SQLite
-                .prepareStatement(
-                        "INSERT INTO warn_settings(user_id, guild_id, warn_reason, amount_of_warns) VALUES(?,?, ?, ?) ")) {
+                .prepareStatement("INSERT INTO warn_settings(user_id, guild_id) VALUES(?,?) ")) {
 
                 insertStatement.setLong(1, userId);
                 insertStatement.setLong(2, guildId);
-                insertStatement.setString(3, reason);
-                insertStatement.setLong(4, amountOfWarns);
                 insertStatement.execute();
             }
 
@@ -122,6 +112,6 @@ public class WarnCommand extends CommandConnector {
             logger.error("Failed to retrieve the amount of warns from the warn settings database",
                     e);
         }
-        return getCurrentAmountOfWarns(userId, guildId, reason, amountOfWarns);
+        return getCurrentAmountOfWarns(userId, guildId);
     }
 }

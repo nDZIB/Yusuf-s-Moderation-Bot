@@ -6,10 +6,9 @@
  *  The GNU General Public License is a free, copyleft license for software and other kinds of works.
  */
 
-CREATE TABLE warn_settings
+CREATE TABLE ban_settings
 (
     user_id BIGINT NOT NULL PRIMARY KEY,
     guild_id BIGINT NOT NULL,
-    warn_reason TEXT NOT NULL,
-    amount_of_warns INTEGER NOT NULL
+    ban_reason TEXT DEFAULT 'This user has been banned for breaking the rules'
 )

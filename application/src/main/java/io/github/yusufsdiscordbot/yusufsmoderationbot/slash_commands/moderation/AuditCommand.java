@@ -12,6 +12,9 @@ import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVis
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class AuditCommand extends CommandConnector {
     private static final String WARN_COMMAND = "warn";
@@ -40,7 +43,24 @@ public class AuditCommand extends CommandConnector {
     }
 
     @Override
-    public void onSlashCommand(YusufSlashCommandEvent yusufSlashCommandEvent) {
-    x
+    public void onSlashCommand(@NotNull YusufSlashCommandEvent yusufSlashCommandEvent) {
+        switch (Objects.requireNonNull(yusufSlashCommandEvent.getSubcommandName())) {
+            case WARN_COMMAND -> handleWarnCommand(yusufSlashCommandEvent);
+            case KICK_COMMAND -> handleKickCommand(yusufSlashCommandEvent);
+            case BAN_COMMAND -> handleBanCommand(yusufSlashCommandEvent);
+            default -> throw new AssertionError();
+        }
+    }
+
+    private void handleWarnCommand(@NotNull YusufSlashCommandEvent event) {
+
+    }
+
+    private void handleKickCommand(@NotNull YusufSlashCommandEvent event) {
+
+    }
+
+    private void handleBanCommand(@NotNull YusufSlashCommandEvent event) {
+
     }
 }

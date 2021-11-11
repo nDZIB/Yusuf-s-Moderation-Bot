@@ -24,10 +24,10 @@ public enum ModerationHelper {
 
     public static boolean handleHasPermissions(@NotNull YusufMember author,
             @NotNull YusufMember bot, @NotNull YusufSlashCommandEvent event,
-            @NotNull YusufGuild guild, String commandType) {
+            @NotNull YusufGuild guild, String commandName) {
         if (!author.hasPermission(Permission.BAN_MEMBERS)) {
             event.replyEphemeralEmbed(new EmbedBuilder().setTitle("Lack of perms")
-                .setDescription("You can not " + commandType
+                .setDescription("You can not " + commandName
                         + " users in this guild since you do not have the BAN_MEMBERS permission.")
                 .setColor(Color.CYAN)
                 .build());
@@ -36,7 +36,7 @@ public enum ModerationHelper {
 
         if (!bot.hasPermission(Permission.BAN_MEMBERS)) {
             event.replyEphemeralEmbed(new EmbedBuilder().setTitle("Lack of perms")
-                .setDescription("I can not " + commandType
+                .setDescription("I can not " + commandName
                         + " users in this guild since I do not have the BAN_MEMBERS permission.")
                 .setColor(Color.CYAN)
                 .build());
@@ -50,12 +50,12 @@ public enum ModerationHelper {
 
     public static boolean handleCanInteractWithTarget(YusufMember target, YusufMember bot,
             @NotNull YusufMember author, @NotNull YusufSlashCommandEvent event,
-            String commandType) {
+            String commandName) {
         String targetTag = target.getUser().getAsTag();
         if (!author.canInteract(target)) {
             event.replyEphemeralEmbed(new EmbedBuilder().setTitle("To powerful")
                 .setDescription("The user " + targetTag + " is too powerful for you to "
-                        + commandType + ".")
+                        + commandName + ".")
                 .setColor(Color.CYAN)
                 .build());
             return false;
@@ -64,7 +64,7 @@ public enum ModerationHelper {
         if (!bot.canInteract(target)) {
             event.replyEphemeralEmbed(new EmbedBuilder().setTitle("To powerful")
                 .setDescription(
-                        "The user " + targetTag + " is too powerful for me to " + commandType + ".")
+                        "The user " + targetTag + " is too powerful for me to " + commandName + ".")
                 .setColor(Color.CYAN)
                 .build());
             return false;

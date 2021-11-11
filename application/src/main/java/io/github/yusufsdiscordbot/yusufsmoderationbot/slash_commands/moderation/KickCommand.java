@@ -30,9 +30,10 @@ public class KickCommand extends CommandConnector {
     private static final Logger logger = LoggerFactory.getLogger(KickCommand.class);
     private static final String USER_OPTION = "user";
     private static final String REASON_OPTION = "reason";
+    private static final String COMMAND_NAME = "kick";
 
     public KickCommand() {
-        super("kick", "Kicks a given user", CommandVisibility.SERVER);
+        super(COMMAND_NAME, "Kicks a given user", CommandVisibility.SERVER);
 
         getCommandData()
             .addOption(OptionType.USER, USER_OPTION, "The user who you want to kick", true)
@@ -53,7 +54,7 @@ public class KickCommand extends CommandConnector {
         YusufMember bot = guild.getBot();
 
         if (target != null && !ModerationHelper.handleCanInteractWithTarget(target, bot, author,
-                event, "kick")) {
+                event, COMMAND_NAME)) {
             return;
         }
 

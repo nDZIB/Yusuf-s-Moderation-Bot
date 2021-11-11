@@ -29,13 +29,13 @@ public class WarnCommand extends CommandConnector {
     private static final Logger logger = LoggerFactory.getLogger(WarnCommand.class);
     private static final String USER_OPTION = "user";
     private static final String REASON_OPTION = "reason";
-    private static final String COMMAND_TYPE = "warn";
+    private static final String COMMAND_NAME = "warn";
 
     /**
      * Were the command is registered.
      */
     public WarnCommand() {
-        super("warn", "Warn a user", CommandVisibility.SERVER);
+        super(COMMAND_NAME, "Warn a user", CommandVisibility.SERVER);
 
         getCommandData().addOption(OptionType.USER, USER_OPTION, "The user to warn", true)
             .addOption(OptionType.STRING, REASON_OPTION, "The reason for the warn", true);
@@ -58,12 +58,12 @@ public class WarnCommand extends CommandConnector {
 
 
         if (targetMember != null && !ModerationHelper.handleCanInteractWithTarget(targetMember,
-                guild.getBot(), author, yusufSlashCommandEvent, "warn")) {
+                guild.getBot(), author, yusufSlashCommandEvent, COMMAND_NAME)) {
             return;
         }
 
         if (!ModerationHelper.handleHasPermissions(yusufSlashCommandEvent.getMember(),
-                guild.getBot(), yusufSlashCommandEvent, guild, COMMAND_TYPE)) {
+                guild.getBot(), yusufSlashCommandEvent, guild, COMMAND_NAME)) {
             return;
         }
 
@@ -81,7 +81,6 @@ public class WarnCommand extends CommandConnector {
             .setColor(Color.CYAN)
             .build());
     }
-
 
     private void updateWarn(long userId, long guildId, @NotNull String reason, int amountOfWarns) {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
@@ -109,7 +108,6 @@ public class WarnCommand extends CommandConnector {
 
             preparedStatement.setLong(1, userId);
             preparedStatement.setLong(2, guildId);
-
 
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {

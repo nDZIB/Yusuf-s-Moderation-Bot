@@ -10,7 +10,9 @@ package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.normal_com
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandConnector;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
+import net.dv8tion.jda.api.EmbedBuilder;
 
+import java.awt.*;
 import java.lang.management.ManagementFactory;
 
 import static me.duncte123.botcommons.StringUtils.replaceLast;
@@ -57,6 +59,10 @@ public class UptimeCommand extends CommandConnector {
         uptime = replaceLast(uptime, ", ", "");
         uptime = replaceLast(uptime, ",", " and");
 
-        event.replyMessage("I've been online for: " + uptime);
+        event.replyEmbed(new EmbedBuilder()
+                        .setTitle("Uptime")
+                        .setDescription( "I've been online for: " + uptime)
+                        .setColor(Color.CYAN)
+                        .build());
     }
 }

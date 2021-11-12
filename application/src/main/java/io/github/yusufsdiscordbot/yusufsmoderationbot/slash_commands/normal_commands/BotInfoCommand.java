@@ -25,7 +25,6 @@ public class BotInfoCommand extends CommandConnector {
         super("botinfo", "Provides the user with info about the bot.", CommandVisibility.SERVER);
     }
 
-    //TODO change from JavaCord Github to JDA github link.
     @Override
     public void onSlashCommand(YusufSlashCommandEvent yusufSlashCommandEvent) {
         EmbedBuilder builder = new EmbedBuilder();
@@ -39,7 +38,7 @@ public class BotInfoCommand extends CommandConnector {
                             • Gradle 7.3
                             • Java 17
                             Library's:
-                            • [JDA](https://github.com/Javacord/Javacord)
+                            • [JDA](https://github.com/DV8FromTheWorld/JDA)
                             • [YusufIsmail's Discord core](https://github.com/YusufsDiscordbot/YusufIsmails-Discord-core)
                             Bots repo and org:
                             • [Yusuf's moderation bot](https://github.com/YusufsDiscordbot/Yusuf-s-Moderation-Bot)

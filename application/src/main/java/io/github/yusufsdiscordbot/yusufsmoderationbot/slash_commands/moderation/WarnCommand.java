@@ -22,7 +22,9 @@ import java.util.Objects;
 
 /**
  * The user will be able to type {@code /warn user reason} which will store the user who has been
- * warned, the reason and the amount of times they have been warned.
+ * warned, the reason and will update the amount of warns by 1
+ *
+ * @author Yusuf Arfan Ismail
  */
 public class WarnCommand extends CommandConnector {
     private static final Logger logger = LoggerFactory.getLogger(WarnCommand.class);

@@ -21,6 +21,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Objects;
 
+/**
+ * Were the database file is registered and created. The file location for the database is stored in
+ * this class and the process of creating the database file is coded here.
+ *
+ * @author Yusuf Arfan Ismail
+ */
 public class DataBase {
     private static final Logger logger = LoggerFactory.getLogger(DataBase.class);
     private static final HikariConfig config = new HikariConfig();

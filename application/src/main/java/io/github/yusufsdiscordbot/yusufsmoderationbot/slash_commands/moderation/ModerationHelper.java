@@ -22,6 +22,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * All the duplicate methods that are need in multiple classes for the moderation command can be
+ * found here.
+ *
+ * @author Yusuf Arfan Ismail
+ */
 public enum ModerationHelper {
     ;
     private static final Logger logger = LoggerFactory.getLogger(ModerationHelper.class);
@@ -169,7 +175,7 @@ public enum ModerationHelper {
         return getBanReason(userId, guildId);
     }
 
-    public static long getBanAuthor(long userId, long guildId) {
+    public static Long getBanAuthor(long userId, long guildId) {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
 
             // language=SQLite
@@ -200,7 +206,7 @@ public enum ModerationHelper {
         return getBanAuthor(userId, guildId);
     }
 
-    public static long getKickAuthor(long userId, long guildId) {
+    public static Long getKickAuthor(long userId, long guildId) {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
 
             // language=SQLite

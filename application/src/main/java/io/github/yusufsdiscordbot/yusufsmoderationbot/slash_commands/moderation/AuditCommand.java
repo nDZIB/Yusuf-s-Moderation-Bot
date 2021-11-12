@@ -16,7 +16,13 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.util.Objects;
 
-
+/**
+ * The audit allows a mod to retrieve data for a certain user such as retrieving the amount of warns
+ * a certain user has or check if a certain user is banned or not and if they are banned who they
+ * were banned by.
+ *
+ * @author Yusuf Arfan Ismail
+ */
 public class AuditCommand extends CommandConnector {
     private static final String WARN_COMMAND = "warn";
     private static final String KICK_COMMAND = "kick";
@@ -29,7 +35,7 @@ public class AuditCommand extends CommandConnector {
      * Were the command is registered.
      */
     public AuditCommand() {
-        super("audit", "get the log for warns, kicks and bans", CommandVisibility.SERVER);
+        super("audit", "get the data for warns, kicks and bans", CommandVisibility.SERVER);
 
         getCommandData().addSubcommands(
                 new SubcommandData(WARN_COMMAND, "Gets the specific warns for that user").addOption(
@@ -53,6 +59,13 @@ public class AuditCommand extends CommandConnector {
         }
     }
 
+    /**
+     * This command allows you to retrieve the amount of warns a user for example the mod can type
+     * /audit @yusuf and the bot will get the warns for yusuf and for this example it will reply
+     * with yusuf has 1 warn.
+     *
+     * @param event My custom slash command event. Used for events such as reply and replyEmbed
+     */
     private void handleWarnCommand(@NotNull YusufSlashCommandEvent event) {
         YusufGuild guild = event.getGuild();
         YusufOptionMapping userOption =
@@ -72,15 +85,29 @@ public class AuditCommand extends CommandConnector {
             return;
         }
 
-        event.replyEmbed(new EmbedBuilder().setTitle("Warns")
-            .setDescription("The user " + user.getUserTag() + " has "
-                    + ModerationHelper.getCurrentAmountOfWarns(user.getUserIdLong(),
-                            guild.getIdLong())
-                    + " warns")
-            .setColor(Color.CYAN)
-            .build());
+        if (ModerationHelper.getCurrentAmountOfWarns(user.getUserIdLong(),
+                guild.getIdLong()) == null) {
+            event.replyEmbed(new EmbedBuilder().setTitle("No warns")
+                .setDescription("The user " + user.getUserTag() + " has " + " no warns")
+                .setColor(Color.CYAN)
+                .build());
+        } else {
+            event.replyEmbed(new EmbedBuilder().setTitle("Warns")
+                .setDescription("The user " + user.getUserTag() + " has "
+                        + ModerationHelper.getCurrentAmountOfWarns(user.getUserIdLong(),
+                                guild.getIdLong())
+                        + " warns")
+                .setColor(Color.CYAN)
+                .build());
+        }
     }
 
+    /**
+     * This command allows you to retrieve the reason why the user was kicked and who kicked the
+     * user.
+     *
+     * @param event My custom slash command event. Used for events such as reply and replyEmbed
+     */
     private void handleKickCommand(@NotNull YusufSlashCommandEvent event) {
         YusufGuild guild = event.getGuild();
         YusufOptionMapping userOption =
@@ -101,16 +128,30 @@ public class AuditCommand extends CommandConnector {
 
         long userId = user.getUserIdLong();
         long guildId = guild.getIdLong();
-        event.replyEmbed(
-                new EmbedBuilder().setTitle("Kick")
+        if (ModerationHelper.getKickAuthor(userId, guildId) == null
+                && ModerationHelper.getKickReason(userId, guildId) == null) {
+            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("Null")
+                .setDescription("The user " + user.getUserTag() + "is not banned")
+                .setColor(Color.CYAN)
+                .build());
+        } else {
+            event
+                .replyEmbed(new EmbedBuilder().setTitle("Kick")
                     .setDescription("The user " + user.getUserTag()
                             + " was kicked for the following reason "
                             + ModerationHelper.getKickReason(userId, guildId) + " by "
                             + ModerationHelper.getKickAuthor(userId, guildId))
                     .setColor(Color.CYAN)
                     .build());
+        }
     }
 
+    /**
+     * This command allows you to retrieve the reason why the user was banned and who banned the
+     * user.
+     *
+     * @param event My custom slash command event. Used for events such as reply and replyEmbed
+     */
     private void handleBanCommand(@NotNull YusufSlashCommandEvent event) {
         YusufGuild guild = event.getGuild();
         YusufOptionMapping userOption =
@@ -131,13 +172,21 @@ public class AuditCommand extends CommandConnector {
 
         long userId = user.getUserIdLong();
         long guildId = guild.getIdLong();
-        event.replyEmbed(
-                new EmbedBuilder().setTitle("Ban")
+        if (ModerationHelper.getBanAuthor(userId, guildId) == null
+                && ModerationHelper.getBanReason(userId, guildId) == null) {
+            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("Null")
+                .setDescription("The user " + user.getUserTag() + "is not banned")
+                .setColor(Color.CYAN)
+                .build());
+        } else {
+            event
+                .replyEmbed(new EmbedBuilder().setTitle("Ban")
                     .setDescription("The user " + user.getUserTag()
                             + " was banned for the following reason "
                             + ModerationHelper.getBanReason(userId, guildId) + " by the user "
                             + ModerationHelper.getBanAuthor(userId, guildId))
                     .setColor(Color.CYAN)
                     .build());
+        }
     }
 }

@@ -57,6 +57,6 @@ public class UptimeCommand extends CommandConnector {
         uptime = replaceLast(uptime, ", ", "");
         uptime = replaceLast(uptime, ",", " and");
 
-        event.replyMessage("I've been online for:\n" + uptime);
+        event.replyMessage("I've been online for: " + uptime);
     }
 }

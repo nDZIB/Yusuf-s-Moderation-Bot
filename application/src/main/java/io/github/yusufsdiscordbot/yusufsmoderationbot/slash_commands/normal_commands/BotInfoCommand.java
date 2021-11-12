@@ -32,7 +32,7 @@ public class BotInfoCommand extends CommandConnector {
         builder.setTitle(yusufSlashCommandEvent.getGuild().getBot().getName() + " Info")
             .setDescription(
                     """
-                            Running on Yusuf's Moderation bot V2-1.0.3
+                            Running on Yusuf's Moderation bot V3-1.0.3
                             Developer:
                             • [RealYusufIsmail](https://github.com/RealYusufIsmail)
                             Runtime-Environment:

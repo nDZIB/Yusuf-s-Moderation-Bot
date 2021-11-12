@@ -54,9 +54,8 @@ public enum ModerationHelper {
                 .build());
 
             logger.error(
-                    "The bot does not have BAN_MEMBERS permission which means it can not use the command "
-                            + commandName + " on the server '{}' ",
-                    yusufGuild.getName());
+                    "The bot does not have BAN_MEMBERS permission which means it can not use the command '{}' on the server '{}' ",
+                    commandName, yusufGuild.getName());
             return false;
         }
         return true;

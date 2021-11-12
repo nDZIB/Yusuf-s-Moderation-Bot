@@ -44,25 +44,21 @@ public class UptimeCommand extends CommandConnector {
         final long hours = duration / 3600000L % 24;
         final long minutes = duration / 60000L % 60;
         final long seconds = duration / 1000L % 60;
-        // final long milliseconds = duration % 1000;
+        final long milliseconds = duration % 1000;
 
         String uptime = (years == 0 ? "" : "**" + years + "** Years, ")
                 + (months == 0 ? "" : "**" + months + "** Months, ")
                 + (days == 0 ? "" : "**" + days + "** Days, ")
                 + (hours == 0 ? "" : "**" + hours + "** Hours, ")
-                + (minutes == 0 ? "" : "**" + minutes + "** Minutes, ") + (seconds == 0 ? ""
-                        : "**" + seconds + "** Seconds, ") /*
-                                                            * + (milliseconds == 0 ? "" :
-                                                            * milliseconds + " Milliseconds, ")
-                                                            */;
-
+                + (minutes == 0 ? "" : "**" + minutes + "** Minutes, ")
+                + (seconds == 0 ? "" : "**" + seconds + "** Seconds, ")
+                + (milliseconds == 0 ? "" : milliseconds + " Milliseconds, ");
         uptime = replaceLast(uptime, ", ", "");
         uptime = replaceLast(uptime, ",", " and");
 
-        event.replyEmbed(new EmbedBuilder()
-                        .setTitle("Uptime")
-                        .setDescription( "I've been online for: " + uptime)
-                        .setColor(Color.CYAN)
-                        .build());
+        event.replyEmbed(new EmbedBuilder().setTitle("Uptime")
+            .setDescription("I've been online for: " + uptime)
+            .setColor(Color.CYAN)
+            .build());
     }
 }

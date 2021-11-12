@@ -86,12 +86,12 @@ public class WarnCommand extends CommandConnector {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
             // language=SQLite
             .prepareStatement(
-                    "UPDATE warn_settings SET user_id = ?, guild_id = ?, warn_reason = ?, amount_of_warns = ?")) {
+                    "UPDATE warn_settings SET warn_reason = ?, amount_of_warns = ? WHERE user_id = ? AND guild_id = ?")) {
 
-            preparedStatement.setLong(1, userId);
-            preparedStatement.setLong(2, guildId);
-            preparedStatement.setString(3, reason);
-            preparedStatement.setInt(4, amountOfWarns);
+            preparedStatement.setString(1, reason);
+            preparedStatement.setInt(2, amountOfWarns);
+            preparedStatement.setLong(3, userId);
+            preparedStatement.setLong(4, guildId);
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

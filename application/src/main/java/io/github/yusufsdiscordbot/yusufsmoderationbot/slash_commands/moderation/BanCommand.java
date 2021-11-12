@@ -71,11 +71,11 @@ public class BanCommand extends CommandConnector {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
             // language=SQLite
             .prepareStatement(
-                    "UPDATE ban_settings SET guild_id = ?, ban_reason = ? WHERE user_id = ?")) {
+                    "UPDATE ban_settings SET ban_reason = ? WHERE user_id = ? AND guild_id = ?")) {
 
-            preparedStatement.setLong(1, userId);
-            preparedStatement.setLong(2, guildId);
-            preparedStatement.setString(3, reason);
+            preparedStatement.setString(1, reason);
+            preparedStatement.setLong(2, userId);
+            preparedStatement.setLong(3, guildId);
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

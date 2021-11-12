@@ -58,8 +58,6 @@ public class DataBase {
                 }
             }
 
-
-
             logger.info("Database table created");
         } catch (SQLException | IOException e) {
             logger.error("Error while loading database", e);

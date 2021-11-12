@@ -10,5 +10,6 @@ CREATE TABLE ban_settings
 (
     user_id BIGINT NOT NULL PRIMARY KEY,
     guild_id BIGINT NOT NULL,
+    author_id BIGINT,
     ban_reason TEXT DEFAULT 'This user has been banned for breaking the rules'
 )

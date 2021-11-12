@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.util.Objects;
 
+
 public class AuditCommand extends CommandConnector {
     private static final String WARN_COMMAND = "warn";
     private static final String KICK_COMMAND = "kick";
@@ -80,8 +81,6 @@ public class AuditCommand extends CommandConnector {
             .build());
     }
 
-
-
     private void handleKickCommand(@NotNull YusufSlashCommandEvent event) {
         YusufGuild guild = event.getGuild();
         YusufOptionMapping userOption =
@@ -100,15 +99,45 @@ public class AuditCommand extends CommandConnector {
             return;
         }
 
-        event.replyEmbed(new EmbedBuilder().setTitle("Kick")
-            .setDescription("The user " + user.getUserTag() + " has been kicked for the following reason "
-                    + ModerationHelper.getKickReason(user.getUserIdLong(),
-                            guild.getIdLong()))
-            .setColor(Color.CYAN)
-            .build());
+        long userId = user.getUserIdLong();
+        long guildId = guild.getIdLong();
+        event.replyEmbed(
+                new EmbedBuilder().setTitle("Kick")
+                    .setDescription("The user " + user.getUserTag()
+                            + " was kicked for the following reason "
+                            + ModerationHelper.getKickReason(userId, guildId) + " by "
+                            + ModerationHelper.getKickAuthor(userId, guildId))
+                    .setColor(Color.CYAN)
+                    .build());
     }
 
     private void handleBanCommand(@NotNull YusufSlashCommandEvent event) {
+        YusufGuild guild = event.getGuild();
+        YusufOptionMapping userOption =
+                Objects.requireNonNull(event.getYusufOption(KICK_USER), "The target is null");
+        YusufUser user = userOption.getAsUser();
+        YusufMember author = Objects.requireNonNull(event.getMember(), "The author is null");
+        YusufMember targetMember = userOption.getAsMember();
 
+        if (targetMember != null && !ModerationHelper.handleCanInteractWithTarget(targetMember,
+                guild.getBot(), author, event, KICK_COMMAND)) {
+            return;
+        }
+
+        if (!ModerationHelper.handleHasPermissions(event.getMember(), guild.getBot(), event, guild,
+                KICK_COMMAND)) {
+            return;
+        }
+
+        long userId = user.getUserIdLong();
+        long guildId = guild.getIdLong();
+        event.replyEmbed(
+                new EmbedBuilder().setTitle("Ban")
+                    .setDescription("The user " + user.getUserTag()
+                            + " was banned for the following reason "
+                            + ModerationHelper.getBanReason(userId, guildId) + " by the user "
+                            + ModerationHelper.getBanAuthor(userId, guildId))
+                    .setColor(Color.CYAN)
+                    .build());
     }
 }

@@ -67,7 +67,8 @@ public class KickCommand extends CommandConnector {
         }
 
         kickUser(target, author, reason, guild, event);
-        updateKickDatabase(target.getUserIdLong(), guild.getIdLong(), reason);
+        updateKickDatabase(target.getUserIdLong(), guild.getIdLong(), reason,
+                author.getUserIdLong());
     }
 
     private static void kickUser(@NotNull YusufMember target, @NotNull YusufMember author,
@@ -121,15 +122,17 @@ public class KickCommand extends CommandConnector {
         return true;
     }
 
-    private void updateKickDatabase(long userId, long guildId, @NotNull String reason) {
+    private void updateKickDatabase(long userId, long guildId, @NotNull String reason,
+            long authorId) {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
             // language=SQLite
             .prepareStatement(
-                    "UPDATE kick_settings SET kick_reason = ? WHERE user_id = ? AND guild_id = ?")) {
+                    "UPDATE kick_settings SET kick_reason = ? AND author_id = ? WHERE user_id = ? AND guild_id = ?")) {
 
             preparedStatement.setString(1, reason);
-            preparedStatement.setLong(2, userId);
-            preparedStatement.setLong(3, guildId);
+            preparedStatement.setLong(2, authorId);
+            preparedStatement.setLong(3, userId);
+            preparedStatement.setLong(4, guildId);
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

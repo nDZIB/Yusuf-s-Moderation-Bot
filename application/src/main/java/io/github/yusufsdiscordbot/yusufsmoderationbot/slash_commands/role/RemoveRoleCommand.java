@@ -20,12 +20,14 @@ import static net.dv8tion.jda.api.interactions.commands.OptionType.ROLE;
 import static net.dv8tion.jda.api.interactions.commands.OptionType.USER;
 
 public class RemoveRoleCommand extends CommandConnector {
+    private static final String REMOVE_ROLE_USER = "user";
+
 
     public RemoveRoleCommand() {
         super("remove_role", "removes a role to the given user", CommandVisibility.SERVER);
 
         getCommandData()
-            .addOptions(new OptionData(USER, RoleCommandUtil.USER,
+            .addOptions(new OptionData(USER, REMOVE_ROLE_USER,
                     "The user which you want to remove the role from.").setRequired(true))
             .addOptions(new OptionData(ROLE, "role", "The role which you want to give")
                 .setRequired(true));
@@ -35,7 +37,7 @@ public class RemoveRoleCommand extends CommandConnector {
     public void onSlashCommand(YusufSlashCommandEvent event) {
         final YusufMember member = event.getMember();
 
-        Member target = event.getOption(RoleCommandUtil.USER).getAsMember();
+        Member target = event.getOption(REMOVE_ROLE_USER).getAsMember();
 
         if (!member.canInteract(target) || !member.hasPermission(Permission.MANAGE_ROLES)) {
             event.replyMessage("You are missing permission to add a role this member");

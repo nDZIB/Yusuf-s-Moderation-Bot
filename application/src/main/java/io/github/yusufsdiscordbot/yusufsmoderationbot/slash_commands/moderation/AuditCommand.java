@@ -7,10 +7,7 @@
 
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation;
 
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandConnector;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
-import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufUser;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.*;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
@@ -56,11 +53,28 @@ public class AuditCommand extends CommandConnector {
     }
 
     private void handleWarnCommand(@NotNull YusufSlashCommandEvent event) {
-        YusufUser user = event.getYusufOption(WARN_USER).getAsUser();
+        YusufGuild guild = event.getGuild();
+        YusufOptionMapping userOption =
+                Objects.requireNonNull(event.getYusufOption(WARN_USER), "The target is null");
+        YusufUser user = userOption.getAsUser();
+        YusufMember author = Objects.requireNonNull(event.getMember(), "The author is null");
+        YusufMember targetMember = userOption.getAsMember();
+
+
+        if (targetMember != null && !ModerationHelper.handleCanInteractWithTarget(targetMember,
+                guild.getBot(), author, event, WARN_COMMAND)) {
+            return;
+        }
+
+        if (!ModerationHelper.handleHasPermissions(event.getMember(), guild.getBot(), event, guild,
+                WARN_COMMAND)) {
+            return;
+        }
+
         event.replyEmbed(new EmbedBuilder().setTitle("Warns")
             .setDescription("The user " + user.getUserTag() + " has "
                     + ModerationHelper.getCurrentAmountOfWarns(user.getUserIdLong(),
-                            event.getGuild().getIdLong())
+                            guild.getIdLong())
                     + " warns")
             .setColor(Color.CYAN)
             .build());

@@ -25,6 +25,7 @@ public class BotInfoCommand extends CommandConnector {
         super("botinfo", "Provides the user with info about the bot.", CommandVisibility.SERVER);
     }
 
+    //TODO change from JavaCord Github to JDA github link.
     @Override
     public void onSlashCommand(YusufSlashCommandEvent yusufSlashCommandEvent) {
         EmbedBuilder builder = new EmbedBuilder();

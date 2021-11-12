@@ -71,8 +71,8 @@ public class AuditCommand extends CommandConnector {
      */
     private void handleWarnCommand(@NotNull YusufSlashCommandEvent yusufSlashCommandEvent) {
         YusufGuild yusufGuild = yusufSlashCommandEvent.getGuild();
-        YusufOptionMapping yusufOptionMapping = Objects
-            .requireNonNull(yusufSlashCommandEvent.getYusufOption(KICK_USER));
+        YusufOptionMapping yusufOptionMapping =
+                Objects.requireNonNull(yusufSlashCommandEvent.getYusufOption(KICK_USER));
         YusufUser yusufUser = yusufOptionMapping.getAsUser();
         YusufMember yusufAuthor =
                 Objects.requireNonNull(yusufSlashCommandEvent.getMember(), AUTHOR_ERROR);
@@ -116,8 +116,8 @@ public class AuditCommand extends CommandConnector {
      */
     private void handleKickCommand(@NotNull YusufSlashCommandEvent yusufSlashCommandEvent) {
         YusufGuild yusufGuild = yusufSlashCommandEvent.getGuild();
-        YusufOptionMapping yusufOptionMapping = Objects
-            .requireNonNull(yusufSlashCommandEvent.getYusufOption(KICK_USER));
+        YusufOptionMapping yusufOptionMapping =
+                Objects.requireNonNull(yusufSlashCommandEvent.getYusufOption(KICK_USER));
         YusufUser yusufUser = yusufOptionMapping.getAsUser();
         YusufMember yusufAuthor =
                 Objects.requireNonNull(yusufSlashCommandEvent.getMember(), AUTHOR_ERROR);
@@ -162,8 +162,8 @@ public class AuditCommand extends CommandConnector {
      */
     private void handleBanCommand(@NotNull YusufSlashCommandEvent yusufSlashCommandEvent) {
         YusufGuild yusufGuild = yusufSlashCommandEvent.getGuild();
-        YusufOptionMapping yusufOptionMapping = Objects
-            .requireNonNull(yusufSlashCommandEvent.getYusufOption(KICK_USER));
+        YusufOptionMapping yusufOptionMapping =
+                Objects.requireNonNull(yusufSlashCommandEvent.getYusufOption(KICK_USER));
         YusufUser yusufUser = yusufOptionMapping.getAsUser();
         YusufMember yusufAuthor =
                 Objects.requireNonNull(yusufSlashCommandEvent.getMember(), AUTHOR_ERROR);

@@ -144,7 +144,7 @@ public enum ModerationHelper {
             }
 
         } catch (SQLException e) {
-            logger.error("Failed to retrieve the amount of warns from the warn settings database",
+            logger.error("Failed to retrieve the kick reason from the kick database",
                     e);
         }
         return getKickReason(userId, guildId);
@@ -175,7 +175,7 @@ public enum ModerationHelper {
             }
 
         } catch (SQLException e) {
-            logger.error("Failed to retrieve the amount of warns from the warn settings database",
+            logger.error("Failed to retrieve the ban reason from the ban database",
                     e);
         }
         return getBanReason(userId, guildId);
@@ -206,7 +206,7 @@ public enum ModerationHelper {
             }
 
         } catch (SQLException e) {
-            logger.error("Failed to retrieve the amount of warns from the warn settings database",
+            logger.error("Failed to retrieve the the author of the ban from the ban database",
                     e);
         }
         return getBanAuthor(userId, guildId);
@@ -237,7 +237,7 @@ public enum ModerationHelper {
             }
 
         } catch (SQLException e) {
-            logger.error("Failed to retrieve the amount of warns from the warn settings database",
+            logger.error("Failed to retrieve the the author of the kick from the kick database",
                     e);
         }
         return getKickAuthor(userId, guildId);

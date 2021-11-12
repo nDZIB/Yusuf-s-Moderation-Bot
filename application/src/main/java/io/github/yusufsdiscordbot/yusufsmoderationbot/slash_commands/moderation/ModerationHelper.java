@@ -106,4 +106,35 @@ public enum ModerationHelper {
         }
         return getCurrentAmountOfWarns(userId, guildId);
     }
+
+    public static String getKickReason(long userId, long guildId) {
+        try (final PreparedStatement preparedStatement = DataBase.getConnection()
+
+                // language=SQLite
+                .prepareStatement(
+                        "SELECT kick_reason FROM kick_settings WHERE user_id = ? AND guild_id = ?")) {
+
+            preparedStatement.setLong(1, userId);
+            preparedStatement.setLong(2, guildId);
+
+            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getString("kick_reason");
+                }
+            }
+            try (final PreparedStatement insertStatement = DataBase.getConnection()
+                    // language=SQLite
+                    .prepareStatement("INSERT INTO kick_settings(user_id, guild_id) VALUES(?,?) ")) {
+
+                insertStatement.setLong(1, userId);
+                insertStatement.setLong(2, guildId);
+                insertStatement.execute();
+            }
+
+        } catch (SQLException e) {
+            logger.error("Failed to retrieve the amount of warns from the warn settings database",
+                    e);
+        }
+        return getKickReason(userId, guildId);
+    }
 }

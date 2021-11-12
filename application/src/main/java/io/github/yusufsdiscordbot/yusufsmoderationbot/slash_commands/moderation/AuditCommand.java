@@ -83,7 +83,29 @@ public class AuditCommand extends CommandConnector {
 
 
     private void handleKickCommand(@NotNull YusufSlashCommandEvent event) {
+        YusufGuild guild = event.getGuild();
+        YusufOptionMapping userOption =
+                Objects.requireNonNull(event.getYusufOption(KICK_USER), "The target is null");
+        YusufUser user = userOption.getAsUser();
+        YusufMember author = Objects.requireNonNull(event.getMember(), "The author is null");
+        YusufMember targetMember = userOption.getAsMember();
 
+        if (targetMember != null && !ModerationHelper.handleCanInteractWithTarget(targetMember,
+                guild.getBot(), author, event, KICK_COMMAND)) {
+            return;
+        }
+
+        if (!ModerationHelper.handleHasPermissions(event.getMember(), guild.getBot(), event, guild,
+                KICK_COMMAND)) {
+            return;
+        }
+
+        event.replyEmbed(new EmbedBuilder().setTitle("Kick")
+            .setDescription("The user " + user.getUserTag() + " has been kicked for the following reason "
+                    + ModerationHelper.getKickReason(user.getUserIdLong(),
+                            guild.getIdLong()))
+            .setColor(Color.CYAN)
+            .build());
     }
 
     private void handleBanCommand(@NotNull YusufSlashCommandEvent event) {

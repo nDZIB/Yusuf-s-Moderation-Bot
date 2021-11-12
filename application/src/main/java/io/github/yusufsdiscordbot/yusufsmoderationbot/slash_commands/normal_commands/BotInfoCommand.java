@@ -15,7 +15,8 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import java.awt.*;
 
 /**
- * When the command is run the user will receive the bots' info such as the bots current version or what Java version it uses.
+ * When the command is run the user will receive the bots' info such as the bots current version or
+ * what Java version it uses.
  *
  * @author Yusuf Arfan Ismail
  */

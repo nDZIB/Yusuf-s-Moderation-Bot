@@ -58,12 +58,12 @@ public class WarnCommand extends CommandConnector {
             .getAsString();
 
 
-        if (targetMember != null && !ModerationHelper.handleCanInteractWithTarget(targetMember,
+        if (targetMember != null && !ModerationHelper.userCanInteractWithTheGivenUser(targetMember,
                 guild.getBot(), author, yusufSlashCommandEvent, COMMAND_NAME)) {
             return;
         }
 
-        if (!ModerationHelper.handleHasPermissions(yusufSlashCommandEvent.getMember(),
+        if (!ModerationHelper.userAndBotHaveTheRightPerms(yusufSlashCommandEvent.getMember(),
                 guild.getBot(), yusufSlashCommandEvent, guild, COMMAND_NAME)) {
             return;
         }

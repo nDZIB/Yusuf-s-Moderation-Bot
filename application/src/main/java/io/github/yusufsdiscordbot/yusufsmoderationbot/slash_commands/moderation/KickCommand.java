@@ -53,7 +53,7 @@ public class KickCommand extends CommandConnector {
         YusufGuild guild = event.getGuild();
         YusufMember bot = guild.getBot();
 
-        if (target != null && !ModerationHelper.handleCanInteractWithTarget(target, bot, author,
+        if (target != null && !ModerationHelper.userCanInteractWithTheGivenUser(target, bot, author,
                 event, COMMAND_NAME)) {
             return;
         }

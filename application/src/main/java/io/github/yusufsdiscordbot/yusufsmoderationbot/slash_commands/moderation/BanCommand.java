@@ -101,12 +101,13 @@ public class BanCommand extends CommandConnector {
         YusufMember bot = guild.getBot();
 
         // Member doesn't exist if attempting to ban a user who is not part of the guild.
-        if (target != null && !ModerationHelper.handleCanInteractWithTarget(target, bot, author,
+        if (target != null && !ModerationHelper.userCanInteractWithTheGivenUser(target, bot, author,
                 event, COMMAND_TYPE)) {
             return;
         }
 
-        if (!ModerationHelper.handleHasPermissions(author, bot, event, guild, COMMAND_TYPE)) {
+        if (!ModerationHelper.userAndBotHaveTheRightPerms(author, bot, event, guild,
+                COMMAND_TYPE)) {
             return;
         }
 

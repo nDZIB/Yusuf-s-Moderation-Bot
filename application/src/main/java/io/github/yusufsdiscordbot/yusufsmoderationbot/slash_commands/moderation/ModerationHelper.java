@@ -32,49 +32,55 @@ public enum ModerationHelper {
     ;
     private static final Logger logger = LoggerFactory.getLogger(ModerationHelper.class);
 
-    public static boolean handleHasPermissions(@NotNull YusufMember author,
-            @NotNull YusufMember bot, @NotNull YusufSlashCommandEvent event,
-            @NotNull YusufGuild guild, String commandName) {
-        if (!author.hasPermission(Permission.BAN_MEMBERS)) {
-            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("Lack of perms")
+    // Originally from https://github.com/Together-Java/TJ-Bot/pull/196, then modified by Yusuf
+    public static boolean userAndBotHaveTheRightPerms(@NotNull YusufMember yusufAuthor,
+            @NotNull YusufMember yusufBot, @NotNull YusufSlashCommandEvent yusufSlashCommandEvent,
+            @NotNull YusufGuild yusufGuild, String commandName) {
+
+        if (!yusufAuthor.hasPermission(Permission.BAN_MEMBERS)) {
+            yusufSlashCommandEvent.replyEphemeralEmbed(new EmbedBuilder().setTitle("Lack of perms")
                 .setDescription("You can not " + commandName
-                        + " users in this guild since you do not have the BAN_MEMBERS permission.")
+                        + " users in this server since you do not have the BAN_MEMBERS permission.")
                 .setColor(Color.CYAN)
                 .build());
             return false;
         }
 
-        if (!bot.hasPermission(Permission.BAN_MEMBERS)) {
-            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("Lack of perms")
+        if (!yusufBot.hasPermission(Permission.BAN_MEMBERS)) {
+            yusufSlashCommandEvent.replyEphemeralEmbed(new EmbedBuilder().setTitle("Lack of perms")
                 .setDescription("I can not " + commandName
-                        + " users in this guild since I do not have the BAN_MEMBERS permission.")
+                        + " users in this server since I do not have the BAN_MEMBERS permission.")
                 .setColor(Color.CYAN)
                 .build());
 
-            logger.error("The bot does not have BAN_MEMBERS permission on the server '{}' ",
-                    guild.getName());
+            logger.error(
+                    "The bot does not have BAN_MEMBERS permission which means it can not use the command "
+                            + commandName + " on the server '{}' ",
+                    yusufGuild.getName());
             return false;
         }
         return true;
     }
 
-    public static boolean handleCanInteractWithTarget(YusufMember target, YusufMember bot,
-            @NotNull YusufMember author, @NotNull YusufSlashCommandEvent event,
-            String commandName) {
-        String targetTag = target.getUser().getAsTag();
-        if (!author.canInteract(target)) {
-            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("To powerful")
-                .setDescription("The user " + targetTag + " is too powerful for you to "
+    // Originally from https://github.com/Together-Java/TJ-Bot/pull/196, then modified by Yusuf
+    public static boolean userCanInteractWithTheGivenUser(YusufMember target, YusufMember yusufBot,
+            @NotNull YusufMember yusufAuthor,
+            @NotNull YusufSlashCommandEvent yusufSlashCommandEvent, String commandName) {
+        String yusufUserTag = target.getUser().getAsTag();
+
+        if (!yusufAuthor.canInteract(target)) {
+            yusufSlashCommandEvent.replyEphemeralEmbed(new EmbedBuilder().setTitle("To powerful")
+                .setDescription("The user " + yusufUserTag + " is too powerful for you to "
                         + commandName + ".")
                 .setColor(Color.CYAN)
                 .build());
             return false;
         }
 
-        if (!bot.canInteract(target)) {
-            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("To powerful")
-                .setDescription(
-                        "The user " + targetTag + " is too powerful for me to " + commandName + ".")
+        if (!yusufBot.canInteract(target)) {
+            yusufSlashCommandEvent.replyEphemeralEmbed(new EmbedBuilder().setTitle("To powerful")
+                .setDescription("The user " + yusufUserTag + " is too powerful for me to "
+                        + commandName + ".")
                 .setColor(Color.CYAN)
                 .build());
             return false;

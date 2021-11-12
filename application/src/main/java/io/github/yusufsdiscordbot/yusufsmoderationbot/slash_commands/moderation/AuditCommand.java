@@ -30,6 +30,8 @@ public class AuditCommand extends CommandConnector {
     private static final String WARN_USER = "user";
     private static final String BAN_USER = "user";
     private static final String KICK_USER = "user";
+    private static final String THE_USER = "the user";
+    private static final String AUTHOR_ERROR = "The has author has not been given";
 
     /**
      * Were the command is registered.
@@ -64,38 +66,41 @@ public class AuditCommand extends CommandConnector {
      * /audit @yusuf and the bot will get the warns for yusuf and for this example it will reply
      * with yusuf has 1 warn.
      *
-     * @param event My custom slash command event. Used for events such as reply and replyEmbed
+     * @param yusufSlashCommandEvent My custom slash command event. Used for events such as reply
+     *        and replyEmbed
      */
-    private void handleWarnCommand(@NotNull YusufSlashCommandEvent event) {
-        YusufGuild guild = event.getGuild();
-        YusufOptionMapping userOption =
-                Objects.requireNonNull(event.getYusufOption(WARN_USER), "The target is null");
-        YusufUser user = userOption.getAsUser();
-        YusufMember author = Objects.requireNonNull(event.getMember(), "The author is null");
-        YusufMember targetMember = userOption.getAsMember();
+    private void handleWarnCommand(@NotNull YusufSlashCommandEvent yusufSlashCommandEvent) {
+        YusufGuild yusufGuild = yusufSlashCommandEvent.getGuild();
+        YusufOptionMapping yusufOptionMapping = Objects
+            .requireNonNull(yusufSlashCommandEvent.getYusufOption(KICK_USER), AUTHOR_ERROR);
+        YusufUser yusufUser = yusufOptionMapping.getAsUser();
+        YusufMember yusufAuthor =
+                Objects.requireNonNull(yusufSlashCommandEvent.getMember(), AUTHOR_ERROR);
+        YusufMember yusufMember = yusufOptionMapping.getAsMember();
 
 
-        if (targetMember != null && !ModerationHelper.handleCanInteractWithTarget(targetMember,
-                guild.getBot(), author, event, WARN_COMMAND)) {
+
+        if (yusufMember != null && !ModerationHelper.userCanInteractWithTheGivenUser(yusufMember,
+                yusufGuild.getBot(), yusufAuthor, yusufSlashCommandEvent, WARN_COMMAND)) {
             return;
         }
 
-        if (!ModerationHelper.handleHasPermissions(event.getMember(), guild.getBot(), event, guild,
-                WARN_COMMAND)) {
+        if (!ModerationHelper.userAndBotHaveTheRightPerms(yusufSlashCommandEvent.getMember(),
+                yusufGuild.getBot(), yusufSlashCommandEvent, yusufGuild, WARN_COMMAND)) {
             return;
         }
 
-        if (ModerationHelper.getCurrentAmountOfWarns(user.getUserIdLong(),
-                guild.getIdLong()) == null) {
-            event.replyEmbed(new EmbedBuilder().setTitle("No warns")
-                .setDescription("The user " + user.getUserTag() + " has " + " no warns")
+        if (ModerationHelper.getCurrentAmountOfWarns(yusufUser.getUserIdLong(),
+                yusufGuild.getIdLong()) == null) {
+            yusufSlashCommandEvent.replyEmbed(new EmbedBuilder().setTitle("No warns")
+                .setDescription(THE_USER + yusufUser.getUserTag() + " has " + " no warns")
                 .setColor(Color.CYAN)
                 .build());
         } else {
-            event.replyEmbed(new EmbedBuilder().setTitle("Warns")
-                .setDescription("The user " + user.getUserTag() + " has "
-                        + ModerationHelper.getCurrentAmountOfWarns(user.getUserIdLong(),
-                                guild.getIdLong())
+            yusufSlashCommandEvent.replyEmbed(new EmbedBuilder().setTitle("Warns")
+                .setDescription(THE_USER + yusufUser.getUserTag() + " has "
+                        + ModerationHelper.getCurrentAmountOfWarns(yusufUser.getUserIdLong(),
+                                yusufGuild.getIdLong())
                         + " warns")
                 .setColor(Color.CYAN)
                 .build());
@@ -106,38 +111,40 @@ public class AuditCommand extends CommandConnector {
      * This command allows you to retrieve the reason why the user was kicked and who kicked the
      * user.
      *
-     * @param event My custom slash command event. Used for events such as reply and replyEmbed
+     * @param yusufSlashCommandEvent My custom slash command event. Used for events such as reply
+     *        and replyEmbed
      */
-    private void handleKickCommand(@NotNull YusufSlashCommandEvent event) {
-        YusufGuild guild = event.getGuild();
-        YusufOptionMapping userOption =
-                Objects.requireNonNull(event.getYusufOption(KICK_USER), "The target is null");
-        YusufUser user = userOption.getAsUser();
-        YusufMember author = Objects.requireNonNull(event.getMember(), "The author is null");
-        YusufMember targetMember = userOption.getAsMember();
+    private void handleKickCommand(@NotNull YusufSlashCommandEvent yusufSlashCommandEvent) {
+        YusufGuild yusufGuild = yusufSlashCommandEvent.getGuild();
+        YusufOptionMapping yusufOptionMapping = Objects
+            .requireNonNull(yusufSlashCommandEvent.getYusufOption(KICK_USER), AUTHOR_ERROR);
+        YusufUser yusufUser = yusufOptionMapping.getAsUser();
+        YusufMember yusufAuthor =
+                Objects.requireNonNull(yusufSlashCommandEvent.getMember(), AUTHOR_ERROR);
+        YusufMember yusufMember = yusufOptionMapping.getAsMember();
 
-        if (targetMember != null && !ModerationHelper.handleCanInteractWithTarget(targetMember,
-                guild.getBot(), author, event, KICK_COMMAND)) {
+        if (yusufMember != null && !ModerationHelper.userCanInteractWithTheGivenUser(yusufMember,
+                yusufGuild.getBot(), yusufAuthor, yusufSlashCommandEvent, KICK_COMMAND)) {
             return;
         }
 
-        if (!ModerationHelper.handleHasPermissions(event.getMember(), guild.getBot(), event, guild,
-                KICK_COMMAND)) {
+        if (!ModerationHelper.userAndBotHaveTheRightPerms(yusufSlashCommandEvent.getMember(),
+                yusufGuild.getBot(), yusufSlashCommandEvent, yusufGuild, KICK_COMMAND)) {
             return;
         }
 
-        long userId = user.getUserIdLong();
-        long guildId = guild.getIdLong();
+        long userId = yusufUser.getUserIdLong();
+        long guildId = yusufGuild.getIdLong();
         if (ModerationHelper.getKickAuthor(userId, guildId) == null
                 && ModerationHelper.getKickReason(userId, guildId) == null) {
-            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("Null")
-                .setDescription("The user " + user.getUserTag() + "is not banned")
+            yusufSlashCommandEvent.replyEphemeralEmbed(new EmbedBuilder().setTitle("Null")
+                .setDescription(THE_USER + yusufUser.getUserTag() + "is not banned")
                 .setColor(Color.CYAN)
                 .build());
         } else {
-            event
+            yusufSlashCommandEvent
                 .replyEmbed(new EmbedBuilder().setTitle("Kick")
-                    .setDescription("The user " + user.getUserTag()
+                    .setDescription(THE_USER + yusufUser.getUserTag()
                             + " was kicked for the following reason "
                             + ModerationHelper.getKickReason(userId, guildId) + " by "
                             + ModerationHelper.getKickAuthor(userId, guildId))
@@ -150,38 +157,40 @@ public class AuditCommand extends CommandConnector {
      * This command allows you to retrieve the reason why the user was banned and who banned the
      * user.
      *
-     * @param event My custom slash command event. Used for events such as reply and replyEmbed
+     * @param yusufSlashCommandEvent My custom slash command event. Used for events such as reply
+     *        and replyEmbed
      */
-    private void handleBanCommand(@NotNull YusufSlashCommandEvent event) {
-        YusufGuild guild = event.getGuild();
-        YusufOptionMapping userOption =
-                Objects.requireNonNull(event.getYusufOption(KICK_USER), "The target is null");
-        YusufUser user = userOption.getAsUser();
-        YusufMember author = Objects.requireNonNull(event.getMember(), "The author is null");
-        YusufMember targetMember = userOption.getAsMember();
+    private void handleBanCommand(@NotNull YusufSlashCommandEvent yusufSlashCommandEvent) {
+        YusufGuild yusufGuild = yusufSlashCommandEvent.getGuild();
+        YusufOptionMapping yusufOptionMapping = Objects
+            .requireNonNull(yusufSlashCommandEvent.getYusufOption(KICK_USER), AUTHOR_ERROR);
+        YusufUser yusufUser = yusufOptionMapping.getAsUser();
+        YusufMember yusufAuthor =
+                Objects.requireNonNull(yusufSlashCommandEvent.getMember(), AUTHOR_ERROR);
+        YusufMember yusufMember = yusufOptionMapping.getAsMember();
 
-        if (targetMember != null && !ModerationHelper.handleCanInteractWithTarget(targetMember,
-                guild.getBot(), author, event, KICK_COMMAND)) {
+        if (yusufMember != null && !ModerationHelper.userCanInteractWithTheGivenUser(yusufMember,
+                yusufGuild.getBot(), yusufAuthor, yusufSlashCommandEvent, KICK_COMMAND)) {
             return;
         }
 
-        if (!ModerationHelper.handleHasPermissions(event.getMember(), guild.getBot(), event, guild,
-                KICK_COMMAND)) {
+        if (!ModerationHelper.userAndBotHaveTheRightPerms(yusufSlashCommandEvent.getMember(),
+                yusufGuild.getBot(), yusufSlashCommandEvent, yusufGuild, KICK_COMMAND)) {
             return;
         }
 
-        long userId = user.getUserIdLong();
-        long guildId = guild.getIdLong();
+        long userId = yusufUser.getUserIdLong();
+        long guildId = yusufGuild.getIdLong();
         if (ModerationHelper.getBanAuthor(userId, guildId) == null
                 && ModerationHelper.getBanReason(userId, guildId) == null) {
-            event.replyEphemeralEmbed(new EmbedBuilder().setTitle("Null")
-                .setDescription("The user " + user.getUserTag() + "is not banned")
+            yusufSlashCommandEvent.replyEphemeralEmbed(new EmbedBuilder().setTitle("Null")
+                .setDescription("The user " + yusufUser.getUserTag() + "is not banned")
                 .setColor(Color.CYAN)
                 .build());
         } else {
-            event
+            yusufSlashCommandEvent
                 .replyEmbed(new EmbedBuilder().setTitle("Ban")
-                    .setDescription("The user " + user.getUserTag()
+                    .setDescription(THE_USER + yusufUser.getUserTag()
                             + " was banned for the following reason "
                             + ModerationHelper.getBanReason(userId, guildId) + " by the user "
                             + ModerationHelper.getBanAuthor(userId, guildId))

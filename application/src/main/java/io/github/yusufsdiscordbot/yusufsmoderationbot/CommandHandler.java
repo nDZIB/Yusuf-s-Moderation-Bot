@@ -17,6 +17,12 @@ import net.dv8tion.jda.api.entities.Guild;
 
 public class CommandHandler extends CoreSlashCommandHandler {
 
+    /**
+     * Handles and registers the commands
+     *
+     * @param jda used to register global command
+     * @param guild used to register guild commands
+     */
     public CommandHandler(JDA jda, Guild guild) {
         super(jda, guild);
         addCommand(new HelloWorld());

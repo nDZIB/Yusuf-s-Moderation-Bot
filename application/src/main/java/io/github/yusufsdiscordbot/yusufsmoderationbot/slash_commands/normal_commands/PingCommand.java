@@ -33,8 +33,8 @@ public class PingCommand extends CommandConnector {
     public void onSlashCommand(YusufSlashCommandEvent event) {
         JDA jda = event.getJDA();
         long ping = jda.getGatewayPing();
-        event.replyEmbed(new EmbedBuilder().setTitle("Ping")
-            .setDescription("Pong! " + ping + "ms")
+        event.replyEmbed(new EmbedBuilder().setTitle("Here is the ping:")
+            .setDescription("The WS ping is: " + ping + "ms")
             .setColor(Color.CYAN)
             .build());
     }

@@ -10,10 +10,13 @@ package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandConnector;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
+import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufUser;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.util.Objects;
 
 public class AuditCommand extends CommandConnector {
@@ -53,8 +56,17 @@ public class AuditCommand extends CommandConnector {
     }
 
     private void handleWarnCommand(@NotNull YusufSlashCommandEvent event) {
-
+        YusufUser user = event.getYusufOption(WARN_USER).getAsUser();
+        event.replyEmbed(new EmbedBuilder().setTitle("Warns")
+            .setDescription("The user " + user.getUserTag() + " has "
+                    + ModerationHelper.getCurrentAmountOfWarns(user.getUserIdLong(),
+                            event.getGuild().getIdLong())
+                    + " warns")
+            .setColor(Color.CYAN)
+            .build());
     }
+
+
 
     private void handleKickCommand(@NotNull YusufSlashCommandEvent event) {
 

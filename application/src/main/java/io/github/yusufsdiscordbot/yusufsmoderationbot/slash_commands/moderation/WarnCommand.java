@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
@@ -67,8 +66,8 @@ public class WarnCommand extends CommandConnector {
             return;
         }
 
-        Integer oldAmountOfWarns =
-                getCurrentAmountOfWarns(targetUser.getUserIdLong(), guild.getIdLong());
+        Integer oldAmountOfWarns = ModerationHelper
+            .getCurrentAmountOfWarns(targetUser.getUserIdLong(), guild.getIdLong());
         int amountOfWarns = oldAmountOfWarns + 1;
 
         if (!yusufSlashCommandEvent.getGuild().checkReasonLength(reason, yusufSlashCommandEvent)) {
@@ -97,36 +96,5 @@ public class WarnCommand extends CommandConnector {
         } catch (SQLException e) {
             logger.error("Failed to update the warn settings", e);
         }
-    }
-
-    private Integer getCurrentAmountOfWarns(long userId, long guildId) {
-        try (final PreparedStatement preparedStatement = DataBase.getConnection()
-
-            // language=SQLite
-            .prepareStatement(
-                    "SELECT amount_of_warns FROM warn_settings WHERE user_id = ? AND guild_id = ?")) {
-
-            preparedStatement.setLong(1, userId);
-            preparedStatement.setLong(2, guildId);
-
-            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    return resultSet.getInt("amount_of_warns");
-                }
-            }
-            try (final PreparedStatement insertStatement = DataBase.getConnection()
-                // language=SQLite
-                .prepareStatement("INSERT INTO warn_settings(user_id, guild_id) VALUES(?,?) ")) {
-
-                insertStatement.setLong(1, userId);
-                insertStatement.setLong(2, guildId);
-                insertStatement.execute();
-            }
-
-        } catch (SQLException e) {
-            logger.error("Failed to retrieve the amount of warns from the warn settings database",
-                    e);
-        }
-        return getCurrentAmountOfWarns(userId, guildId);
     }
 }

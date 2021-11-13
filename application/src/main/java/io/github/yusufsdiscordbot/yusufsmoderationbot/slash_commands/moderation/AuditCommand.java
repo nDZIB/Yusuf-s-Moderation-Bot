@@ -135,10 +135,9 @@ public class AuditCommand extends CommandConnector {
 
         long userId = yusufUser.getUserIdLong();
         long guildId = yusufGuild.getIdLong();
-        if (ModerationHelper.getKickAuthor(userId, guildId) == null
-                && ModerationHelper.getKickReason(userId, guildId) == null) {
+        if (ModerationHelper.checkIfKickIsNull(userId, guildId) == null) {
             yusufSlashCommandEvent.replyEphemeralEmbed(new EmbedBuilder().setTitle("Null")
-                .setDescription(THE_USER + yusufUser.getUserTag() + "is not banned")
+                .setDescription(THE_USER + yusufUser.getUserTag() + " is not banned")
                 .setColor(Color.CYAN)
                 .build());
         } else {
@@ -181,8 +180,7 @@ public class AuditCommand extends CommandConnector {
 
         long userId = yusufUser.getUserIdLong();
         long guildId = yusufGuild.getIdLong();
-        if (ModerationHelper.getBanAuthor(userId, guildId) == null
-                && ModerationHelper.getBanReason(userId, guildId) == null) {
+        if (ModerationHelper.checkIfBanIsNull(userId, guildId) == null) {
             yusufSlashCommandEvent.replyEphemeralEmbed(new EmbedBuilder().setTitle("Null")
                 .setDescription("The user " + yusufUser.getUserTag() + "is not banned")
                 .setColor(Color.CYAN)

@@ -8,10 +8,7 @@
 package io.github.yusufsdiscordbot.yusufsmoderationbot;
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CoreSlashCommandHandler;
-import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation.BanCommand;
-import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation.KickCommand;
-import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation.PurgeCommand;
-import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation.UnBanCommand;
+import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation.*;
 import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.normal_commands.*;
 import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.role.AddRoleCommand;
 import io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.role.RemoveRoleCommand;
@@ -20,6 +17,12 @@ import net.dv8tion.jda.api.entities.Guild;
 
 public class CommandHandler extends CoreSlashCommandHandler {
 
+    /**
+     * Handles and registers the commands
+     *
+     * @param jda used to register global command
+     * @param guild used to register guild commands
+     */
     public CommandHandler(JDA jda, Guild guild) {
         super(jda, guild);
         addCommand(new HelloWorld());
@@ -36,13 +39,12 @@ public class CommandHandler extends CoreSlashCommandHandler {
 
         addCommand(new BanCommand());
         addCommand(new UnBanCommand());
-        // addCommand(new WarnCommand());
-        // addCommand(new MuteCommand());
+        addCommand(new WarnCommand());
         addCommand(new KickCommand());
-        addCommand(new PurgeCommand());
-
         addCommand(new AddRoleCommand());
         addCommand(new RemoveRoleCommand());
+        addCommand(new AuditCommand());
+
         globalCommandsData.queue();
         guildCommandsData.queue();
     }

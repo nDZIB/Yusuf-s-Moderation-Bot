@@ -14,6 +14,12 @@ import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.awt.*;
 
+/**
+ * When the command is run the user will receive the bots' info such as the bots current version or
+ * what Java version it uses.
+ *
+ * @author Yusuf Arfan Ismail
+ */
 public class BotInfoCommand extends CommandConnector {
     public BotInfoCommand() {
         super("botinfo", "Provides the user with info about the bot.", CommandVisibility.SERVER);
@@ -25,14 +31,14 @@ public class BotInfoCommand extends CommandConnector {
         builder.setTitle(yusufSlashCommandEvent.getGuild().getBot().getName() + " Info")
             .setDescription(
                     """
-                            Running on Yusuf's Moderation bot V2-1.0.3
+                            Running on Yusuf's Moderation bot V3-1.0.3
                             Developer:
                             • [RealYusufIsmail](https://github.com/RealYusufIsmail)
                             Runtime-Environment:
                             • Gradle 7.3
                             • Java 17
                             Library's:
-                            • [JDA](https://github.com/Javacord/Javacord)
+                            • [JDA](https://github.com/DV8FromTheWorld/JDA)
                             • [YusufIsmail's Discord core](https://github.com/YusufsDiscordbot/YusufIsmails-Discord-core)
                             Bots repo and org:
                             • [Yusuf's moderation bot](https://github.com/YusufsDiscordbot/Yusuf-s-Moderation-Bot)

@@ -13,19 +13,22 @@
 package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.moderation;
 
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.*;
-import net.dv8tion.jda.api.Permission;
+import io.github.yusufsdiscordbot.yusufsmoderationbot.DataBase;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class BanCommand extends CommandConnector {
     private static final String USER_OPTION = "user";
     private static final String DELETE_HISTORY_OPTION = "delete-history";
     private static final String REASON_OPTION = "reason";
+    private static final String COMMAND_TYPE = "ban";
     private static final Logger logger = LoggerFactory.getLogger(BanCommand.class);
 
     public BanCommand() {
@@ -64,39 +67,22 @@ public class BanCommand extends CommandConnector {
                 target.getUserId(), deleteHistoryDays, reason);
     }
 
-    private static boolean handleCanInteractWithTarget(YusufMember target, YusufMember bot,
-            @NotNull YusufMember author, @NotNull YusufSlashCommandEvent event) {
-        String targetTag = target.getUser().getAsTag();
-        if (!author.canInteract(target)) {
-            event.replyEphemeral("The user " + targetTag + " is too powerful for you to ban.");
-            return false;
-        }
+    private void updateBanDatabase(long userId, long guildId, @NotNull String reason,
+            long authorId) {
+        try (final PreparedStatement preparedStatement = DataBase.getConnection()
+            // language=SQLite
+            .prepareStatement(
+                    "UPDATE ban_settings SET ban_reason = ? AND author_id = ?  WHERE user_id = ? AND guild_id = ?")) {
 
-        if (!bot.canInteract(target)) {
-            event.replyEphemeral("The user " + targetTag + " is too powerful for me to ban.");
-            return false;
-        }
-        return true;
-    }
+            preparedStatement.setString(1, reason);
+            preparedStatement.setLong(2, authorId);
+            preparedStatement.setLong(3, userId);
+            preparedStatement.setLong(4, guildId);
 
-    private static boolean handleHasPermissions(@NotNull YusufMember author,
-            @NotNull YusufMember bot, @NotNull YusufSlashCommandEvent event,
-            @NotNull YusufGuild guild) {
-        if (!author.hasPermission(Permission.BAN_MEMBERS)) {
-            event.replyEphemeral(
-                    "You can not ban users in this guild since you do not have the BAN_MEMBERS permission.");
-            return false;
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Failed to update the ban settings", e);
         }
-
-        if (!bot.hasPermission(Permission.BAN_MEMBERS)) {
-            event.replyEphemeral(
-                    "I can not ban users in this guild since I do not have the BAN_MEMBERS permission.");
-
-            logger.error("The bot does not have BAN_MEMBERS permission on the server '{}' ",
-                    guild.getName());
-            return false;
-        }
-        return true;
     }
 
     @Override
@@ -115,11 +101,13 @@ public class BanCommand extends CommandConnector {
         YusufMember bot = guild.getBot();
 
         // Member doesn't exist if attempting to ban a user who is not part of the guild.
-        if (target != null && !handleCanInteractWithTarget(target, bot, author, event)) {
+        if (target != null && !ModerationHelper.userCanInteractWithTheGivenUser(target, bot, author,
+                event, COMMAND_TYPE)) {
             return;
         }
 
-        if (!handleHasPermissions(author, bot, event, guild)) {
+        if (!ModerationHelper.userAndBotHaveTheRightPerms(author, bot, event, guild,
+                COMMAND_TYPE)) {
             return;
         }
 
@@ -130,6 +118,8 @@ public class BanCommand extends CommandConnector {
             return;
         }
 
-        banUser(userOption.getAsUser(), event.getMember(), reason, deleteHistoryDays, guild, event);
+        YusufUser user = userOption.getAsUser();
+        banUser(user, event.getMember(), reason, deleteHistoryDays, guild, event);
+        updateBanDatabase(user.getUserIdLong(), guild.getIdLong(), reason, author.getIdLong());
     }
 }

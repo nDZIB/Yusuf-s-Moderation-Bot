@@ -10,7 +10,10 @@ package io.github.yusufsdiscordbot.yusufsmoderationbot.slash_commands.normal_com
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandConnector;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.CommandVisibility;
 import io.github.yusufsdiscordbot.yusufsdiscordcore.bot.slash_command.YusufSlashCommandEvent;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
+
+import java.awt.*;
 
 public class PingCommand extends CommandConnector {
 
@@ -30,7 +33,10 @@ public class PingCommand extends CommandConnector {
     public void onSlashCommand(YusufSlashCommandEvent event) {
         JDA jda = event.getJDA();
         long ping = jda.getGatewayPing();
-        event.replyMessage("Pong! " + ping + "ms");
+        event.replyEmbed(new EmbedBuilder().setTitle("Here is the ping:")
+            .setDescription("The WS ping is: " + ping + "ms")
+            .setColor(Color.CYAN)
+            .build());
     }
 }
 

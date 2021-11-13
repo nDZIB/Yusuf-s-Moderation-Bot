@@ -14,10 +14,19 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Objects;
 
+/**
+ * Were the database file is registered and created. The file location for the database is stored in
+ * this class and the process of creating the database file is coded here.
+ *
+ * @author Yusuf Arfan Ismail
+ */
 public class DataBase {
     private static final Logger logger = LoggerFactory.getLogger(DataBase.class);
     private static final HikariConfig config = new HikariConfig();
@@ -25,7 +34,7 @@ public class DataBase {
 
     static {
         try {
-            final File dbFile = new File("database.db");
+            final File dbFile = new File("database/build/database.db");
 
             if (!dbFile.exists()) {
                 if (dbFile.createNewFile()) {
@@ -36,7 +45,7 @@ public class DataBase {
             logger.error("Error while loading database", e);
         }
 
-        config.setJdbcUrl("jdbc:sqlite:database.db");
+        config.setJdbcUrl("jdbc:sqlite:database/build/database.db");
         config.setUsername("");
         config.setPassword("");
         config.addDataSourceProperty("cachePrepStmts", "true");
@@ -46,14 +55,17 @@ public class DataBase {
         dataSource = new HikariDataSource(config);
 
         try (final Statement statement = getConnection().createStatement()) {
+            File folder = new File("application/src/main/resources/database");
+            File[] listOfFiles = folder.listFiles();
 
-            // language=SQLite
-            statement.execute("CREATE TABLE IF NOT EXISTS warn_settings("
-                    + "user_id BIGINT NOT NULL PRIMARY KEY," + "guid_id BIGINT NOT NULL,"
-                    + "warn_reason TEXT NOT NULL," + "amount_of_warns INTEGER NOT NULL" + ");");
+            for (File file : Objects.requireNonNull(listOfFiles)) {
+                if (file.isFile()) {
+                    statement.execute(new String(Files.readAllBytes(Path.of(file.getPath()))));
+                }
+            }
 
             logger.info("Database table created");
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             logger.error("Error while loading database", e);
         }
     }

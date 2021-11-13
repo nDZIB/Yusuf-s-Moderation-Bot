@@ -11,6 +11,7 @@ out
 *.ipr
 *.iws
 *.iml
+*.log
 .idea
 
 # gradle
@@ -21,8 +22,6 @@ build
 eclipse
 run
 .DS_Store
-<<<<<<< Updated upstream
-=======
-*.log
 .env
->>>>>>> Stashed changes
+database.db
+identifier.sqlite

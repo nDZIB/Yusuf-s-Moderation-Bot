@@ -20,6 +20,8 @@ import static net.dv8tion.jda.api.interactions.commands.OptionType.ROLE;
 import static net.dv8tion.jda.api.interactions.commands.OptionType.USER;
 
 public class AddRoleCommand extends CommandConnector {
+    private static final String ADD_ROLE_USER = "user";
+
     /**
      * Were the command is registered.
      */
@@ -27,7 +29,7 @@ public class AddRoleCommand extends CommandConnector {
         super("add_role", "add a role to the given user", CommandVisibility.SERVER);
 
         getCommandData()
-            .addOptions(new OptionData(USER, RoleCommandUtil.USER,
+            .addOptions(new OptionData(USER, ADD_ROLE_USER,
                     "The user which you want to give the role to.").setRequired(true))
             .addOptions(new OptionData(ROLE, "role", "The role which you want to give")
                 .setRequired(true));
@@ -37,7 +39,7 @@ public class AddRoleCommand extends CommandConnector {
     public void onSlashCommand(YusufSlashCommandEvent event) {
         final YusufMember member = event.getMember();
 
-        Member target = event.getOption(RoleCommandUtil.USER).getAsMember();
+        Member target = event.getOption(ADD_ROLE_USER).getAsMember();
 
         if (!member.canInteract(target) || !member.hasPermission(Permission.MANAGE_ROLES)) {
             event.replyEphemeral("You are missing permission to add a role this member");

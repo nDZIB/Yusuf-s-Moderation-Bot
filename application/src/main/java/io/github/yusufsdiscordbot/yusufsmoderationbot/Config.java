@@ -8,11 +8,12 @@
 package io.github.yusufsdiscordbot.yusufsmoderationbot;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import org.jetbrains.annotations.NotNull;
 
 public class Config {
     private static final Dotenv dotenv = Dotenv.load();
 
-    public static String get(String key) {
+    public static String get(@NotNull String key) {
         return dotenv.get(key.toUpperCase());
     }
 }

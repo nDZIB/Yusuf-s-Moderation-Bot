@@ -13,18 +13,22 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
 import java.sql.SQLException;
 import java.util.EnumSet;
 
 public class Bot {
+    private static final Logger logger = LoggerFactory.getLogger(Bot.class);
+
     public static void main(String[] args)
             throws LoginException, InterruptedException, SQLException {
         final int cores = Runtime.getRuntime().availableProcessors();
 
         if (cores <= 1) {
-            System.out.println("Available Cores \"" + cores + "\", setting Parallelism Flag");
+            logger.info("Available Cores '{}' setting Parallelism Flag", cores);
             System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "1");
         }
 

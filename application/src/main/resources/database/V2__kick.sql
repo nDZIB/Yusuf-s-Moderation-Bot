@@ -6,7 +6,7 @@
  *  The GNU General Public License is a free, copyleft license for software and other kinds of works.
  */
 
-CREATE TABLE kick_settings
+CREATE TABLE IF NOT EXISTS kick_settings
 (
     user_id BIGINT NOT NULL PRIMARY KEY,
     guild_id BIGINT NOT NULL,

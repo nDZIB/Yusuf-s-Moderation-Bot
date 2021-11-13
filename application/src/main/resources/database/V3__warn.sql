@@ -6,7 +6,7 @@
  *  The GNU General Public License is a free, copyleft license for software and other kinds of works.
  */
 
-CREATE TABLE warn_settings
+CREATE TABLE IF NOT EXISTS warn_settings
 (
     user_id BIGINT NOT NULL PRIMARY KEY,
     guild_id BIGINT NOT NULL,

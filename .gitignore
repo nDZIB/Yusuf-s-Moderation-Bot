@@ -25,3 +25,4 @@ run
 .env
 database.db
 identifier.sqlite
+*.gz

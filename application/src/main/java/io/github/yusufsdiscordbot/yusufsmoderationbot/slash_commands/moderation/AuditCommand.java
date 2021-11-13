@@ -30,7 +30,7 @@ public class AuditCommand extends CommandConnector {
     private static final String WARN_USER = "user";
     private static final String BAN_USER = "user";
     private static final String KICK_USER = "user";
-    private static final String THE_USER = "the user";
+    private static final String THE_USER = "the user ";
     private static final String AUTHOR_ERROR = "The has author has not been given";
 
     /**

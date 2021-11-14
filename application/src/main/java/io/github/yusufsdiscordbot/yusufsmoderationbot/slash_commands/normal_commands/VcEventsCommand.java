@@ -53,7 +53,7 @@ public class VcEventsCommand extends CommandConnector {
             .addOptions(new OptionData(OptionType.STRING, ACTIVITY,
                     "the activity that you want to use in the vc", true)
                         .addChoices(VC_APPLICATIONS))
-            .addOption(OptionType.STRING, CHANNEL, "the vc channel to use the activity in", true)
+            .addOption(OptionType.CHANNEL, CHANNEL, "the vc channel to use the activity in", true)
             .addOption(OptionType.INTEGER, MAX_AGE, "the max age of the invite", true)
             .addOption(OptionType.STRING, MAX_USE, "the max uses of the invite", true);
     }
@@ -66,15 +66,6 @@ public class VcEventsCommand extends CommandConnector {
                 "Voice states aren't being cached, check the JDABuilder");
 
         YusufMember bot = yusufSlashCommandEvent.getGuild().getBot();
-
-        if (!bot.getVoiceState().inVoiceChannel()) {
-            yusufSlashCommandEvent
-                .replyEphemeral("I need to be in a voice channel for this to work");
-        }
-        if (!member.getVoiceState().inVoiceChannel()) {
-            yusufSlashCommandEvent
-                .replyEphemeral("You need to be in a voice channel for this command to work");
-        }
 
         if (!bot.hasPermission(Permission.CREATE_INSTANT_INVITE)) {
             yusufSlashCommandEvent.replyEphemeral(

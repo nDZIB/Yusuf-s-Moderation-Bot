@@ -35,8 +35,8 @@ public class BotInfoCommand extends CommandConnector {
                             Developer:
                             • [RealYusufIsmail](https://github.com/RealYusufIsmail)
                             Runtime-Environment:
-                            • Gradle 7.3
-                            • Java 17
+                            • Gradle 7.2
+                            • Java 16
                             Library's:
                             • [JDA](https://github.com/DV8FromTheWorld/JDA)
                             • [YusufIsmail's Discord core](https://github.com/YusufsDiscordbot/YusufIsmails-Discord-core)

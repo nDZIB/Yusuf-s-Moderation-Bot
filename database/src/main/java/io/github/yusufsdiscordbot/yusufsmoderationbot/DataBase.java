@@ -57,8 +57,9 @@ public class DataBase {
         dataSource = new HikariDataSource(config);
 
         try (final Statement statement = getConnection().createStatement()) {
-            File folder = new File("application/src/main/resources/database");
+            File folder = new File(Config.get("DATABASE_SQL_FOLDER"));
             File[] listOfFiles = folder.listFiles();
+            logger.info("Checking database for tables");
 
             for (File file : Objects.requireNonNull(listOfFiles)) {
                 if (file.isFile()) {

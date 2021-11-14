@@ -5,6 +5,7 @@ TOKEN=
 GUILD_ID=
 DATABASE_FILE_LOCATION=database/build/database.db
 DATABASE_URL=jdbc:sqlite:database/build/database.db
+DATABASE_SQL_FOLDER=application/src/main/resources/database
 ```
 Make sure DATABASE_URL has the same database path as DATABASE_FILE_LOCATION
 Paste your bot token next to token. 

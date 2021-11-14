@@ -140,6 +140,7 @@ public class AuditCommand extends CommandConnector {
                 .setDescription(THE_USER + yusufUser.getUserTag() + " is not kicked")
                 .setColor(Color.CYAN)
                 .build());
+            return;
         }
 
         yusufSlashCommandEvent.replyEmbed(
@@ -185,6 +186,7 @@ public class AuditCommand extends CommandConnector {
                 .setDescription("The user " + yusufUser.getUserTag() + "is not banned")
                 .setColor(Color.CYAN)
                 .build());
+            return;
         }
 
         yusufSlashCommandEvent.replyEmbed(

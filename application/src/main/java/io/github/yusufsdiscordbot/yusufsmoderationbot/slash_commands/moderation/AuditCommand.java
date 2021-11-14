@@ -140,17 +140,17 @@ public class AuditCommand extends CommandConnector {
                 .setDescription(THE_USER + yusufUser.getUserTag() + " is not kicked")
                 .setColor(Color.CYAN)
                 .build());
-            return;
-        }
+        } else {
 
-        yusufSlashCommandEvent.replyEmbed(
-                new EmbedBuilder().setTitle("Kick")
+            yusufSlashCommandEvent
+                .replyEmbed(new EmbedBuilder().setTitle("Kick")
                     .setDescription(THE_USER + yusufUser.getUserTag()
                             + " was kicked for the following reason "
                             + ModerationHelper.getKickReason(userId, guildId) + " by "
                             + ModerationHelper.getKickAuthor(userId, guildId))
                     .setColor(Color.CYAN)
                     .build());
+        }
     }
 
     /**
@@ -186,17 +186,17 @@ public class AuditCommand extends CommandConnector {
                 .setDescription("The user " + yusufUser.getUserTag() + "is not banned")
                 .setColor(Color.CYAN)
                 .build());
-            return;
-        }
+        } else {
 
-        yusufSlashCommandEvent.replyEmbed(
-                new EmbedBuilder().setTitle("Ban")
+            yusufSlashCommandEvent
+                .replyEmbed(new EmbedBuilder().setTitle("Ban")
                     .setDescription(THE_USER + yusufUser.getUserTag()
                             + " was banned for the following reason "
                             + ModerationHelper.getBanReason(userId, guildId) + " by the user "
                             + ModerationHelper.getBanAuthor(userId, guildId))
                     .setColor(Color.CYAN)
                     .build());
+        }
 
     }
 }

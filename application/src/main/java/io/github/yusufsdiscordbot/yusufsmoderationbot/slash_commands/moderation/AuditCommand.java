@@ -136,7 +136,7 @@ public class AuditCommand extends CommandConnector {
         long userId = yusufUser.getUserIdLong();
         long guildId = yusufGuild.getIdLong();
         if (!ModerationHelper.checkIfKickIsNull(userId, guildId)) {
-                yusufSlashCommandEvent.replyEphemeralEmbed(new EmbedBuilder().setTitle("Null")
+            yusufSlashCommandEvent.replyEphemeralEmbed(new EmbedBuilder().setTitle("Null")
                 .setDescription(THE_USER + yusufUser.getUserTag() + " is not kicked")
                 .setColor(Color.CYAN)
                 .build());

@@ -34,16 +34,20 @@ public class DataBase {
 
     static {
         try {
-            final File dbFile = new File("database/build/database.db");
+            final File dbFile = new File(Config.get("DATABASE_FILE_LOCATION"));
 
-            if (!dbFile.exists() || !dbFile.createNewFile()) {
-                logger.info("Database file created");
+            if (!dbFile.exists()) {
+                if (dbFile.createNewFile()) {
+                    logger.info("Created database file");
+                } else {
+                    logger.info("Could not create database file");
+                }
             }
         } catch (IOException e) {
             logger.error("Error while loading database", e);
         }
 
-        config.setJdbcUrl("jdbc:sqlite:database/build/database.db");
+        config.setJdbcUrl(Config.get("DATABASE_URL"));
         config.setUsername("");
         config.setPassword("");
         config.addDataSourceProperty("cachePrepStmts", "true");
@@ -53,8 +57,9 @@ public class DataBase {
         dataSource = new HikariDataSource(config);
 
         try (final Statement statement = getConnection().createStatement()) {
-            File folder = new File("application/src/main/resources/database");
+            File folder = new File(Config.get("DATABASE_SQL_FOLDER"));
             File[] listOfFiles = folder.listFiles();
+            logger.info("Checking database for tables");
 
             for (File file : Objects.requireNonNull(listOfFiles)) {
                 if (file.isFile()) {

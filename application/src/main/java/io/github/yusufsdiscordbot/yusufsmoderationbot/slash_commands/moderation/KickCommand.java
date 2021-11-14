@@ -68,7 +68,7 @@ public class KickCommand extends CommandConnector {
 
         kickUser(target, author, reason, guild, event);
         updateKickDatabase(target.getUserIdLong(), guild.getIdLong(), reason,
-                author.getUserIdLong(), true);
+                author.getUserIdLong());
     }
 
     private static void kickUser(@NotNull YusufMember target, @NotNull YusufMember author,
@@ -123,7 +123,7 @@ public class KickCommand extends CommandConnector {
     }
 
     private void updateKickDatabase(long userId, long guildId, @NotNull String reason,
-            long authorId, boolean isKicked) {
+            long authorId) {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
             // language=SQLite
             .prepareStatement(
@@ -131,7 +131,7 @@ public class KickCommand extends CommandConnector {
 
             preparedStatement.setString(1, reason);
             preparedStatement.setLong(2, authorId);
-            preparedStatement.setBoolean(3, isKicked);
+            preparedStatement.setBoolean(3, true);
             preparedStatement.setLong(4, userId);
             preparedStatement.setLong(5, guildId);
 

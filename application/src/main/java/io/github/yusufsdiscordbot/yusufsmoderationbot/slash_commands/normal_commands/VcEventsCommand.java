@@ -54,8 +54,8 @@ public class VcEventsCommand extends CommandConnector {
                     "the activity that you want to use in the vc", true)
                         .addChoices(VC_APPLICATIONS))
             .addOption(OptionType.CHANNEL, CHANNEL, "the vc channel to use the activity in", true)
-            .addOption(OptionType.INTEGER, MAX_AGE, "the max age of the invite", true)
-            .addOption(OptionType.STRING, MAX_USE, "the max uses of the invite", true);
+            .addOption(OptionType.INTEGER, MAX_AGE, "the max age of the invite", false)
+            .addOption(OptionType.STRING, MAX_USE, "the max uses of the invite", false);
     }
 
     @Override

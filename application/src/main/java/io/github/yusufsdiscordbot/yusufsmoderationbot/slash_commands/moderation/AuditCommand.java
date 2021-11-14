@@ -135,21 +135,21 @@ public class AuditCommand extends CommandConnector {
 
         long userId = yusufUser.getUserIdLong();
         long guildId = yusufGuild.getIdLong();
-        if (ModerationHelper.checkIfKickIsNull(userId, guildId) == null) {
-            yusufSlashCommandEvent.replyEphemeralEmbed(new EmbedBuilder().setTitle("Null")
-                .setDescription(THE_USER + yusufUser.getUserTag() + " is not banned")
+        if (!ModerationHelper.checkIfKickIsNull(userId, guildId)) {
+                yusufSlashCommandEvent.replyEphemeralEmbed(new EmbedBuilder().setTitle("Null")
+                .setDescription(THE_USER + yusufUser.getUserTag() + " is not kicked")
                 .setColor(Color.CYAN)
                 .build());
-        } else {
-            yusufSlashCommandEvent
-                .replyEmbed(new EmbedBuilder().setTitle("Kick")
+        }
+
+        yusufSlashCommandEvent.replyEmbed(
+                new EmbedBuilder().setTitle("Kick")
                     .setDescription(THE_USER + yusufUser.getUserTag()
                             + " was kicked for the following reason "
                             + ModerationHelper.getKickReason(userId, guildId) + " by "
                             + ModerationHelper.getKickAuthor(userId, guildId))
                     .setColor(Color.CYAN)
                     .build());
-        }
     }
 
     /**
@@ -180,20 +180,21 @@ public class AuditCommand extends CommandConnector {
 
         long userId = yusufUser.getUserIdLong();
         long guildId = yusufGuild.getIdLong();
-        if (ModerationHelper.checkIfBanIsNull(userId, guildId) == null) {
+        if (!ModerationHelper.checkIfBanIsNull(userId, guildId)) {
             yusufSlashCommandEvent.replyEphemeralEmbed(new EmbedBuilder().setTitle("Null")
                 .setDescription("The user " + yusufUser.getUserTag() + "is not banned")
                 .setColor(Color.CYAN)
                 .build());
-        } else {
-            yusufSlashCommandEvent
-                .replyEmbed(new EmbedBuilder().setTitle("Ban")
+        }
+
+        yusufSlashCommandEvent.replyEmbed(
+                new EmbedBuilder().setTitle("Ban")
                     .setDescription(THE_USER + yusufUser.getUserTag()
                             + " was banned for the following reason "
                             + ModerationHelper.getBanReason(userId, guildId) + " by the user "
                             + ModerationHelper.getBanAuthor(userId, guildId))
                     .setColor(Color.CYAN)
                     .build());
-        }
+
     }
 }

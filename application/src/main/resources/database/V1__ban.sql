@@ -11,5 +11,6 @@ CREATE TABLE IF NOT EXISTS ban_settings
     user_id BIGINT NOT NULL PRIMARY KEY,
     guild_id BIGINT NOT NULL,
     author_id BIGINT,
+    is_banned BIT DEFAULT 0,
     ban_reason TEXT DEFAULT 'This user has been banned for breaking the rules'
 )

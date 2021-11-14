@@ -11,5 +11,6 @@ CREATE TABLE IF NOT EXISTS kick_settings
     user_id BIGINT NOT NULL PRIMARY KEY,
     guild_id BIGINT NOT NULL,
     author_id BIGINT,
+    is_kicked BIT DEFAULT 0,
     kick_reason TEXT DEFAULT 'This user has been kicked for breaking the rules'
 )

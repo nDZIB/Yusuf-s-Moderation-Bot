@@ -182,19 +182,19 @@ public enum ModerationHelper {
         return getKickAuthor(userId, guildId);
     }
 
-    public static Long checkIfKickIsNull(long userId, long guildId) {
+    public static boolean checkIfKickIsNull(long userId, long guildId) {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
 
             // language=SQLite
             .prepareStatement(
-                    "SELECT user_id FROM kick_settings WHERE user_id = ? AND guild_id = ?")) {
+                    "SELECT is_kicked FROM kick_settings WHERE user_id = ? AND guild_id = ?")) {
 
             preparedStatement.setLong(1, userId);
             preparedStatement.setLong(2, guildId);
 
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    return resultSet.getLong("user_id");
+                    return resultSet.getBoolean("is_kicked");
                 }
             }
             try (final PreparedStatement insertStatement = DataBase.getConnection()
@@ -207,7 +207,7 @@ public enum ModerationHelper {
             }
 
         } catch (SQLException e) {
-            logger.error("Failed to retrieve the ban reason from the ban database", e);
+            logger.error("Failed to retrieve the boolean is kicked.", e);
         }
         return checkIfKickIsNull(userId, guildId);
     }
@@ -216,19 +216,19 @@ public enum ModerationHelper {
     private static final String INSERT_FOR_BAN =
             "INSERT INTO ban_settings(user_id, guild_id) VALUES(?,?)";
 
-    public static Long checkIfBanIsNull(long userId, long guildId) {
+    public static boolean checkIfBanIsNull(long userId, long guildId) {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
 
             // language=SQLite
             .prepareStatement(
-                    "SELECT user_id FROM ban_settings WHERE user_id = ? AND guild_id = ?")) {
+                    "SELECT is_banned FROM ban_settings WHERE user_id = ? AND guild_id = ?")) {
 
             preparedStatement.setLong(1, userId);
             preparedStatement.setLong(2, guildId);
 
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    return resultSet.getLong("user_id");
+                    return resultSet.getBoolean("is_banned");
                 }
             }
             try (final PreparedStatement insertStatement = DataBase.getConnection()
@@ -241,7 +241,7 @@ public enum ModerationHelper {
             }
 
         } catch (SQLException e) {
-            logger.error("Failed to retrieve the ban reason from the ban database", e);
+            logger.error("Failed to retrieve the boolean is banned", e);
         }
         return checkIfBanIsNull(userId, guildId);
     }

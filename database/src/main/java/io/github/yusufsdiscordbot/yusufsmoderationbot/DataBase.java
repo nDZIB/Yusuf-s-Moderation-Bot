@@ -61,8 +61,9 @@ public class DataBase {
                     statement.execute(new String(Files.readAllBytes(Path.of(file.getPath()))));
                 }
             }
-
             logger.info("Database table created");
+            statement.closeOnCompletion();
+            logger.info("Database table closed");
         } catch (SQLException | IOException e) {
             logger.error("Error while loading database", e);
         }

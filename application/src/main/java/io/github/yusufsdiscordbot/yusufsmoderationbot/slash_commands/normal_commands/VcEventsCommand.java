@@ -67,6 +67,11 @@ public class VcEventsCommand extends CommandConnector {
 
         YusufMember bot = yusufSlashCommandEvent.getGuild().getBot();
 
+        if (!voiceState.inVoiceChannel()) {
+            yusufSlashCommandEvent
+                .replyEphemeral("You need to be in a voice channel to run this command!");
+            return;
+        }
         if (!bot.hasPermission(Permission.CREATE_INSTANT_INVITE)) {
             yusufSlashCommandEvent.replyEphemeral(
                     "I need the permission CREATE_INSTANT_INVITE for this command to work");
@@ -86,6 +91,8 @@ public class VcEventsCommand extends CommandConnector {
             .setTargetStream(channel.getAsString())
             .setMaxAge(maxAge)
             .setMaxUses(maxUse)
+            .flatMap(invite -> yusufSlashCommandEvent
+                .reply("Here is the link " + invite.getUrl() + "And Thank you for using our bot."))
             .queue();
     }
 }

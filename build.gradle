@@ -19,7 +19,7 @@ plugins {
 version 'v3-1.0.3'
 group 'io.github.yusufsdiscordbot'
 
-sourceCompatibility = JavaVersion.VERSION_17
+sourceCompatibility = JavaVersion.VERSION_16
 
 sonarqube {
     properties {
@@ -47,8 +47,8 @@ subprojects {
         dependsOn 'spotlessApply'
 
         // Nails the Java-Version of every Subproject
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_16
+        targetCompatibility = JavaVersion.VERSION_16
     }
 
     spotless {

@@ -43,6 +43,6 @@ public class Bot {
             .build();
 
         jda.awaitReady()
-            .addEventListener(new CommandHandler(jda, jda.getGuildById(Config.get("GUILDID"))));
+            .addEventListener(new CommandHandler(jda, jda.getGuildById(Config.get("GUILD_ID"))));
     }
 }

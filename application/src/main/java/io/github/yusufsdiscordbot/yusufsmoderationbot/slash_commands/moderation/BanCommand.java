@@ -67,17 +67,18 @@ public class BanCommand extends CommandConnector {
                 target.getUserId(), deleteHistoryDays, reason);
     }
 
-    private void updateBanDatabase(long userId, long guildId, @NotNull String reason,
-            long authorId) {
+    private void updateBanDatabase(long userId, long guildId, @NotNull String reason, long authorId,
+            boolean isBanned) {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
             // language=SQLite
             .prepareStatement(
-                    "UPDATE ban_settings SET ban_reason = ? AND author_id = ?  WHERE user_id = ? AND guild_id = ?")) {
+                    "UPDATE ban_settings SET ban_reason = ? , author_id = ?, is_banned = ? WHERE user_id = ? AND guild_id = ?")) {
 
             preparedStatement.setString(1, reason);
             preparedStatement.setLong(2, authorId);
-            preparedStatement.setLong(3, userId);
-            preparedStatement.setLong(4, guildId);
+            preparedStatement.setBoolean(3, isBanned);
+            preparedStatement.setLong(4, userId);
+            preparedStatement.setLong(5, guildId);
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -120,6 +121,7 @@ public class BanCommand extends CommandConnector {
 
         YusufUser user = userOption.getAsUser();
         banUser(user, event.getMember(), reason, deleteHistoryDays, guild, event);
-        updateBanDatabase(user.getUserIdLong(), guild.getIdLong(), reason, author.getIdLong());
+        updateBanDatabase(user.getUserIdLong(), guild.getIdLong(), reason, author.getIdLong(),
+                true);
     }
 }

@@ -36,10 +36,8 @@ public class DataBase {
         try {
             final File dbFile = new File("database/build/database.db");
 
-            if (!dbFile.exists()) {
-                if (dbFile.createNewFile()) {
-                    logger.info("Database file created");
-                }
+            if (!dbFile.exists() || !dbFile.createNewFile()) {
+                logger.info("Database file created");
             }
         } catch (IOException e) {
             logger.error("Error while loading database", e);
@@ -63,8 +61,9 @@ public class DataBase {
                     statement.execute(new String(Files.readAllBytes(Path.of(file.getPath()))));
                 }
             }
-
             logger.info("Database table created");
+            statement.closeOnCompletion();
+            logger.info("Database table closed");
         } catch (SQLException | IOException e) {
             logger.error("Error while loading database", e);
         }

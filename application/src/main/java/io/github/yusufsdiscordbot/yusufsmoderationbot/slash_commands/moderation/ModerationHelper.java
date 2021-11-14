@@ -118,6 +118,10 @@ public enum ModerationHelper {
         return getCurrentAmountOfWarns(userId, guildId);
     }
 
+    // language=SQLite
+    private static final String INSERT_FOR_KICK =
+            "INSERT INTO kick_settings(user_id, guild_id) VALUES(?,?)";
+
     public static String getKickReason(long userId, long guildId) {
         try (final PreparedStatement preparedStatement = DataBase.getConnection()
 
@@ -135,7 +139,7 @@ public enum ModerationHelper {
             }
             try (final PreparedStatement insertStatement = DataBase.getConnection()
                 // language=SQLite
-                .prepareStatement("INSERT INTO kick_settings(user_id, guild_id) VALUES(?,?) ")) {
+                .prepareStatement(INSERT_FOR_KICK)) {
 
                 insertStatement.setLong(1, userId);
                 insertStatement.setLong(2, guildId);
@@ -146,6 +150,100 @@ public enum ModerationHelper {
             logger.error("Failed to retrieve the kick reason from the kick database", e);
         }
         return getKickReason(userId, guildId);
+    }
+
+    public static Long getKickAuthor(long userId, long guildId) {
+        try (final PreparedStatement preparedStatement = DataBase.getConnection()
+
+            // language=SQLite
+            .prepareStatement(
+                    "SELECT author_id FROM kick_settings WHERE user_id = ? AND guild_id = ?")) {
+
+            preparedStatement.setLong(1, userId);
+            preparedStatement.setLong(2, guildId);
+
+            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getLong("author_id");
+                }
+            }
+            try (final PreparedStatement insertStatement = DataBase.getConnection()
+                // language=SQLite
+                .prepareStatement(INSERT_FOR_KICK)) {
+
+                insertStatement.setLong(1, userId);
+                insertStatement.setLong(2, guildId);
+                insertStatement.execute();
+            }
+
+        } catch (SQLException e) {
+            logger.error("Failed to retrieve the the author of the kick from the kick database", e);
+        }
+        return getKickAuthor(userId, guildId);
+    }
+
+    public static boolean checkIfKickIsNull(long userId, long guildId) {
+        try (final PreparedStatement preparedStatement = DataBase.getConnection()
+
+            // language=SQLite
+            .prepareStatement(
+                    "SELECT is_kicked FROM kick_settings WHERE user_id = ? AND guild_id = ?")) {
+
+            preparedStatement.setLong(1, userId);
+            preparedStatement.setLong(2, guildId);
+
+            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getBoolean("is_kicked");
+                }
+            }
+            try (final PreparedStatement insertStatement = DataBase.getConnection()
+                // language=SQLite
+                .prepareStatement(INSERT_FOR_KICK)) {
+
+                insertStatement.setLong(1, userId);
+                insertStatement.setLong(2, guildId);
+                insertStatement.execute();
+            }
+
+        } catch (SQLException e) {
+            logger.error("Failed to retrieve the boolean is kicked.", e);
+        }
+        return checkIfKickIsNull(userId, guildId);
+    }
+
+    // language=SQLite
+    private static final String INSERT_FOR_BAN =
+            "INSERT INTO ban_settings(user_id, guild_id) VALUES(?,?)";
+
+    public static boolean checkIfBanIsNull(long userId, long guildId) {
+        try (final PreparedStatement preparedStatement = DataBase.getConnection()
+
+            // language=SQLite
+            .prepareStatement(
+                    "SELECT is_banned FROM ban_settings WHERE user_id = ? AND guild_id = ?")) {
+
+            preparedStatement.setLong(1, userId);
+            preparedStatement.setLong(2, guildId);
+
+            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getBoolean("is_banned");
+                }
+            }
+            try (final PreparedStatement insertStatement = DataBase.getConnection()
+                // language=SQLite
+                .prepareStatement(INSERT_FOR_BAN)) {
+
+                insertStatement.setLong(1, userId);
+                insertStatement.setLong(2, guildId);
+                insertStatement.execute();
+            }
+
+        } catch (SQLException e) {
+            logger.error("Failed to retrieve the boolean is banned", e);
+        }
+        return checkIfBanIsNull(userId, guildId);
     }
 
     public static String getBanReason(long userId, long guildId) {
@@ -165,7 +263,7 @@ public enum ModerationHelper {
             }
             try (final PreparedStatement insertStatement = DataBase.getConnection()
                 // language=SQLite
-                .prepareStatement("INSERT INTO ban_settings(user_id, guild_id) VALUES(?,?) ")) {
+                .prepareStatement(INSERT_FOR_BAN)) {
 
                 insertStatement.setLong(1, userId);
                 insertStatement.setLong(2, guildId);
@@ -195,7 +293,7 @@ public enum ModerationHelper {
             }
             try (final PreparedStatement insertStatement = DataBase.getConnection()
                 // language=SQLite
-                .prepareStatement("INSERT INTO ban_settings(user_id, guild_id) VALUES(?,?) ")) {
+                .prepareStatement(INSERT_FOR_BAN)) {
 
                 insertStatement.setLong(1, userId);
                 insertStatement.setLong(2, guildId);
@@ -206,35 +304,5 @@ public enum ModerationHelper {
             logger.error("Failed to retrieve the the author of the ban from the ban database", e);
         }
         return getBanAuthor(userId, guildId);
-    }
-
-    public static Long getKickAuthor(long userId, long guildId) {
-        try (final PreparedStatement preparedStatement = DataBase.getConnection()
-
-            // language=SQLite
-            .prepareStatement(
-                    "SELECT author_id FROM kick_settings WHERE user_id = ? AND guild_id = ?")) {
-
-            preparedStatement.setLong(1, userId);
-            preparedStatement.setLong(2, guildId);
-
-            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    return resultSet.getLong("author_id");
-                }
-            }
-            try (final PreparedStatement insertStatement = DataBase.getConnection()
-                // language=SQLite
-                .prepareStatement("INSERT INTO kick_settings(user_id, guild_id) VALUES(?,?) ")) {
-
-                insertStatement.setLong(1, userId);
-                insertStatement.setLong(2, guildId);
-                insertStatement.execute();
-            }
-
-        } catch (SQLException e) {
-            logger.error("Failed to retrieve the the author of the kick from the kick database", e);
-        }
-        return getKickAuthor(userId, guildId);
     }
 }

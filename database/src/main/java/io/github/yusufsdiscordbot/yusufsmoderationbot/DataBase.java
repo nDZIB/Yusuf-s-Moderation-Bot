@@ -34,10 +34,14 @@ public class DataBase {
 
     static {
         try {
-            final File dbFile = new File("database/build/database.db");
+            final File dbFile = new File("../../../../../database.db");
 
-            if (!dbFile.exists() || !dbFile.createNewFile()) {
-                logger.info("Database file created");
+            if (!dbFile.exists()) {
+                if (dbFile.createNewFile()) {
+                    logger.info("Created database file");
+                } else {
+                    logger.info("Could not create database file");
+                }
             }
         } catch (IOException e) {
             logger.error("Error while loading database", e);

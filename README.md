@@ -1,4 +1,6 @@
 [![DeepSource](https://deepsource.io/gh/YusufsDiscordbot/Yusuf-s-Moderation-Bot.svg/?label=active+issues&show_trend=true&token=reVj_TamzteXYDCyriSjz3v8)](https://deepsource.io/gh/YusufsDiscordbot/Yusuf-s-Moderation-Bot/?ref=repository-badge)
+<a href="https://cla-assistant.io/YusufsDiscordbot/Yusuf-s-Moderation-Bot"><img src="https://cla-assistant.io/readme/badge/YusufsDiscordbot/Yusuf-s-Moderation-Bot" alt="CLA assistant" /></a>
+<br>
 To get started fork the repo and create a .env file and in the .env include this
 ```env
 TOKEN=
